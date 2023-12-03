@@ -1,0 +1,6 @@
+#include "MainClass.h"
+
+void Object::Set(){
+	
+}
+}
