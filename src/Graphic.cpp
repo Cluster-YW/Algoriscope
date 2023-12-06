@@ -64,16 +64,13 @@ int main(int argc, char* argv[]) {
 	  //glCullFace(GL_FRONT);//GL_BACK:剔除背面 ，GL_FRONT:剔除正面
 	 */
 	
-	//VAO 绑定Vertex Arrays
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	
 	//VBO
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	// Bind 究竟是什么意思？
+	// 个人理解：把当前操作的目标设置为某个对象——颜午
 	
 	//EBO
 	unsigned int EBO;
@@ -85,12 +82,16 @@ int main(int argc, char* argv[]) {
 	// VBO - 负责数据的传输
 	// VAO - 负责数据的解释
 	
+	//VAO 绑定Vertex Arrays
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// 上述代码的解释
-	// glVertexAttribPointer 负责解释VBO中顶点的顺序。
+	// glVertexAttribPointer() 负责解释 VBO 中顶点使用的顺序。
 	// 第一个参数 0，表示对应数据要传入属性的 location。此处为 0 (location = 0)。
 	// 第二个参数 3，表示传入属性由几个值构成。此处表示一次传入 3 个，对应 vec3。
 	// 第三个参数 GL_FLOAT，表示传入数据类型。此处表示 float。
@@ -99,8 +100,11 @@ int main(int argc, char* argv[]) {
 	// 		这里指每隔 6 个 float 的内存大小传入。
 	//  	若设置为 0 ，则按紧密排列的假设自动设定。
 	// 第六个参数 (void*)0 起始位置指针，类型为 void* 无类型指针。
-	// 		未绑定 VBO 时，直接指向需要上传的数据地址
-	// 		绑定 VBO 时，标志
+	// 		未绑定 VBO 时，直接指向需要上传的数据地址。
+	// 		绑定 VBO 时，表示 VBO 位置的地址偏移量。
+	//		此处第一个为 0 表示从头开始取。第二个表示跳过开头的 3 个开始取。
+	//	
+	// glEnableVertexAttribArray() 表示启用顶点属性。不启用则对应 location 无法输入。
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -115,6 +119,7 @@ int main(int argc, char* argv[]) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		//--------
 		
+		//更新 VBO 的缓冲数据
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 		
@@ -131,7 +136,14 @@ int main(int argc, char* argv[]) {
 		shader.setFloat("change", sinTime); //把sinTime赋给名为change的变量  
 		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		
+		// glDrawArrays() 	直接画图
+		// 第一个参数 要画的图形
+		// 第二个参数 从 VAO 读出的第几个点开始
+		// 第二个参数 使用的点的个数
+		// glDrawElements() 按照索引的方式画图
+		// 第一个参数 要画的图形
+		// 第二个参数 使用的点的个数
+		// 第三和第四个参数分别表示读取 EBO 的数据类型和起始位置偏移量
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
