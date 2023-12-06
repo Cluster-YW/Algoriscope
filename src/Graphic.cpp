@@ -38,13 +38,13 @@ int main(int argc, char* argv[]) {
 	
 	GLFWwindow* window = glfwCreateWindow(800, 600, "Test window", NULL, NULL);
 	
-	if (window == NULL)
+	if (window == NULL)//若初始化失败
 	{
 		cout << "Failed to create GLFW window" << endl;
 		glfwTerminate();//销毁窗口，释放资源
-		//return EXIT_FAILURE;
+		return EXIT_FAILURE;
 	}
-	glfwMakeContextCurrent(window);//指定线程
+	glfwMakeContextCurrent(window);//指定线程，创建OpenGL上下文
 	
 	glewExperimental = true;
 	
@@ -63,10 +63,12 @@ int main(int argc, char* argv[]) {
 	  //glEnable(GL_CULL_FACE);
 	  //glCullFace(GL_FRONT);//GL_BACK:剔除背面 ，GL_FRONT:剔除正面
 	 */
+	
 	//VAO 绑定Vertex Arrays
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
+	
 	//VBO
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
@@ -76,15 +78,29 @@ int main(int argc, char* argv[]) {
 	//EBO
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
-	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	
+	
+	// VBO - 负责数据的传输
+	// VAO - 负责数据的解释
 	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	// 上述代码的解释
+	// glVertexAttribPointer 负责解释VBO中顶点的顺序。
+	// 第一个参数 0，表示对应数据要传入属性的 location。此处为 0 (location = 0)。
+	// 第二个参数 3，表示传入属性由几个值构成。此处表示一次传入 3 个，对应 vec3。
+	// 第三个参数 GL_FLOAT，表示传入数据类型。此处表示 float。
+	// 第四个参数 GL_FALSE，设置是否标准化（把所有数据压缩到 0~1 之间）。此处选择否。
+	// 第五个参数 6 * sizeof(float)，表示内存步长。
+	// 		这里指每隔 6 个 float 的内存大小传入。
+	//  	若设置为 0 ，则按紧密排列的假设自动设定。
+	// 第六个参数 (void*)0 起始位置指针，类型为 void* 无类型指针。
+	// 		未绑定 VBO 时，直接指向需要上传的数据地址
+	// 		绑定 VBO 时，标志
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -92,9 +108,7 @@ int main(int argc, char* argv[]) {
 		const char* vertexPath ="vertexShader.glsl";
 		const char* fragmentPath ="fragmentShader_frag=vertex.glsl";
 		
-		
-		processInput(window);
-		
+		processInput(window);//处理输入事件
 		
 		glClearColor(0.2f, 0.3f, 0.3f, 0.1f);
 		//清空colorbuff的缓冲区

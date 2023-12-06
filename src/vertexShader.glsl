@@ -2,7 +2,7 @@
 layout(location = 0) in vec3 aPos;  
 layout(location = 1) in vec3 aColor;    
 out vec4 vertexColor;
-uniform float change;//从shader传进来的位置变化变量
+uniform float change; //浠巗hader浼犺繘鏉ョ殑浣嶇疆鍙樺寲鍙橀噺
 void main(){
 	gl_Position = vec4(aPos.x*change, aPos.y+change, aPos.z, 1.0);
 	vertexColor = vec4(aColor.x,aColor.y,aColor.z,1.0); 
