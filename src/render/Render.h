@@ -1,14 +1,14 @@
-#ifndef RENDER_H
-#define RENDER_H
+#ifndef ALGORISCOPE_RENDER_H
+#define ALGORISCOPE_RENDER_H
 
 #include "shader.h"
-#include "vector2.h"
+#include "Vector2.h"
 #include "color.h"
 
 namespace Algoriscope {
 	class Render {
 		private:
-			vector2 size;//画布/场景尺寸
+			Vector2 size;//画布/场景尺寸
 		public:
 			//构造函数，进行相关初始化。
 			Render() {
@@ -35,13 +35,13 @@ namespace Algoriscope {
 			//pos1 - 起点位置
 			//pos2 - 终点位置
 			//color - 线的颜色
-			int drawLine(const vector2& pos1, const vector2& pos2, const color& col) {
+			int drawLine(const Vector2& pos1, const Vector2& pos2, const Color& col) {
 
 			}
 
 			//画三角形
 			//3个点+颜色
-			int drawTri(const vector2& pos1, const vector2& pos2, const vector2& pos3, const color& col) {
+			int drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const Color& col) {
 
 			}
 
@@ -49,11 +49,11 @@ namespace Algoriscope {
 			// pos - 起始点
 			// size - 尺寸（宽和高）
 			// color - 颜色
-			int drawRect(const vector2& pos, const vector2& size, const color& col) {
+			int drawRect(const Vector2& pos, const Vector2& size, const Color& col) {
 
 			}
 
-			int drawText(const vector2& pos, const char*)
+			int drawText(const Vector2& pos, const char*)
 
 	};
 }
