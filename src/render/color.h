@@ -1,5 +1,5 @@
-#ifndef ALGORISCOPE_VECTOR2_H
-#define ALGORISCOPE_VECTOR2_H
+#ifndef ALGORISCOPE_COLOR_H 
+#define ALGORISCOPE_COLOR_H
 
 namespace Algoriscope {
 

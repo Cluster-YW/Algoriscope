@@ -1,33 +1,48 @@
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef ALGORISCOPE_SHADER_H
+#define ALGORISCOPE_SHADER_H
+
+#include "GL/glew.h"    
+#include "GLFW/glfw3.h" 
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
 using namespace std;
 class Shader {
 	public:
-		Shader(const char* vertexPath, const char* fragmentPath) {
+		Shader() {
+			
+			this->vertexPath = "vertexShader0.glsl";// è¯»å…¥é¡¶ç‚¹ç€è‰²å™¨çš„æ–‡ä»¶ä½ç½®
+			this->fragmentPath = "fragmentShader_frag=vertex.glsl"; //è¯»å…¥ç‰‡æ®µç€è‰²å™¨çš„æ–‡ä»¶ä½ç½®
 
-			this->vertexPath = vertexPath;// ¶ÁÈë¶¥µã×ÅÉ«Æ÷µÄÎÄ¼şÎ»ÖÃ
-			this->fragmentPath = fragmentPath; //¶ÁÈëÆ¬¶Î×ÅÉ«Æ÷µÄÎÄ¼şÎ»ÖÃ
 
-
-			// ¡ª¡ª¡ª¡ª¡ª¡ªVS¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª
-			// ¶¥µã×ÅÉ«Æ÷²¿·Ö
+			// â€”â€”â€”â€”â€”â€”VSâ€”â€”â€”â€”â€”â€”â€”â€”
+			// é¡¶ç‚¹ç€è‰²å™¨éƒ¨åˆ†
 			//
+			cout<<"A";
 			unsigned int vertex;
-			vertex = glCreateShader(GL_VERTEX_SHADER);// ´´½¨¶¥µã×ÅÉ«Æ÷
+			vertex = glCreateShader(GL_VERTEX_SHADER);// åˆ›å»ºé¡¶ç‚¹ç€è‰²å™¨
 
-			string vertShaderSrc = loadShaderSrc(vertexPath); // ¶ÁÈ¡ glsl µ½ vertexShaderSrc
-			const GLchar* vertShader = vertShaderSrc.c_str(); // °Ñ string ×ª»»Îª GLchar
-			glShaderSource(vertex, 1, &vertShader, NULL); // ÊäÈë×ÅÉ«Æ÷Ô´´úÂë
+			string vertShaderSrc = loadShaderSrc(vertexPath); // è¯»å– glsl åˆ° vertexShaderSrc
+			const GLchar* vertShader = vertShaderSrc.c_str(); // æŠŠ string è½¬æ¢ä¸º GLchar
+			glShaderSource(vertex, 1, &vertShader, NULL); // è¾“å…¥ç€è‰²å™¨æºä»£ç 
 
-			glCompileShader(vertex); // ±àÒë×ÅÉ«Æ÷
+			glCompileShader(vertex); // ç¼–è¯‘ç€è‰²å™¨
 
-			// ¡ª¡ª¡ª¡ª¡ª¡ªFS¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª
-			// Æ¬¶Î×ÅÉ«Æ÷²¿·Ö
-			// ÀàËÆVS
+			int success;
+			char info_log[512];
+			//æ£€æŸ¥ç€è‰²å™¨æ˜¯å¦æˆåŠŸç¼–è¯‘ï¼Œå¦‚ç¼–è¯‘å¤±è´¥ï¼Œæ‰“å°é”™è¯¯ä¿¡æ¯
+			glGetShaderiv(vertex,GL_COMPILE_STATUS,&success);
+			if(!success)
+			{
+				glGetShaderInfoLog(vertex,512,NULL,info_log);
+				cout<<"vertexç¼–è¯‘å¤±è´¥\n"<<info_log<<endl;
+			}
+			
+			// â€”â€”â€”â€”â€”â€”FSâ€”â€”â€”â€”â€”â€”â€”â€”
+			// ç‰‡æ®µç€è‰²å™¨éƒ¨åˆ†
+			// ç±»ä¼¼VS
 			unsigned int fragment;
 			fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -36,45 +51,53 @@ class Shader {
 			glShaderSource(fragment, 1, &fragmentShader, NULL);
 
 			glCompileShader(fragment);
+			glGetShaderiv(fragment,GL_COMPILE_STATUS,&success);
+			if(!success)
+			{
+				glGetShaderInfoLog(fragment,512,NULL,info_log);
+				cout<<"ç¼–è¯‘å¤±è´¥\n"<<info_log<<endl;
+			}
+			
+			
 
 			// shader Program
-			// ´´½¨×ÅÉ«Æ÷³ÌĞò
+			// åˆ›å»ºç€è‰²å™¨ç¨‹åº
 			ID = glCreateProgram();
 			glAttachShader(ID, vertex);
 			glAttachShader(ID, fragment);
 			glLinkProgram(ID);
 
-			// ³ÌĞò´´½¨Íê³ÉºóÉ¾³ı×ÅÉ«Æ÷
+			// ç¨‹åºåˆ›å»ºå®Œæˆååˆ é™¤ç€è‰²å™¨
 			glDeleteShader(vertex);
 			glDeleteShader(fragment);
 		}
-		// ¶ÁÈ¡ÎÄ¼şº¯Êı
+		// è¯»å–æ–‡ä»¶å‡½æ•°
 		string loadShaderSrc(const char* filename) {
-			ifstream file; //´´½¨file
+			ifstream file; //åˆ›å»ºfile
 			stringstream buf;
 			string ret = "";
 			file.open(filename);
 			if (file.is_open()) {
-				buf << file.rdbuf(); //ÎÄ¼şĞ´Èëbuf
-				ret = buf.str();  //buf´æÈëret
+				buf << file.rdbuf(); //æ–‡ä»¶å†™å…¥buf
+				ret = buf.str();  //bufå­˜å…¥ret
 			} else {
 				cout << "Could not open " << filename << endl;
 			}
 			file.close();
 			return ret;
 		}
-		// Ê¹ÓÃ×ÅÆ÷
+		// ä½¿ç”¨ç€å™¨
 		void use() {
 			glUseProgram(ID);
 		}
-		// ÉèÖÃ bool ÀàĞÍµÄ uniform Öµ
-		// nams		×ÅÉ«Æ÷Ô´ÂëÖĞµÄ uniform Ãû×Ö
-		// value	Òª¸ü¸ÄµÄÖµ
+		// è®¾ç½® bool ç±»å‹çš„ uniform å€¼
+		// nams		ç€è‰²å™¨æºç ä¸­çš„ uniform åå­—
+		// value	è¦æ›´æ”¹çš„å€¼
 		void setBool(const std::string& name, bool value) const {
 			glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
 		}
-		// ÏÂÃæµÄº¯ÊıÀàËÆ
-		// ÉèÖÃ int ÀàĞÍµÄ uniform Öµ
+		// ä¸‹é¢çš„å‡½æ•°ç±»ä¼¼
+		// è®¾ç½® int ç±»å‹çš„ uniform å€¼
 		void setInt(const std::string& name, int value) const {
 			glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 		}

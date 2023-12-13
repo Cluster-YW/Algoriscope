@@ -3,18 +3,18 @@
 
 #include <iostream>
 #include <cmath>
-using namespace std;
+
 class Vector2 {
 	public:
-		double x;
-		double y;
-		double length;
+		float x;
+		float y;
+		float length;
 
 		//无参构造函数
 		Vector2();
 
 		//有参构造函数
-		Vector2(double x, double y);
+		Vector2(float x, float y);
 
 		//拷贝构造函数
 		Vector2(const Vector2 &vector2);
@@ -24,34 +24,34 @@ class Vector2 {
 
 		//------成员函数-------------------------------
 		//设置向量坐标
-		void Set(double x, double y);
+		void Set(float x, float y);
 
 		//返回向量长度
-		double GetLength();
+		float GetLength();
 
 		//归一化(单位化)向量，使得向量长度为1
 		void Normalize();
 
 		//向量按比例缩放
-		void Scale(double factor);
+		void Scale(float factor);
 
 		//---------------静态函数------------------------
 		//向量点乘
-		static double Dot(const Vector2 &lhs, const Vector2 &rhs);
+		static float Dot(const Vector2 &lhs, const Vector2 &rhs);
 
 		//计算向量from和to的无方向夹角，返回角度（0~180）使用acos
 		//如果不太清楚 google或baidu，或直接问老师
-		static double Angle(const Vector2 &from, const Vector2 &to);
+		static float Angle(const Vector2 &from, const Vector2 &to);
 
 		//计算向量from和to的有方向夹角，返回角度（-180~180）使用 atan2
-		static double SignedAngle(const Vector2 from, const Vector2 to);
+		static float SignedAngle(const Vector2 from, const Vector2 to);
 
 		//计算向量from和to的距离 = ||from - to||
-		static double Distance(const Vector2 from, const Vector2 to);
+		static float Distance(const Vector2 from, const Vector2 to);
 
 		//-------------------运算符-------------------------
 		//下标运算符 vector[0]返回x, vector[1] 返回y
-		double &operator[](int index);
+		float &operator[](int index);
 
 		//输入输出运算符
 		friend std::ostream &operator<<(std::ostream &os, const Vector2 &vector);
@@ -68,13 +68,13 @@ class Vector2 {
 		friend Vector2 operator-(const Vector2 &lhs);
 
 		//向量与标量乘，向量vector乘以标量factor
-		friend Vector2 operator*(const Vector2 &lhs, const double factor);
+		friend Vector2 operator*(const Vector2 &lhs, const float factor);
 
 		//标量与向量乘，标量factor乘以向量vector
-		friend Vector2 operator*(const double &factor, const Vector2 &rhs);
+		friend Vector2 operator*(const float &factor, const Vector2 &rhs);
 
 		//向量与标量除法，向量vector除以标量factor，各元素x,y分别除以标量factor
-		friend Vector2 operator/(const Vector2 &lhs, const double factor);
+		friend Vector2 operator/(const Vector2 &lhs, const float factor);
 
 		//判断两个向量相等
 		friend bool operator==(const Vector2 &lhs, const Vector2 &rhs);
@@ -92,7 +92,7 @@ Vector2::Vector2() {
 	SetLength();
 }
 
-Vector2::Vector2(double x, double y) {
+Vector2::Vector2(float x, float y) {
 	Set(x, y);
 	SetLength();
 }
@@ -108,7 +108,7 @@ Vector2 &Vector2::operator=(const Vector2 &vector) {
 	return *this;
 }
 
-void Vector2::Set(double x, double y) {
+void Vector2::Set(float x, float y) {
 	this->x = x;
 	this->y = y;
 	SetLength();
@@ -118,56 +118,56 @@ void Vector2::SetLength() {
 	this->length = sqrt(pow(this->x, 2) + pow(this->y, 2));
 }
 
-double Vector2::GetLength() {
+float Vector2::GetLength() {
 	return this->length;
 }
 
 void Vector2::Normalize() {
-	double divisor = sqrt(pow(this->x, 2) + pow(this->y, 2));
+	float divisor = sqrt(pow(this->x, 2) + pow(this->y, 2));
 	this->x /= divisor;
 	this->y /= divisor;
 	SetLength();
 }
 
-void Vector2::Scale(double factor) {
+void Vector2::Scale(float factor) {
 	this->x /= factor;
 	this->y /= factor;
 	SetLength();
 }
 
-double Vector2::Dot(const Vector2 &lhs, const Vector2 &rhs) {
+float Vector2::Dot(const Vector2 &lhs, const Vector2 &rhs) {
 	return lhs.x * rhs.x + lhs.y * rhs.y;
 }
 
-double Vector2::Angle(const Vector2 &from, const Vector2 &to) {
-	double PI = 3.141592653589793238;
-	double t = ((from.x) * (to.x) + (from.y) * (to.y)) /
+float Vector2::Angle(const Vector2 &from, const Vector2 &to) {
+	float PI = 3.141592653589793238;
+	float t = ((from.x) * (to.x) + (from.y) * (to.y)) /
 	           (sqrt(pow(from.x, 2) + pow(from.y, 2)) * sqrt(pow(to.x, 2) + pow(to.y, 2)));
 	return acos(t) * (180 / PI);
 }
 
-double Vector2::SignedAngle(const Vector2 from, const Vector2 to) {
-	double pi = 3.141592653589793238;
-	return atan2((to.y - from.y), (to.x - from.x)) * (double) 180 / pi;
+float Vector2::SignedAngle(const Vector2 from, const Vector2 to) {
+	float pi = 3.141592653589793238;
+	return atan2((to.y - from.y), (to.x - from.x)) * (float) 180 / pi;
 }
 
-double Vector2::Distance(const Vector2 from, const Vector2 to) {
+float Vector2::Distance(const Vector2 from, const Vector2 to) {
 	return sqrt(pow(from.x - to.x, 2) + pow(from.y - to.y, 2));
 }
 
-double &Vector2::operator[](int index) {
+float &Vector2::operator[](int index) {
 	if (index == 0) {
 		return this->x;
-	} else if (index == 1) {
+	} else {
 		return this->y;
 	}
 }
 
-std::ostream &operator<<(ostream &os, const Vector2 &vector) {
+std::ostream &operator<<(std::ostream &os, const Vector2 &vector) {
 	return os << "x: " << vector.x << "\ny: " << vector.y << "\nlenth: " << vector.length << "\n";
 }
 
-std::istream &operator>>(istream &in, Vector2 &vector) {
+std::istream &operator>>(std::istream &in, Vector2 &vector) {
 	vector.SetLength();
 	return in >> vector.x >> vector.y;
 }
@@ -198,7 +198,7 @@ Vector2 operator-(const Vector2 &lhs) {
 	return *v;
 }
 
-Vector2 operator*(const Vector2 &lhs, const double factor) {
+Vector2 operator*(const Vector2 &lhs, const float factor) {
 	Vector2 *v = new Vector2();
 	v->x = lhs.x * factor;
 	v->y = lhs.y * factor;
@@ -206,7 +206,7 @@ Vector2 operator*(const Vector2 &lhs, const double factor) {
 	return *v;
 }
 
-Vector2 operator*(const double &factor, const Vector2 &rhs) {
+Vector2 operator*(const float &factor, const Vector2 &rhs) {
 	Vector2 *v = new Vector2();
 	v->x = rhs.x * factor;
 	v->y = rhs.y * factor;
@@ -214,7 +214,7 @@ Vector2 operator*(const double &factor, const Vector2 &rhs) {
 	return *v;
 }
 
-Vector2 operator/(const Vector2 &lhs, const double factor) {
+Vector2 operator/(const Vector2 &lhs, const float factor) {
 	Vector2 *v = new Vector2();
 	v->x = lhs.x / factor;
 	v->y = lhs.y / factor;

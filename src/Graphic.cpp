@@ -2,8 +2,92 @@
 #include <iostream>
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "shader.h"  
 #include <math.h>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+class Shader {
+public:
+	Shader(const char* vertexPath, const char* fragmentPath) {
+		
+		this->vertexPath = vertexPath;// 读入顶点着色器的文件位置
+		this->fragmentPath = fragmentPath; //读入片段着色器的文件位置
+		
+		
+		// ——————VS————————
+		// 顶点着色器部分
+		//
+		unsigned int vertex;
+		vertex = glCreateShader(GL_VERTEX_SHADER);// 创建顶点着色器
+		
+		string vertShaderSrc = loadShaderSrc(vertexPath); // 读取 glsl 到 vertexShaderSrc
+		const GLchar* vertShader = vertShaderSrc.c_str(); // 把 string 转换为 GLchar
+		glShaderSource(vertex, 1, &vertShader, NULL); // 输入着色器源代码
+		
+		glCompileShader(vertex); // 编译着色器
+		
+		// ——————FS————————
+		// 片段着色器部分
+		// 类似VS
+		unsigned int fragment;
+		fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		
+		string fragmentShaderSrc = loadShaderSrc(fragmentPath);
+		const GLchar* fragmentShader = fragmentShaderSrc.c_str();
+		glShaderSource(fragment, 1, &fragmentShader, NULL);
+		
+		glCompileShader(fragment);
+		
+		// shader Program
+		// 创建着色器程序
+		ID = glCreateProgram();
+		glAttachShader(ID, vertex);
+		glAttachShader(ID, fragment);
+		glLinkProgram(ID);
+		
+		// 程序创建完成后删除着色器
+		glDeleteShader(vertex);
+		glDeleteShader(fragment);
+	}
+	// 读取文件函数
+	string loadShaderSrc(const char* filename) {
+		ifstream file; //创建file
+		stringstream buf;
+		string ret = "";
+		file.open(filename);
+		if (file.is_open()) {
+			buf << file.rdbuf(); //文件写入buf
+			ret = buf.str();  //buf存入ret
+		} else {
+			cout << "Could not open " << filename << endl;
+		}
+		file.close();
+		return ret;
+	}
+	// 使用着器
+	void use() {
+		glUseProgram(ID);
+	}
+	// 设置 bool 类型的 uniform 值
+	// nams		着色器源码中的 uniform 名字
+	// value	要更改的值
+	void setBool(const std::string& name, bool value) const {
+		glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+	}
+	// 下面的函数类似
+	// 设置 int 类型的 uniform 值
+	void setInt(const std::string& name, int value) const {
+		glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+	}
+	void setFloat(const std::string& name, float value) const {
+		glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+	}
+	const char* vertexPath;
+	const char* fragmentPath;
+	unsigned int ID;
+};
+
 //#include "stb_image.h"图片导入 与纹理相关
 
 using namespace std;
@@ -13,10 +97,10 @@ void processInput(GLFWwindow* window);
 
 //模型顶点数据
 float vertices[] = {
-	0.10f, 0.25f, 0.0f,   /* Postion 右上角  Color*/  1.0f, 0.0f, 0.0f,
-	0.10f, -0.25f, 0.0f,  /* 右下角 */			    0.0f, 1.0f, 0.0f,
-	-0.10f, -0.25f, 0.0f, /* 左下角 */			    0.0f, 0.0f, 1.0f,
-	-0.10f, 0.25f, 0.0f,  /* 左上角*/					1.0f, 0.0f, 1.0f,
+	0.5f, 0.5f, 0.0f, 
+	0.5f, -0.5f, 0.0f, 
+	-0.5f, -0.5f, 0.0f, 
+	-0.5f, 0.5f, 0.0f, 
 };
 
 
@@ -56,13 +140,13 @@ int main(int argc, char* argv[]) {
 	}
 	//设置视口视角
 	glViewport(0, 0, 800, 600);
-	/*
-	  //框线模式 Wireframe Mode
-	  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	  //剔除多边形背面
-	  //glEnable(GL_CULL_FACE);
-	  //glCullFace(GL_FRONT);//GL_BACK:剔除背面 ，GL_FRONT:剔除正面
-	 */
+	
+//	  框线模式 Wireframe Mode
+//	  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//	  剔除多边形背面
+//	  glEnable(GL_CULL_FACE);
+//	  glCullFace(GL_FRONT);//GL_BACK:剔除背面 ，GL_FRONT:剔除正面
+	 
 	
 	//VBO
 	unsigned int VBO;
@@ -86,9 +170,9 @@ int main(int argc, char* argv[]) {
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// 上述代码的解释
 	// glVertexAttribPointer() 负责解释 VBO 中顶点使用的顺序。
@@ -109,7 +193,7 @@ int main(int argc, char* argv[]) {
 	while (!glfwWindowShouldClose(window))
 	{
 		//读取shadersource文本文件
-		const char* vertexPath ="vertexShader1.glsl";
+		const char* vertexPath ="vertexShader.glsl";
 		const char* fragmentPath ="fragmentShader_frag=vertex.glsl";
 		
 		processInput(window);//处理输入事件
@@ -131,22 +215,19 @@ int main(int argc, char* argv[]) {
 		Shader shader(vertexPath, fragmentPath);
 		shader.use();
 		
-		//float time = glfwGetTime();
-		//float sinTime = sin(time);// 可写成sin(time*10) 则速度加快
-		//shader.setFloat("change", sinTime); //把sinTime赋给名为change的变量  
-		
-		float change=0.3;
-		for(int i=0;i<3;i++)
+		float change =0.2;
+		for(int i=0;i<5;i++)
 		{
 			shader.setFloat("change",change);
 			glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
-			change+=0.3;
+			change+=0.5;
 		}
+		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// glDrawArrays() 	直接画图
 		// 第一个参数 要画的图形
 		// 第二个参数 从 VAO 读出的第几个点开始
-		// 第二个参数 使用的点的个数
+		// 第三个参数 使用的点的个数
 		// glDrawElements() 按照索引的方式画图
 		// 第一个参数 要画的图形
 		// 第二个参数 使用的点的个数

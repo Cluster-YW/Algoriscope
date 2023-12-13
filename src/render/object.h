@@ -4,7 +4,7 @@
 #include "render.h"
 
 namespace Algoriscope{
-	class object{
+	class Object{
 		
 	};
 }
