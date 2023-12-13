@@ -3,9 +3,12 @@
 using namespace Algoriscope;
 
 int main(){
+	cout<<"0";
 	auto render=Render();
 	while(1){
 		render.update();
-		render.drawLine(Vector2(1,0),Vector2(0,1),Color(255,255,255));
+		auto a=Vector2(1,0);
+		auto b=Vector2(0,1);
+		render.drawLine(a,b);
 	}
 }
