@@ -3,6 +3,8 @@
 
 #include "render.h"
 #include "object.h"
+#include "color.h"
+#include "vector2.h"
 
 namespace Algoriscope {
 	class Scene {
@@ -10,11 +12,15 @@ namespace Algoriscope {
 			Render render;
 			Object root;
 			Color color_bg;
+			Vector2 size;
 		public:
 			Scene() {
 
 			}
 			~Scene() {
+
+			}
+			run() {
 
 			}
 	};
