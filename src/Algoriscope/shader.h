@@ -1,8 +1,8 @@
 #ifndef ALGORISCOPE_SHADER_H
 #define ALGORISCOPE_SHADER_H
 
-#include <GL/glew.h>    
-#include <GLFW/glfw3.h> 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -12,7 +12,7 @@ using namespace std;
 class Shader {
 	public:
 		Shader() {
-			
+
 			this->vertexPath = "vertexShader0.glsl";// 读入顶点着色器的文件位置
 			this->fragmentPath = "fragmentShader_frag=vertex.glsl"; //读入片段着色器的文件位置
 
@@ -20,8 +20,9 @@ class Shader {
 			// ——————VS————————
 			// 顶点着色器部分
 			//
-			cout<<"A";
+			cout << "A";
 			unsigned int vertex;
+			cout<<"B";
 			vertex = glCreateShader(GL_VERTEX_SHADER);// 创建顶点着色器
 
 			string vertShaderSrc = loadShaderSrc(vertexPath); // 读取 glsl 到 vertexShaderSrc
@@ -29,17 +30,16 @@ class Shader {
 			glShaderSource(vertex, 1, &vertShader, NULL); // 输入着色器源代码
 
 			glCompileShader(vertex); // 编译着色器
-
+		
 			int success;
 			char info_log[512];
 			//检查着色器是否成功编译，如编译失败，打印错误信息
-			glGetShaderiv(vertex,GL_COMPILE_STATUS,&success);
-			if(!success)
-			{
-				glGetShaderInfoLog(vertex,512,NULL,info_log);
-				cout<<"vertex编译失败\n"<<info_log<<endl;
+			glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+			if (!success) {
+				glGetShaderInfoLog(vertex, 512, NULL, info_log);
+				cout << "vertex编译失败\n" << info_log << endl;
 			}
-			
+
 			// ——————FS————————
 			// 片段着色器部分
 			// 类似VS
@@ -51,14 +51,13 @@ class Shader {
 			glShaderSource(fragment, 1, &fragmentShader, NULL);
 
 			glCompileShader(fragment);
-			glGetShaderiv(fragment,GL_COMPILE_STATUS,&success);
-			if(!success)
-			{
-				glGetShaderInfoLog(fragment,512,NULL,info_log);
-				cout<<"编译失败\n"<<info_log<<endl;
+			glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+			if (!success) {
+				glGetShaderInfoLog(fragment, 512, NULL, info_log);
+				cout << "编译失败\n" << info_log << endl;
 			}
-			
-			
+
+
 
 			// shader Program
 			// 创建着色器程序
