@@ -1,6 +1,9 @@
 #ifndef _COLOR_H_
 #define _COLOR_H_
 
+#include <algorithm>
+#include <iostream>
+
 namespace Algoriscope {
 
 
@@ -43,13 +46,13 @@ namespace Algoriscope {
 			int getA() {
 				return this->a;
 			}
-			int getH() {
+			float getH() {
 				return this->h;
 			}
-			int getS() {
+			float getS() {
 				return this->s;
 			}
-			int getL() {
+			float getL() {
 				return this->l;
 			}
 			// rgba标准化函数
@@ -69,9 +72,7 @@ namespace Algoriscope {
 			void trimRGBA();
 			void trimHSL();
 			void switchfromRGBtoHSL();
-			void switchfromRGBtoHSL();
-
-
+			void switchfromHSLtoRGB();
 	};
 
 }

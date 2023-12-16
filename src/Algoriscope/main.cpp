@@ -1,14 +1,12 @@
 #include "render.h"
+#include "color.h"
 
 using namespace Algoriscope;
+using namespace std;
 
-int main(){
-	cout<<"0";
-	auto render=Render();
-	while(1){
-		render.update();
-		auto a=Vector2(1,0);
-		auto b=Vector2(0,1);
-		render.drawLine(a,b);
-	}
+int main() {
+	auto A = Color("#ABCDEF");
+	cout << A.getRf() << ";" << A.getGf() << ";" << A.getBf()
+	     << ";" << A.getA() << endl;
+	cout << A.getH() << ";" << A.getS() << ";" << A.getL() << endl;
 }

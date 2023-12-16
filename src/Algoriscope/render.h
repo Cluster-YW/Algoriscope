@@ -39,13 +39,13 @@ namespace Algoriscope {
 		
 		//画三角形
 		//3个点+颜色
-		int drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const color& col) ;
+		int drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const Color& col) ;
 		
 		//画矩形
 		// pos - 起始点
 		// size - 尺寸（宽和高）
 		// color - 颜色
-		int drawRect(const Vector2& pos, const Vector2& size, const color& col) ;
+		int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
 		
 		int drawText(const Vector2& pos, const char*);
 	};

@@ -67,7 +67,7 @@ namespace Algoriscope {
 	
 	//画三角形
 	//3个点+颜色
-	int Render::drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const color& col) {
+	int Render::drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const Color& col) {
 		return 0;
 	}
 	
@@ -75,7 +75,7 @@ namespace Algoriscope {
 	// pos - 起始点
 	// size - 尺寸（宽和高）
 	// color - 颜色
-	int Render::drawRect(const Vector2& pos, const Vector2& size, const color& col) {
+	int Render::drawRect(const Vector2& pos, const Vector2& size, const Color& col) {
 		return 0;
 	}
 	int Render::drawText(const Vector2& pos, const char*){

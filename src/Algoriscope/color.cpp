@@ -10,6 +10,7 @@ Color::Color(const char* RGB) {
 	r = arr[1] * 16 + arr[2];
 	g = arr[3] * 16 + arr[4];
 	b = arr[5] * 16 + arr[6];
+	a = 255;
 	trimRGBA();
 	switchfromRGBtoHSL();
 };
@@ -27,7 +28,7 @@ Color::Color(float h, float s, float l) {
 	this->s = s;
 	this->l = l;
 	trimHSL();
-	SwitchfromHSLtoRGB();
+	switchfromHSLtoRGB();
 };
 void Color::trimRGBA() {
 	if (r > 255)this->r = 255;
@@ -57,10 +58,13 @@ void Color::trimHSL() {
 	else this->l = l;
 }
 void Color::switchfromRGBtoHSL() {
-	float max, min, _r, _g, _b;
-	_r = r / 255, _g = g / 255, _b = b / 255;
-	max = _r > (_g > _b ? _g : _b) ? r : (_g > _b ? _g : _b);
-	min = _r > (_g > _b ? _b : _g) ? (_g > _b ? _b : _g) : _r;
+	float max, min;
+	float _r = this->getRf();
+	float _g = this->getGf();
+	float _b = this->getBf();
+	max = std::max({_r, _g, _b});
+	min = std::min({_r, _g, _b});
+	std::cout << max << "-" << min << std::endl;
 	//计算L
 	l = (max + min) / 2;
 	//计算S
@@ -68,13 +72,17 @@ void Color::switchfromRGBtoHSL() {
 	else if (l < 0.5)s = (max - min) / (max + min);
 	else s = (max - min) / (2 - max - min);
 	//计算H
-	if (_r == max)h = (_g - _b) / (max - min) / 255;
-	else if (_g == max)h = 2.0 + (_b - _r) / (max - min);
-	else h = 4.0 + (_r - _g) / (max - min);
-	h = h * 60;
-	if (h < 0)h += 360;
+	if (max == min) {
+		h = 0.0f;
+	} else {
+		if (_r == max)h = (_g - _b) / (max - min);
+		else if (_g == max)h = 2.0 + (_b - _r) / (max - min);
+		else h = 4.0 + (_r - _g) / (max - min);
+		h = h * 60;
+		if (h < 0)h += 360;
+	}
 }
-void Color::SwitchfromHSLtoRGB() {
+void Color::switchfromHSLtoRGB() {
 	float temp2, temp1, _h, arr[3] = {0};
 	if (s == 0)r = g = b = l * 255;
 	else {
