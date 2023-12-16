@@ -35,7 +35,7 @@ namespace Algoriscope {
 		//pos1 - 起点位置
 		//pos2 - 终点位置
 		//color - 线的颜色
-		int drawLine(const Vector2& pos1, const Vector2& pos2) ;
+		int drawLine(const Vector2& pos1, const Vector2& pos2, const Color& col);
 		
 		//画三角形
 		//3个点+颜色
@@ -48,6 +48,10 @@ namespace Algoriscope {
 		int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
 		
 		int drawText(const Vector2& pos, const char*);
+		
+		GLFWwindow* getw(){
+			return window;
+		}
 	};
 }
 #endif

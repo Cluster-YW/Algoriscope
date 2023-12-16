@@ -1,12 +1,19 @@
 #include "render.h"
-#include "color.h"
 
 using namespace Algoriscope;
-using namespace std;
+
 
 int main() {
-	auto A = Color("#ABCDEF");
-	cout << A.getRf() << ";" << A.getGf() << ";" << A.getBf()
-	     << ";" << A.getA() << endl;
-	cout << A.getH() << ";" << A.getS() << ";" << A.getL() << endl;
+	auto render = Render();
+	float t = 0;
+	while (1) {
+		auto a = Vector2(cos(t), sin(t));
+		auto c = Vector2(-cos(t), sin(t));
+		auto b = Vector2(0.0, 0.0);
+		auto color = Color("#FF0000");
+		render.drawLine(a, b, color);
+		render.drawLine(c, b, color);
+		render.update();
+		t += 0.01f;
+	}
 }
