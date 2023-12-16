@@ -1,7 +1,7 @@
 #include "render.h"
 
 namespace Algoriscope {
-	Render::Render() {
+	Render::Render() : size (1500.0f,1500.0f) {
 		std::cout << "render()\n";
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -11,22 +11,28 @@ namespace Algoriscope {
 		window = glfwCreateWindow(size.x, size.y, "Computer Graphics", nullptr, nullptr);
 		glfwMakeContextCurrent(window);
 		glewExperimental = true;
+		glewInit();
 		glViewport(0, 0, size.x, size.y);
 		
-		shader.use();
+//		shader.init("vertexShader0.glsl","fragmentShader_frag=vertex.glsl");
+//		shader.use();
 	}
 	
 	//析构函数，进行收尾工作
 	Render::~Render() {
+		std::cout<<"Terminate\n";
 		glfwTerminate();
 	}
 	//负责帧的更新
 	int Render::update() {
-		std::cout << "update();\n";
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		std::cout << "update()\n";
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		shader.init("vertexShaderDrawLines.glsl","fragmentShader_frag=vertexDrawLines.glsl");
+		shader.use();
+
 		return 0;
 	}
 	
@@ -41,12 +47,13 @@ namespace Algoriscope {
 	//pos1 - 起点位置
 	//pos2 - 终点位置
 	//color - 线的颜色
-	int Render::drawLine(const Vector2& pos1, const Vector2& pos2) {
+	int Render::drawLine(const Vector2& pos1, const Vector2& pos2, const Color& col) {
+		glLineWidth(10.0f);
 		const float line[] = {
-//					pos1.x,pos2.y,1.0,
-//					pos2.x,pos2.y,1.0,
-			1.0f, 1.0f, 0.0f,
-			1.0f, 1.0f, 0.0f
+			pos1.x,pos1.y,0.0,
+			pos2.x,pos2.y,0.0
+//			0.0f, 0.0f, 0.0f,
+//			0.2f, 0.5f, 0.0f
 		};
 		GLuint vertex_array_object;//VAO,使用核心模式，只需调用一次
 		glGenVertexArrays(1, &vertex_array_object);//先生成
@@ -58,16 +65,21 @@ namespace Algoriscope {
 		
 		glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
 		
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); //设置顶点属性指针//试着去了解各个参数的意义
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //设置顶点属性指针//试着去了解各个参数的意义
 		glEnableVertexAttribArray(0);//开启通道
+		
 		glBindVertexArray(vertex_array_object);
+		
+		shader.setFloat4("inputColor",col.getRf(),col.getGf(),col.getBf(),col.getAf());
+		
 		glDrawArrays(GL_LINES, 0, 2);
-		return 0;
+
+		return 1;
 	}
 	
 	//画三角形
 	//3个点+颜色
-	int Render::drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const color& col) {
+	int Render::drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const Color& col) {
 		return 0;
 	}
 	
@@ -75,7 +87,7 @@ namespace Algoriscope {
 	// pos - 起始点
 	// size - 尺寸（宽和高）
 	// color - 颜色
-	int Render::drawRect(const Vector2& pos, const Vector2& size, const color& col) {
+	int Render::drawRect(const Vector2& pos, const Vector2& size, const Color& col) {
 		return 0;
 	}
 	int Render::drawText(const Vector2& pos, const char*){
