@@ -13,12 +13,15 @@ namespace Algoriscope {
 			Color(float h=0, float s=0, float l=0);
 			void SetRed(int r) {
 				this->r = r;
+				void SwitchfromRGBtoHSL();
 			};
 			void SetGreen(int g) {
 				this->g = g;
+				void SwitchfromRGBtoHSL();
 			};
 			void SetBlue(int b) {
 				this->b = b;
+				void SwitchfromRGBtoHSL();
 			};
 			void SetA(float a) {
 				this->a = a;
