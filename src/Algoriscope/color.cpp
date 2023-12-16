@@ -10,8 +10,8 @@ Color::Color(const char* RGB) {
 	r = arr[1] * 16 + arr[2];
 	g = arr[3] * 16 + arr[4];
 	b = arr[5] * 16 + arr[6];
-	Check1();
-	SwitchfromRGBtoHSL();
+	trimRGBA();
+	switchfromRGBtoHSL();
 };
 
 Color::Color(int r, int g, int b, int a) {
@@ -19,17 +19,17 @@ Color::Color(int r, int g, int b, int a) {
 	this->g = g;
 	this->b = b;
 	this->a = a;
-	Check1();
-	SwitchfromRGBtoHSL();
+	trimRGBA();
+	switchfromRGBtoHSL();
 };
 Color::Color(float h, float s, float l) {
 	this->h = h;
 	this->s = s;
 	this->l = l;
-	Check2();
+	trimHSL();
 	SwitchfromHSLtoRGB();
 };
-void Color::Check1() {
+void Color::trimRGBA() {
 	if (r > 255)this->r = 255;
 	else if (r < 0)this->r = 0;
 	else this->r = r;
@@ -43,7 +43,7 @@ void Color::Check1() {
 	else if (a < 0)this->r = 0;
 	else this->a = a;
 };
-void Color::Check2() {
+void Color::trimHSL() {
 	while (h > 360 || h < 0) {
 		if (h > 360)this->h = h - 360;
 		else if (h < 0)this->h = h + 360;
@@ -56,7 +56,7 @@ void Color::Check2() {
 	else if (l < 0)this->l = 0;
 	else this->l = l;
 }
-void Color::SwitchfromRGBtoHSL() {
+void Color::switchfromRGBtoHSL() {
 	float max, min, _r, _g, _b;
 	_r = r / 255, _g = g / 255, _b = b / 255;
 	max = _r > (_g > _b ? _g : _b) ? r : (_g > _b ? _g : _b);
@@ -95,7 +95,7 @@ void Color::SwitchfromHSLtoRGB() {
 			else if (2.0 * arr[i] < 1)arr[i] = temp2;
 			else if (3.0 * arr[i] < 2)arr[i] = temp1 + (temp2 - temp1) * ((2.0 / 3.0) - arr[i]) * 6.0;
 			else arr[i] = temp1;
-			
+
 		}
 		r = arr[0] * 255;
 		g = arr[1] * 255;
