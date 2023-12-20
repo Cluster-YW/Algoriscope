@@ -31,7 +31,7 @@ CommandLine =
 Folders = 
 IncludeVersionInfo = 0
 SupportXPThemes = 0
-CompilerSet = 1
+CompilerSet = 2
 StaticLink = 0
 AddCharset = 1
 ExecEncoding = SYSTEM
@@ -44,46 +44,8 @@ UseUTF8 = 1
 
 
 [Unit1]
-FileName = shader.h
-CompileCpp = 0
-Folder = 头文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-
-
-[Unit2]
-FileName = color.h
-CompileCpp = 0
-Folder = 头文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-
-
-[Unit3]
-FileName = shader.fs
-Folder = 其他文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-CompileCpp = 1
-
-
-[Unit4]
 FileName = vector2.cpp
+CompileCpp = 1
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -92,7 +54,45 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
+
+
+[Unit2]
+FileName = color.cpp
 CompileCpp = 1
+Folder = 源文件
+Compile = 1
+Link = 1
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+
+
+[Unit3]
+FileName = color.h
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
+
+
+[Unit4]
+FileName = shader.h
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
 
 
 [VersionInfo]
@@ -116,20 +116,7 @@ SyncProduct = 1
 
 
 [Unit5]
-FileName = color.cpp
-Folder = 源文件
-Compile = 1
-Link = 1
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-CompileCpp = 1
-
-
-[Unit6]
-FileName = fragmentShader_frag=vertex.glsl
+FileName = vertexShader0.glsl
 Folder = 其他文件
 Compile = 0
 Link = 0
@@ -141,7 +128,7 @@ RealEncoding = ASCII
 CompileCpp = 0
 
 
-[Unit7]
+[Unit6]
 FileName = render.h
 Folder = 头文件
 Compile = 0
@@ -154,8 +141,21 @@ RealEncoding = UTF-8
 CompileCpp = 0
 
 
+[Unit7]
+FileName = vector2.h
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
+
+
 [Unit8]
-FileName = main.cpp
+FileName = render.cpp
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -163,7 +163,7 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = ASCII
+RealEncoding = UTF-8
 CompileCpp = 1
 
 
@@ -177,24 +177,11 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
-CompileCpp = 0
+CompileCpp = 1
 
 
 [Unit10]
-FileName = vertexShader0.glsl
-Folder = 其他文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-CompileCpp = 0
-
-
-[Unit11]
-FileName = render.cpp
+FileName = main.cpp
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -202,11 +189,11 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = UTF-8
+RealEncoding = ASCII
 CompileCpp = 1
 
 
-[Unit12]
+[Unit11]
 FileName = vertexShader1.glsl
 Folder = 其他文件
 Compile = 0
@@ -216,18 +203,32 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = ASCII
+CompileCpp = 0
 
 
-[Unit13]
-FileName = vector2.h
-Folder = 头文件
+[Unit12]
+FileName = fragmentShader_frag=vertex.glsl
+Folder = 其他文件
 Compile = 0
 Link = 0
 Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = UTF-8
+RealEncoding = ASCII
+CompileCpp = 0
+
+
+[Unit13]
+FileName = shader.fs
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
 CompileCpp = 0
 
 

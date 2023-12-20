@@ -5,9 +5,9 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = Algoriscope_private.res
-OBJ      = vector2.o color.o main.o render.o $(RES)
-LINKOBJ  = vector2.o color.o main.o render.o Algoriscope_private.res
-CLEANOBJ  =  vector2.o color.o main.o render.o  Algoriscope_private.res Algoriscope.exe
+OBJ      = vector2.o color.o render.o main.o $(RES)
+LINKOBJ  = vector2.o color.o render.o main.o Algoriscope_private.res
+CLEANOBJ  =  vector2.o color.o render.o main.o  Algoriscope_private.res Algoriscope.exe
 LIBS     =  -s -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32
 INCS     =  
 CXXINCS  =  
@@ -33,11 +33,11 @@ vector2.o: vector2.cpp
 color.o: color.cpp
 	$(CPP) -c color.cpp -o color.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-main.o: main.cpp
-	$(CPP) -c main.cpp -o main.o $(CXXFLAGS) 
-
 render.o: render.cpp
 	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS) 
 
 Algoriscope_private.res: Algoriscope_private.rc 
 	$(WINDRES) -i Algoriscope_private.rc --input-format=rc -o Algoriscope_private.res -O coff $(WINDRESFLAGS) 

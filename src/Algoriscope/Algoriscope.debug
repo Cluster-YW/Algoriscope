@@ -1,7 +1,15 @@
 {
     "breakpoints": [
+        {
+            "breakpoint_type": 0,
+            "condition": "",
+            "enabled": true,
+            "filename": "render.cpp",
+            "line": 120,
+            "timestamp": "1703073622506"
+        }
     ],
-    "timestamp": "1702738875356",
+    "timestamp": "1703080473569",
     "watchvars": [
     ]
 }
