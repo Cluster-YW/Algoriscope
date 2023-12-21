@@ -1,19 +1,36 @@
 #include "render.h"
-
+#include "time.h"
+#include "dynamics.h"
 using namespace Algoriscope;
 
+const float FPS = 60;
 
 int main() {
 	auto render = Render();
-	float t = 0;
+	int t = 0;
+	clock_t last, now;
+	last = now = clock();
+	Dynamics d(0,5.0f,0.25f,1.0f);
+	Color color("#66CCFF");
+	Vector2 a(0,0);
 	while (1) {
-		auto a = Vector2(cos(t), sin(t));
-		auto c = Vector2(-cos(t), sin(t));
-		auto b = Vector2(0.0, 0.0);
-		auto color = Color("#FF0000");
-		render.drawLine(a, b, color);
-		render.drawLine(c, b, color);
-		render.update();
-		t += 0.01f;
+		now = clock();
+		if (now - last > CLOCKS_PER_SEC / FPS) {
+			if(t/((int)FPS*1)%2){
+				d=1.0f;
+				color=Color("#66CCFF");
+			}
+			else{
+				d=0.0f;
+				color=Color("#FF0000");
+			}
+			render.drawLine(a, Vector2(0.5f,d()), color);
+			t+=1;
+			
+			d.update(1.0/FPS);
+			render.update();
+			
+			last = now;
+		}
 	}
 }
