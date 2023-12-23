@@ -11,7 +11,7 @@ int main() {
 	clock_t last, now;
 	last = now = clock();
 	Dynamics d(0, 5.0f, 0.25f, 1.0f);
-	Dynamics d2(0, 3.0f, 1.0f, 0.5f);
+	Dynamics2 d2(Vector2(-0.5f, 0.0f), 3.0f, 1.0f, 0.5f);
 	Color color("#66CCFF");
 	Vector2 a(0, 0);
 	while (1) {
@@ -26,18 +26,16 @@ int main() {
 			}
 
 			if (t % (int)(FPS * 0.5f) == 0) {
-				auto temp = d2() + 0.25f;
-				if (temp<0.5f) {
-					d2=temp;
-				}
-				else{
-					d2=-0.5f;
+				auto temp = d2().y + 0.25f;
+				if (temp < 0.5f) {
+					d2 = Vector2(-0.5f, temp);
+				} else {
+					d2 = Vector2(-0.5f, -0.5f);
+					d.set(-1.0f);
 				}
 			}
-
-
 			render.drawLine(a, Vector2(0.5f, d()), color);
-			render.drawRect(Vector2(-0.5f, -d2()), Vector2(0.2f, 0.2f), color);
+			render.drawRect(d2(), Vector2(0.2f, 0.2f), color);
 			t += 1;
 
 			d.update(1.0 / FPS);
