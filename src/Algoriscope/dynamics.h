@@ -4,12 +4,17 @@
 #include "vector2.h"
 
 namespace Algoriscope {
-	//动画解算类：
-	//一个值，以 float 作为输入，每帧调用一遍 update() 函数
-	//可以通过 dnm=f 直接输入
-	//可以通过 dnm() 或 dnm.get() 获取动画处理后的输出量
-	//可以通过 f=dnm() 或 dnm(f) 直接把输出量赋给外部变量
-	//可以通过 dnm.set() 强制性地同时修改输入、输出量，并将运动的速度归零
+	// 动画解算类：
+	// 一个值，以 float 作为输入，每帧调用一遍 update() 函数
+	// 可以通过 dnm=f 直接输入
+	// 可以通过 dnm() 或 dnm.get() 获取动画处理后的输出量
+	// 可以通过 f=dnm() 或 dnm(f) 直接把输出量赋给外部变量
+	// 可以通过 dnm.set() 强制性地同时修改输入、输出量，并将运动的速度归零
+	//
+	// 三个运动学参数解读：
+	// f	固有频率(Hz)	对变化的响应速度与震动的频率
+	// z(ζ)	阻尼系数 		无阻尼 = 0 < 震荡 < 1 < 不震动
+	// r	初始响应 		提前准备 < 0 < 立即响应 < 1 < 过度响应
 	class Dynamics {
 		public:
 			Dynamics(float x0 = 0.0f, float f = 1.0f, float z = 1.0f, float r = 1.0f);
