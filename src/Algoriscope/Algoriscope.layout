@@ -1,87 +1,92 @@
 [
     {
         "caretX": 2,
-        "caretY": 8,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/color.h",
-        "focused": false,
-        "isOpen": false,
-        "leftChar": 1,
-        "topLine": 1
-    },
-    {
-        "caretX": 31,
-        "caretY": 66,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/color.cpp",
-        "focused": false,
-        "isOpen": false,
-        "leftChar": 1,
-        "topLine": 1
-    },
-    {
-        "caretX": 1,
-        "caretY": 3,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.cpp",
+        "caretY": 17,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/vector2.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 3,
-        "topLine": 3
+        "order": 2,
+        "topLine": 7
     },
     {
-        "caretX": 24,
-        "caretY": 12,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.h",
+        "caretX": 20,
+        "caretY": 143,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/render.cpp",
         "focused": false,
-        "isOpen": false,
+        "isOpen": true,
         "leftChar": 1,
+        "order": 6,
+        "topLine": 130
+    },
+    {
+        "caretX": 4,
+        "caretY": 49,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/main.cpp",
+        "focused": true,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 8,
+        "topLine": 22
+    },
+    {
+        "caretX": 13,
+        "caretY": 12,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/color.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 4,
+        "topLine": 37
+    },
+    {
+        "caretX": 33,
+        "caretY": 7,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/render.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 7,
+        "topLine": 28
+    },
+    {
+        "caretX": 27,
+        "caretY": 6,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/dynamics.cpp",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 5,
         "topLine": 1
     },
     {
-        "caretX": 19,
-        "caretY": 1,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.h",
+        "caretX": 17,
+        "caretY": 61,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/color.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 0,
-        "topLine": 1
+        "topLine": 52
     },
     {
-        "caretX": 1,
-        "caretY": 5,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/shader.h",
-        "focused": false,
-        "isOpen": false,
-        "leftChar": 1,
-        "topLine": 1
-    },
-    {
-        "caretX": 32,
-        "caretY": 14,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/main.cpp",
-        "focused": true,
-        "isOpen": true,
-        "leftChar": 9,
-        "order": 2,
-        "topLine": 1
-    },
-    {
-        "caretX": 25,
-        "caretY": 17,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.cpp",
+        "caretX": 5,
+        "caretY": 42,
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/shader.h",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 1,
-        "topLine": 1
+        "topLine": 42
     },
     {
         "caretX": 1,
         "caretY": 1,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/vector2.cpp",
+        "filename": "C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/vector2.h",
         "focused": false,
-        "isOpen": false,
+        "isOpen": true,
         "leftChar": 1,
+        "order": 3,
         "topLine": 1
     }
 ]
