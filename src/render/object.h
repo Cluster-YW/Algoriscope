@@ -5,6 +5,9 @@
 
 namespace Algoriscope{
 	class Object{
+	public:Object *object;
+		int x,y;
+		Color col;
 		
 	};
 }
