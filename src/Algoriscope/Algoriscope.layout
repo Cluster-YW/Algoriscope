@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< Updated upstream
         "caretX": 1,
         "caretY": 1,
         "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/vector2.cpp",
@@ -23,10 +24,16 @@
         "caretX": 1,
         "caretY": 1,
         "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/color.h",
+=======
+        "caretX": 80,
+        "caretY": 106,
+        "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/render.cpp",
+>>>>>>> Stashed changes
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 2,
+<<<<<<< Updated upstream
         "topLine": 1
     },
     {
@@ -38,15 +45,65 @@
         "leftChar": 1,
         "order": 3,
         "topLine": 1
+=======
+        "topLine": 103
+>>>>>>> Stashed changes
     },
     {
         "caretX": 1,
         "caretY": 1,
+<<<<<<< Updated upstream
+=======
+        "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/color.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 3,
+        "topLine": 7
+    },
+    {
+        "caretX": 1,
+        "caretY": 1,
+>>>>>>> Stashed changes
         "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/dynamics.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+<<<<<<< Updated upstream
+        "order": 4,
+        "topLine": 1
+=======
+        "topLine": 1
+    },
+    {
+        "caretX": 19,
+        "caretY": 11,
+        "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/object.h",
+        "focused": true,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 0,
+        "topLine": 33
+    },
+    {
+        "caretX": 20,
+        "caretY": 11,
+        "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/main.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 4,
         "topLine": 1
+    },
+    {
+        "caretX": 1,
+        "caretY": 1,
+        "filename": "D:/GitHub/1/Algoriscope/src/Algoriscope/vector2.cpp",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 1,
+        "topLine": 49
+>>>>>>> Stashed changes
     }
 ]
