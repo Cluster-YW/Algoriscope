@@ -109,4 +109,12 @@ void Color::switchfromHSLtoRGB() {
 		g = arr[1] * 255;
 		b = arr[2] * 255;
 	}
+
+}
+Color Color::lerp(Color target, float k) {
+	auto flerp = [](float a, float b, float k)->float{return (a * (1 - k) + b * k);	};
+	return Color(flerp(this->getR(), target.getR(), k),
+	             flerp(this->getG(), target.getG(), k),
+	             flerp(this->getB(), target.getB(), k),
+	             flerp(this->getA(), target.getA(), k));
 }
