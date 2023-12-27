@@ -4,7 +4,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
-//#include "freetype/ft2build.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H 
+
 
 #include "shader.h"
 #include "vector2.h"

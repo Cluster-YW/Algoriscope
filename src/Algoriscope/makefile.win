@@ -5,12 +5,12 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = Algoriscope_private.res
-OBJ      = vector2.o main.o render.o dynamics.o color.o $(RES)
-LINKOBJ  = vector2.o main.o render.o dynamics.o color.o Algoriscope_private.res
-CLEANOBJ  =  vector2.o main.o render.o dynamics.o color.o  Algoriscope_private.res Algoriscope.exe
-LIBS     =  -s -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32
-INCS     =  
-CXXINCS  =  
+OBJ      = vector2.o main.o render.o dynamics.o color.o scene.o $(RES)
+LINKOBJ  = vector2.o main.o render.o dynamics.o color.o scene.o Algoriscope_private.res
+CLEANOBJ  =  vector2.o main.o render.o dynamics.o color.o scene.o  Algoriscope_private.res Algoriscope.exe
+LIBS     =  -L"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/libs" -s -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32 -lfreetype
+INCS     =   -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope"
+CXXINCS  =   -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope"
 BIN      = Algoriscope.exe
 CXXFLAGS = $(CXXINCS)  -O2 -pipe
 CFLAGS   = $(INCS)  -O2 -pipe
@@ -27,20 +27,23 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-vector2.o: vector2.cpp
+vector2.o: vector2.cpp vector2.h
 	$(CPP) -c vector2.cpp -o vector2.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS) 
 
-render.o: render.cpp
+render.o: render.cpp shader.h render.h
 	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-dynamics.o: dynamics.cpp
+dynamics.o: dynamics.cpp dynamics.h vector2.h
 	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-color.o: color.cpp
+color.o: color.cpp color.h
 	$(CPP) -c color.cpp -o color.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+scene.o: scene.cpp shader.h scene.h render.h color.h vector2.h
+	$(CPP) -c scene.cpp -o scene.o $(CXXFLAGS) 
 
 Algoriscope_private.res: Algoriscope_private.rc 
 	$(WINDRES) -i Algoriscope_private.rc --input-format=rc -o Algoriscope_private.res -O coff $(WINDRESFLAGS) 
