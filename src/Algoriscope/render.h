@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
+//#include "freetype/ft2build.h"
 
 #include "shader.h"
 #include "vector2.h"
@@ -46,6 +47,8 @@ namespace Algoriscope {
 		// size - 尺寸（宽和高）
 		// color - 颜色
 		int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
+		
+		int drawRectBorder(const Vector2&pos,const Vector2&size,const Color&col,const float width);
 		
 		int drawText(const Vector2& pos, const char*);
 		

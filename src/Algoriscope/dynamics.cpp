@@ -39,7 +39,7 @@ namespace Algoriscope {
 	}
 	float Dynamics::set(float f) {
 		Dy0=0;
-		return input=y0=f;
+		return input=x0=y0=f;
 	}
 
 	Dynamics2::Dynamics2(float x0, float y0, float f, float z, float r) {
@@ -84,6 +84,6 @@ namespace Algoriscope {
 	}
 	Vector2 Dynamics2::set(Vector2 f) {
 		Dy0=Vector2(0,0);
-		return input=y0=f;
+		return input=x0=y0=f;
 	}
 }
