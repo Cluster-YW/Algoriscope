@@ -2,7 +2,6 @@
 #define  MAX_CHAR 128
 namespace Algoriscope {
 	Render::Render() : size (1500.0f,1500.0f) {
-		std::cout << "render()\n";
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -20,12 +19,10 @@ namespace Algoriscope {
 	
 	//析构函数，进行收尾工作
 	Render::~Render() {
-		std::cout<<"Terminate\n";
 		glfwTerminate();
 	}
 	//负责帧的更新
 	int Render::update() {
-		std::cout << "update()\n";
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -40,6 +37,7 @@ namespace Algoriscope {
 	//key - 按下哪个键
 	//options - 检测功能键（如ctrl,shift）等
 	bool Render::isKeyDown(const char& key, const char* options) const {
+		
 		return 0;
 	}
 	
@@ -131,8 +129,36 @@ namespace Algoriscope {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		return 0;
 	}
+	
+	int Render::drawRectBorder(const Vector2& pos, const Vector2& size, const Color&col, const float width)
+	{
+		glLineWidth(width);
+		const float line[] = {
+			pos.x,pos.y,0.0,
+			pos.x+size.x,pos.y,0.0,
+			pos.x+size.x,pos.y,0.0,
+			pos.x+size.x,pos.y+size.y,0.0,
+			pos.x+size.x,pos.y+size.y,0.0,
+			pos.x,pos.y+size.y,0.0,
+			pos.x,pos.y,0.0,
+			pos.x,pos.y+size.y,0.0
+		};
+		GLuint vertex_array_object;//VAO,使用核心模式，只需调用一次
+		glGenVertexArrays(1, &vertex_array_object);//先生成
+		glBindVertexArray(vertex_array_object);//再绑定
+		GLuint vertex_buffer_object;//VBO
+		glGenBuffers(1, &vertex_buffer_object);
+		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object); //将顶点数据绑定至当前默认的缓冲中
+		glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //设置顶点属性指针//试着去了解各个参数的意义
+		glEnableVertexAttribArray(0);//开启通道
+		glBindVertexArray(vertex_array_object);
+		shader.setFloat4("inputColor",col.getRf(),col.getGf(),col.getBf(),col.getAf());
+		glDrawArrays(GL_LINES, 0, 8);
+		return 0;
+	}
 	int Render::drawText(const Vector2& pos, const char*){
-
+		
 		return 0;
 	}
 	

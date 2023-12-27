@@ -25,11 +25,8 @@ class Shader {
 			// ——————VS————————
 			// 顶点着色器部分
 			//
-			cout << "A"<< endl;
 			unsigned int vertex;
-			cout<<"B\n";
 			vertex = glCreateShader(GL_VERTEX_SHADER);// 创建顶点着色器
-			cout<<"C\n";
 			string vertShaderSrc = loadShaderSrc(vertexPath); // 读取 glsl 到 vertexShaderSrc
 			const GLchar* vertShader = vertShaderSrc.c_str(); // 把 string 转换为 GLchar
 			glShaderSource(vertex, 1, &vertShader, NULL); // 输入着色器源代码

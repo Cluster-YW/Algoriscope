@@ -14,6 +14,7 @@ int main() {
 	Dynamics2 d2(Vector2(-0.5f, 0.0f), 3.0f, 1.0f, 0.5f);
 	Color color("#66CCFF");
 	Vector2 a(0, 0);
+	const float width=0.0f;
 	while (1) {
 		now = clock();
 		if (now - last > CLOCKS_PER_SEC / FPS) {
@@ -47,5 +48,6 @@ int main() {
 
 			last = now;
 		}
+		render.drawRectBorder(Vector2(-0.25f,0.25f),Vector2(0.5f,0.5f),color,width);
 	}
 }
