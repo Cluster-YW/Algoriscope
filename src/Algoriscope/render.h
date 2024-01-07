@@ -4,7 +4,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
-
+#include <map>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <ft2build.h>
 #include FT_FREETYPE_H 
 
@@ -53,7 +56,7 @@ namespace Algoriscope {
 		
 		int drawRectBorder(const Vector2&pos,const Vector2&size,const Color&col,const float width);
 		
-		int drawText(const Vector2& pos, const char*);
+		int drawText(Vector2& pos,GLfloat scale,string text,Color iColor);
 		
 		GLFWwindow* getw(){
 			return window;

@@ -23,8 +23,6 @@ class Shader {
 
 			this->vertexPath = vPath;// 读入顶点着色器的文件位置
 			this->fragmentPath = fPath; //读入片段着色器的文件位置
-
-
 			// ——————VS————————
 			// 顶点着色器部分
 			//
