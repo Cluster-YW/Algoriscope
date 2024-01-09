@@ -25,8 +25,7 @@ namespace Algoriscope {
 		
 	public:
 		//构造函数，进行相关初始化。
-		Render();
-		
+		Render(int sizex, int sizey);
 		
 		//析构函数，进行收尾工作
 		~Render();

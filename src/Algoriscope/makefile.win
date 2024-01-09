@@ -5,15 +5,15 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = Algoriscope_private.res
-OBJ      = scene.o render.o dynamics.o color.o main.o vector2.o $(RES)
-LINKOBJ  = scene.o render.o dynamics.o color.o main.o vector2.o Algoriscope_private.res
-CLEANOBJ  =  scene.o render.o dynamics.o color.o main.o vector2.o  Algoriscope_private.res Algoriscope.exe
-LIBS     =  -L"C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/libs" -s -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32 -lfreetype
-INCS     =   -I"C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope" -I"C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/include"
-CXXINCS  =   -I"C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope" -I"C:/Users/26470/Documents/GitHub/Algoriscope/src/Algoriscope/include"
+OBJ      = render.o color.o dynamics.o scene.o main.o vector2.o $(RES)
+LINKOBJ  = render.o color.o dynamics.o scene.o main.o vector2.o Algoriscope_private.res
+CLEANOBJ  =  render.o color.o dynamics.o scene.o main.o vector2.o  Algoriscope_private.res Algoriscope.exe
+LIBS     =  -L"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/libs" -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32 -lfreetype
+INCS     =  -I"D:/Environment/glad/include/glad"  -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope" -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/include"
+CXXINCS  =  -I"D:/Environment/glad/include"  -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope" -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/include"
 BIN      = Algoriscope.exe
-CXXFLAGS = $(CXXINCS)  -O2 -pipe
-CFLAGS   = $(INCS)  -O2 -pipe
+CXXFLAGS = $(CXXINCS)  -g3 -pipe -Wall -D__DEBUG__
+CFLAGS   = $(INCS)  -g3 -pipe -Wall -D__DEBUG__
 RM       = del /q /f
 WINDRESFLAGS  = 
 
@@ -27,22 +27,22 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-scene.o: scene.cpp color.h render.h scene.h vector2.h shader.h
-	$(CPP) -c scene.cpp -o scene.o $(CXXFLAGS) 
-
-render.o: render.cpp render.h shader.h
+render.o: render.cpp
 	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-dynamics.o: dynamics.cpp dynamics.h vector2.h
-	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
-
-color.o: color.cpp color.h
+color.o: color.cpp
 	$(CPP) -c color.cpp -o color.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-main.o: main.cpp render.h shader.h
-	$(CPP) -c main.cpp -o main.o $(CXXFLAGS) 
+dynamics.o: dynamics.cpp
+	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-vector2.o: vector2.cpp vector2.h
+scene.o: scene.cpp
+	$(CPP) -c scene.cpp -o scene.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+vector2.o: vector2.cpp
 	$(CPP) -c vector2.cpp -o vector2.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
 Algoriscope_private.res: Algoriscope_private.rc 
