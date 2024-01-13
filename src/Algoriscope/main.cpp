@@ -1,51 +1,57 @@
+// Std. Includes
 #include "render.h"
-#include "time.h"
-#include "dynamics.h"
+#include <iostream>
+#include <map>
+#include <string>
+// GLEW
+#define GLEW_STATIC
+#include <GL/glew.h>
+// GLFW
+#include <GLFW/glfw3.h>
+// GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+// FreeType
+#include <ft2build.h>
+#include FT_FREETYPE_H
+// Timer
+#include <time.h>
+// GL includes
+#include "Shader.h"
 using namespace Algoriscope;
 
-const float FPS = 60;
+const int FPS = 60;
 
 int main() {
-	auto render = Render();
-	int t = 0;
+	auto render = Render(1200, 900);
+	float t = 0;
 	clock_t last, now;
 	last = now = clock();
-	Dynamics d(0, 5.0f, 1.0f, 1.0f);
-	Dynamics2 d2(Vector2(-0.5f, 0.0f), 3.0f, 1.0f, 0.5f);
-	Color color("#66CCFF");
-	Vector2 a(0, 0);
+
+	auto tcolor = Color("#FF6611");
+
 	while (1) {
 		now = clock();
-		if (now - last > CLOCKS_PER_SEC / FPS) {
-			if (t % (int)(FPS) == 0) {
-				if (t / ((int)FPS * 1) % 2) {
-					d = 1.0f;
-					color = Color("#66CCFF");
-				} else {
-					d = 0.0f;
-					color = Color("#FF0000");
-				}
-			}
-
-			if ((t+10) % (int)(FPS * 0.5f) == 0) {
-				auto temp = d2().y + 0.25f;
-				if (temp < 0.5f) {
-					d2 = Vector2(-0.5f, temp);
-				} else {
-					d2 = Vector2(-0.5f, -0.5f);
-				}
-				d.set(-1.0f);
-			}
-
-			render.drawLine(a, Vector2(0.5f, d()), color);
-			render.drawRect(d2(), Vector2(0.2f, 0.2f), color);
-			t += 1;
-
-			d.update(1.0 / FPS);
-			d2.update(1.0 / FPS);
-			render.update();
-
-			last = now;
+		if (now - last < CLOCKS_PER_SEC / FPS) {
+			continue;
 		}
+		last = now;// 稳定帧率
+
+		tcolor.SetR(255 * sin(t));
+
+		render.update();
+
+		auto col = Color("#FFFFFF");
+		auto b = Vector2(0.0f, 0.0f);
+		auto size = Vector2(0.2f, 0.5f);
+		render.drawRect(b, size, col);
+
+		auto a = Vector2(500 + 100 * cos(2 * t), 600);
+		render.drawText(a, 1.0, "Text Test.", tcolor);
+		// 文字
+		
+		t += 1.0f / FPS;
 	}
 }
+
