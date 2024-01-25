@@ -30,19 +30,6 @@ Color::Color(float h, float s, float l) {
 	trimHSL();
 	switchfromHSLtoRGB();
 };
-void Color::Set(const char*RGB){
-	int arr[7] = {0};
-	for (int i = 1; i < 7; i++) {
-		if (*(RGB + i) > 64 && *(RGB + i) < 72)arr[i] = *(RGB + i) - 55;
-		else if (*(RGB + i) > 47 && *(RGB + i) < 58)  arr[i] = *(RGB + i) - 48;
-	}
-	r = arr[1] * 16 + arr[2];
-	g = arr[3] * 16 + arr[4];
-	b = arr[5] * 16 + arr[6];
-	a = 255;
-	trimRGBA();
-	switchfromRGBtoHSL();	
-}
 void Color::trimRGBA() {
 	if (r > 255)this->r = 255;
 	else if (r < 0)this->r = 0;
