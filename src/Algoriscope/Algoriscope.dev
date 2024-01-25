@@ -4,7 +4,7 @@ name = Algoriscope
 UnitCount = 20
 Type = 1
 Ver = 3
-Includes = .
+Includes = .;include
 Libs = libs
 Bins = 
 ResourceIncludes = 
@@ -31,7 +31,7 @@ CommandLine =
 Folders = 
 IncludeVersionInfo = 0
 SupportXPThemes = 0
-CompilerSet = 2
+CompilerSet = 3
 StaticLink = 0
 AddCharset = 1
 ExecEncoding = SYSTEM
@@ -44,33 +44,8 @@ UseUTF8 = 1
 
 
 [Unit1]
-FileName = shader.h
-CompileCpp = 0
-Folder = 头文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-
-
-[Unit2]
-FileName = scene.h
-CompileCpp = 0
-Folder = 头文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-
-
-[Unit3]
-FileName = vector2.cpp
+FileName = color.cpp
+CompileCpp = 1
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -79,12 +54,37 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
+
+
+[Unit2]
+FileName = dynamics.cpp
+CompileCpp = 1
+Folder = 源文件
+Compile = 1
+Link = 1
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+
+
+[Unit3]
+FileName = vertexShaderDrawLines.glsl
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
 CompileCpp = 1
 
 
 [Unit4]
-FileName = algoriscope.h
-Folder = 头文件
+FileName = shader.fs
+Folder = 其他文件
 Compile = 0
 Link = 0
 Priority = 1000
@@ -116,33 +116,7 @@ SyncProduct = 1
 
 
 [Unit5]
-FileName = render.h
-Folder = 头文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-CompileCpp = 0
-
-
-[Unit6]
-FileName = fragmentShader_frag=vertex.glsl
-Folder = 其他文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-CompileCpp = 0
-
-
-[Unit7]
-FileName = main.cpp
+FileName = scene.cpp
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -150,24 +124,11 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = ASCII
+RealEncoding = UTF-8
 CompileCpp = 1
 
 
-[Unit8]
-FileName = color.h
-Folder = 头文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-CompileCpp = 0
-
-
-[Unit9]
+[Unit6]
 FileName = dynamics.h
 Folder = 头文件
 Compile = 0
@@ -180,9 +141,9 @@ RealEncoding = UTF-8
 CompileCpp = 0
 
 
-[Unit10]
-FileName = shader.fs
-Folder = 其他文件
+[Unit7]
+FileName = algoriscope.h
+Folder = 头文件
 Compile = 0
 Link = 0
 Priority = 1000
@@ -190,10 +151,10 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
-CompileCpp = 1
+CompileCpp = 0
 
 
-[Unit11]
+[Unit8]
 FileName = render.cpp
 Folder = 源文件
 Compile = 1
@@ -203,6 +164,45 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
+CompileCpp = 1
+
+
+[Unit9]
+FileName = fragmentShader_frag=vertex.glsl
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
+CompileCpp = 0
+
+
+[Unit10]
+FileName = main.cpp
+Folder = 源文件
+Compile = 1
+Link = 1
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
+CompileCpp = 1
+
+
+[Unit11]
+FileName = vertexShader1.glsl
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
 CompileCpp = 1
 
 
@@ -220,95 +220,32 @@ CompileCpp = 1
 
 
 [Unit13]
-FileName = shader.vs
-Folder = 其他文件
-Compile = 0
-Link = 0
+FileName = vector2.cpp
+Folder = 源文件
+Compile = 1
+Link = 1
 Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
-CompileCpp = 0
+CompileCpp = 1
 
 
 [Unit14]
-FileName = dynamics.cpp
-Folder = 源文件
-Compile = 1
-Link = 1
+FileName = color.h
+Folder = 头文件
+Compile = 0
+Link = 0
 Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
-CompileCpp = 1
+CompileCpp = 0
 
 
 [Unit15]
-FileName = vertexShader1.glsl
-CompileCpp = 0
-Folder = 其他文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-
-
-[Unit16]
-FileName = fragmentShader_frag=vertexDrawLines.glsl
-Folder = 其他文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-
-
-[Unit17]
-FileName = vertexShaderDrawLines.glsl
-Folder = 其他文件
-Compile = 0
-Link = 0
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-
-
-[Unit18]
-FileName = color.cpp
-CompileCpp = 1
-Folder = 源文件
-Compile = 1
-Link = 1
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = UTF-8
-
-
-[Unit19]
-FileName = scene.cpp
-CompileCpp = 1
-Folder = 源文件
-Compile = 1
-Link = 1
-Priority = 1000
-OverrideBuildCmd = 0
-BuildCmd = 
-FileEncoding = PROJECT
-RealEncoding = ASCII
-
-
-[Unit20]
 FileName = vector2.h
 CompileCpp = 0
 Folder = 头文件
@@ -321,23 +258,85 @@ FileEncoding = PROJECT
 RealEncoding = UTF-8
 
 
+[Unit16]
+FileName = scene.h
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
+
+
+[Unit17]
+FileName = shader.vs
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
+
+
+[Unit18]
+FileName = render.h
+CompileCpp = 0
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+
+
+[Unit19]
+FileName = shader.h
+CompileCpp = 0
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+
+
+[Unit20]
+FileName = fragmentShader_frag=vertexDrawLines.glsl
+CompileCpp = 1
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
+
+
+[Unit21]
+FileName = shader.fs
+CompileCpp = 1
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+
+
 [CompilerSettings]
-c_cmd_opt_std = 
-cc_cmd_opt_abort_on_error = 
-cc_cmd_opt_check_iso_conformance = 
-cc_cmd_opt_debug_info = 
-cc_cmd_opt_inhibit_all_warning = 
-cc_cmd_opt_instruction = 
-cc_cmd_opt_optimize = 2
-cc_cmd_opt_pointer_size = 
-cc_cmd_opt_profile_info = 
-cc_cmd_opt_stack_protector = 
-cc_cmd_opt_std = 
-cc_cmd_opt_syntax_only = 
+cc_cmd_opt_debug_info = on
 cc_cmd_opt_use_pipe = on
-cc_cmd_opt_warning_all = 
-cc_cmd_opt_warning_as_error = 
-cc_cmd_opt_warning_extra = 
-link_cmd_opt_no_console = 
-link_cmd_opt_no_link_stdlib = 
-link_cmd_opt_strip_exe = on
+cc_cmd_opt_warning_all = on
