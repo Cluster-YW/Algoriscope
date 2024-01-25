@@ -4,6 +4,13 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include <map>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <ft2build.h>
+#include FT_FREETYPE_H 
+
 
 #include "shader.h"
 #include "vector2.h"
@@ -18,8 +25,7 @@ namespace Algoriscope {
 		
 	public:
 		//构造函数，进行相关初始化。
-		Render();
-		
+		Render(int sizex, int sizey);
 		
 		//析构函数，进行收尾工作
 		~Render();
@@ -47,7 +53,9 @@ namespace Algoriscope {
 		// color - 颜色
 		int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
 		
-		int drawText(const Vector2& pos, const char*);
+		int drawRectBorder(const Vector2&pos,const Vector2&size,const Color&col,const float width);
+		
+		int drawText(Vector2& pos,GLfloat scale,string text,Color iColor);
 		
 		GLFWwindow* getw(){
 			return window;

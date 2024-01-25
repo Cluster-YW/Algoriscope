@@ -5,5 +5,5 @@ out vec4 vertexColor;
 uniform float change;
 void main(){
     gl_Position = vec4(aPos.x+change,aPos.y,aPos.z,1.0);
-    vertexColor = vec4(aColor.x,aColor.y,aColor.z,1.0); 
+    vertexColor = aColor; 
 };
