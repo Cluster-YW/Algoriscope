@@ -8,7 +8,6 @@
 #include "shader.h"
 #include "vector2.h"
 #include "color.h"
-
 namespace Algoriscope {
 	class Render {
 	private:

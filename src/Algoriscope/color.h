@@ -14,6 +14,7 @@ namespace Algoriscope {
 			Color(const char* RGB);
 			Color(int r = 0, int g = 0, int b = 0, int a = 255);
 			Color(float h = 0, float s = 0, float l = 0);
+		void Set(const char*RGB);
 			void Set(int r) {
 				this->r = r;
 				switchfromRGBtoHSL();
