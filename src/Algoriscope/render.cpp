@@ -7,26 +7,33 @@ namespace Algoriscope {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		window = glfwCreateWindow(size.x, size.y, "Computer Graphics", nullptr, nullptr);
-		glfwMakeContextCurrent(window);
 		glewExperimental = true;
-		glewInit();
-		glViewport(0, 0, size.x, size.y);
+		
 	}
-
+	
+	int Render::setTitle(const char* name){
+		window = glfwCreateWindow(size.x, size.y, name, nullptr, nullptr);
+		glfwMakeContextCurrent(window);
+		glViewport(0, 0, size.x, size.y);
+		glewInit();
+		return 0;
+	}
+	
 	//析构函数，进行收尾工作
 	Render::~Render() {
 		glfwTerminate();
 	}
 	//负责帧的更新
-	int Render::update() {
+	int Render::update(const Color& col) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.use();
-
+		GLuint WIDTH = size.x,HEIGHT = size.y;
+		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
+		shader.setMat4("projection",projection);
 		return 0;
 	}
 
@@ -80,7 +87,7 @@ namespace Algoriscope {
 			pos2.x, pos2.y, 0.0,
 			pos3.x, pos3.y, 0.0,
 		};
-		GLuint VAO, VBO, EBO;
+		GLuint VAO, VBO;
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 		glGenBuffers(1, &VBO);
@@ -167,19 +174,12 @@ namespace Algoriscope {
 		GLuint VAO, VBO;
 
 
-		glEnable(GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// Compile and setup the shader
 		Shader shader("shaders/text.vs", "shaders/text.fs");
 		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
-		for(int i=0;i<4;i++){
-			for(int j=0;j<4;j++){
-				cout<<projection[i][j]<<" ";
-			}
-			cout<<endl;
-		}
-		cout<<endl;
 		shader.use();
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		FT_Library ft;
@@ -279,7 +279,7 @@ namespace Algoriscope {
 		}
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
-//
+		glDisable(GL_BLEND);
 		return 0;
 	}
 
