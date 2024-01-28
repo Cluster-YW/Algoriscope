@@ -5,9 +5,6 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <map>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <ft2build.h>
 #include FT_FREETYPE_H 
 
@@ -27,10 +24,12 @@ namespace Algoriscope {
 		//构造函数，进行相关初始化。
 		Render(int sizex, int sizey);
 		
+		int setTitle(const char* name);
+		
 		//析构函数，进行收尾工作
 		~Render();
 		//负责帧的更新
-		int update();
+		int update(const Color& col);
 		
 		//检测按键是否按下
 		//key - 按下哪个键
