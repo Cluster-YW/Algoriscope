@@ -5,6 +5,8 @@
 #include <iostream>
 
 namespace Algoriscope {
+
+
 	class Color {
 		private:
 			int r, g, b, a;
@@ -14,7 +16,9 @@ namespace Algoriscope {
 			Color(const char* RGB);
 			Color(int r = 0, int g = 0, int b = 0, int a = 255);
 			Color(float h = 0, float s = 0, float l = 0);
-			void Set(int r) {
+		    void set(const char*RGB);
+		    void set(int r,int g,int b,int a);
+			void SetR(int r) {
 				this->r = r;
 				switchfromRGBtoHSL();
 			};
@@ -66,6 +70,9 @@ namespace Algoriscope {
 			float getAf()const {
 				return this->a / 255.0f;
 			}
+
+			Color lerp(Color target, float k);
+		
 		private:
 			void trimRGBA();
 			void trimHSL();
