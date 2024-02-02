@@ -64,8 +64,8 @@ void Color::switchfromRGBtoHSL() {
 	float _b = this->getBf();
 	max = std::max({_r, _g, _b});
 	min = std::min({_r, _g, _b});
-	std::cout << max << "-" << min << std::endl;
-	//计算L
+//	std::cout << max << "-" << min << std::endl;
+//	计算L
 	l = (max + min) / 2;
 	//计算S
 	if (max == min)s = 0;
@@ -109,4 +109,12 @@ void Color::switchfromHSLtoRGB() {
 		g = arr[1] * 255;
 		b = arr[2] * 255;
 	}
+
+}
+Color Color::lerp(Color target, float k) {
+	auto flerp = [](float a, float b, float k)->float{return (a * (1 - k) + b * k);	};
+	return Color(flerp(this->getR(), target.getR(), k),
+	             flerp(this->getG(), target.getG(), k),
+	             flerp(this->getB(), target.getB(), k),
+	             flerp(this->getA(), target.getA(), k));
 }

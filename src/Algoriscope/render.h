@@ -4,6 +4,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include <map>
+#include <ft2build.h>
+#include FT_FREETYPE_H 
+
 
 #include "shader.h"
 #include "vector2.h"
@@ -18,13 +22,14 @@ namespace Algoriscope {
 		
 	public:
 		//构造函数，进行相关初始化。
-		Render();
+		Render(int sizex, int sizey);
 		
+		int setTitle(const char* name);
 		
 		//析构函数，进行收尾工作
 		~Render();
 		//负责帧的更新
-		int update();
+		int update(const Color& col);
 		
 		//检测按键是否按下
 		//key - 按下哪个键
@@ -47,7 +52,9 @@ namespace Algoriscope {
 		// color - 颜色
 		int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
 		
-		int drawText(const Vector2& pos, const char*);
+		int drawRectBorder(const Vector2&pos,const Vector2&size,const Color&col,const float width);
+		
+		int drawText(Vector2& pos,GLfloat scale,string text,Color iColor);
 		
 		GLFWwindow* getw(){
 			return window;
