@@ -1,6 +1,5 @@
 // Std. Includes
 #include "render.h"
-<<<<<<< Updated upstream
 #include <iostream>
 #include <map>
 #include <string>
@@ -67,19 +66,4 @@ int main() {
 		
 		t += 1.0f / FPS;
 	}	
-=======
-#include"object.h"
-#include<iostream>
-using namespace Algoriscope;
-int main() {
-	Render render;
-	int arr[10]={1,2,3,4,5,6,7,8,9,10};
-	Object a(arr,10);
-	while(1){
-		a.DrawBar(render);
-		render.update();
-	}
-	
-
->>>>>>> Stashed changes
 }
