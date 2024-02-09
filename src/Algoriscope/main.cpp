@@ -26,10 +26,10 @@ using namespace Algoriscope;
 
 int main() {
 	//use Scene:
-	//Algoriscope::Scene a(600, 800);
+	//Algoriscope::Scene a(1200, 800);
 	//a.setTitle("Test window");
-	//a.run("#005500",1000);
-	//a.run("#550000",1000);
+	//a.run(1000);
+	//a.run(1000);
 	
 
 	auto render = Render(1200, 900);
@@ -53,16 +53,21 @@ int main() {
 		render.update("#000000");
 		
 		auto col = Color("#FFFF00");
-		auto b = Vector2(100.0f, 600.0f);
-		auto size = Vector2(200.0f, 100.0f);
+		auto b = Vector2(-580.0f, -400.0f);
+		auto size1 = Vector2(200.0f, 100.0f);
+		auto size2 = Vector2(300.0f,250.0f);
+		auto c = Vector2(0.0f, 0.0f);
+		auto d = Vector2(300,300);
 		
-		//要先绘制图形再绘制文字
-		
-		render.drawRect(b, size, col);
+		render.drawRect(b, size1, col);
+		render.drawRectBorder(c, size2, col,10);
+		render.drawLine(b, c, col ,10);
+		render.drawPoints(d,col,5);
 	
-		auto a = Vector2(500 + 100 * cos(2 * t), 600);
-		render.drawText(a, 1.0, "Text Test.", tcolor);
+		
 		// 文字
+		auto a = Vector2(-100 + 100 * cos(2 * t), 0);
+		render.drawText(a,1.0, "Text Test.", tcolor);
 		
 		t += 1.0f / FPS;
 	}	

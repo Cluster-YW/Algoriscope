@@ -10,15 +10,14 @@ namespace Algoriscope {
 		return 0;
 	}
 	
-	int Scene::run(const Color& background,int time,bool mouse) {
+	int Scene::run(int time,bool mouse) {
 		float timer = 0.0f;
 		clock_t last, now;
 		last = now = clock();
 		
 		while (1) {
 			
-			// TODO : 这里加一段填充背景色
-			render.update(background);
+			
 			
 			now = clock();
 			if (now - last < CLOCKS_PER_SEC / FPS) {
@@ -32,6 +31,10 @@ namespace Algoriscope {
 					break;
 				}
 			}
+			
+			// TODO : 这里加一段填充背景色
+			render.update(background);
+			
 //			root->update();
 //			root->render();
 		}

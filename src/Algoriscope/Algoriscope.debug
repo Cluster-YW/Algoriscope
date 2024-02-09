@@ -1,7 +1,39 @@
 {
     "breakpoints": [
+        {
+            "breakpoint_type": 0,
+            "condition": "",
+            "enabled": true,
+            "filename": "render.cpp",
+            "line": 13,
+            "timestamp": "1706326887245"
+        },
+        {
+            "breakpoint_type": 0,
+            "condition": "",
+            "enabled": true,
+            "filename": "render.h",
+            "line": 9,
+            "timestamp": "1707393226289"
+        },
+        {
+            "breakpoint_type": 0,
+            "condition": "",
+            "enabled": true,
+            "filename": "render.cpp",
+            "line": 79,
+            "timestamp": "1707394329308"
+        },
+        {
+            "breakpoint_type": 0,
+            "condition": "",
+            "enabled": true,
+            "filename": "render.h",
+            "line": 75,
+            "timestamp": "1707398491272"
+        }
     ],
-    "timestamp": "1706346959605",
+    "timestamp": "1707485983757",
     "watchvars": [
     ]
 }

@@ -19,7 +19,7 @@ namespace Algoriscope {
 		// 运行场景一定时间
 		// time -	运行的时间（毫秒）
 		// mouse -	是否可以通过鼠标点击直接结束
-		int run(const Color& background,int time = -1, bool mouse = 1);
+		int run(int time = -1, bool mouse = 1);
 		
 		
 		int addObject(Object* p);
