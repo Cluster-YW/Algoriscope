@@ -5,15 +5,18 @@ namespace Algoriscope {
 		size(x, y), render(x, y), FPS(_FPS), background("#222222") {
 	}
 
+	int Scene::setTitle(const char*name) {
+		render.setTitle(name);
+		return 0;
+	}
+
 	int Scene::run(int time, bool mouse) {
 		float timer = 0.0f;
 		clock_t last, now;
 		last = now = clock();
 
+		auto i = 0;
 		while (1) {
-			
-			// TODO : 这里加一段填充背景色
-			
 			now = clock();
 			if (now - last < CLOCKS_PER_SEC / FPS) {
 				continue;
@@ -26,13 +29,22 @@ namespace Algoriscope {
 					break;
 				}
 			}
+
+			render.update(background);
 //			root->update();
 //			root->render();
+			cout << i << endl;
+			i++;
+			if (debug_function != nullptr)
+				debug_function(this, &render);
 		}
 		cout << "loopend" << endl;
 		return 0;
 	}
 	int Scene::addObject(Object* p) {
+
 		return 0;
 	}
 }
+
+
