@@ -2,12 +2,25 @@
 #define  MAX_CHAR 128
 namespace Algoriscope {
 	Render::Render(int sizex, int sizey) : size (sizex, sizey) {
+		//init 版本号
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+<<<<<<< HEAD
 		window = glfwCreateWindow(size.x, size.y, "Computer Graphics", nullptr, nullptr);
+=======
+		glfwWindowHint(GLFW_SAMPLES, 4); // 设置反走样的采样数，可以根据需要调整
+		glEnable(GL_MULTISAMPLE);//启用多采样
+		glewExperimental = true;
+		
+	}
+	
+	int Render::setTitle(const char* name){
+		//create window
+		window = glfwCreateWindow(size.x, size.y, name, nullptr, nullptr);
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 		glfwMakeContextCurrent(window);
 		glewExperimental = true;
 		glewInit();
@@ -24,9 +37,22 @@ namespace Algoriscope {
 		glfwPollEvents();
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
 		shader.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.use();
+<<<<<<< HEAD
 
+=======
+		GLuint WIDTH = size.x,HEIGHT = size.y;
+		//正投影矩阵projection
+		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
+		shader.setMat4("projection",projection);
+		//平移矩阵trans
+		//使用uniform   projection*translation*vec4(aPos,1.0)实现坐标变换
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(WIDTH/2, HEIGHT/2, 0.0f));
+		shader.setMat4("translation",trans);
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 		return 0;
 	}
 
@@ -38,30 +64,30 @@ namespace Algoriscope {
 		return 0;
 	}
 
-	//画直线
-	//pos1 - 起点位置
-	//pos2 - 终点位置
-	//color - 线的颜色
-	int Render::drawLine(const Vector2& pos1, const Vector2& pos2, const Color& col) {
-		glLineWidth(10.0f);
+
+	int Render::drawLine(const Vector2& pos1, const Vector2& pos2, const Color& col, const float width) {
+		glLineWidth(width);
 		const float line[] = {
 			pos1.x, pos1.y, 0.0,
 			pos2.x, pos2.y, 0.0
-//			0.0f, 0.0f, 0.0f,
-//			0.2f, 0.5f, 0.0f
 		};
-		GLuint vertex_array_object;//VAO,使用核心模式，只需调用一次
-		glGenVertexArrays(1, &vertex_array_object);//先生成
-		glBindVertexArray(vertex_array_object);//再绑定
-
-		GLuint vertex_buffer_object;//VBO
+		//VAO,使用核心模式，只需调用一次
+		GLuint vertex_array_object;
+		//先生成
+		glGenVertexArrays(1, &vertex_array_object);
+		//再绑定
+		glBindVertexArray(vertex_array_object);
+		//VBO
+		GLuint vertex_buffer_object;
 		glGenBuffers(1, &vertex_buffer_object);
-		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object); //将顶点数据绑定至当前默认的缓冲中
+		//将顶点数据绑定至当前默认的缓冲中
+		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object); 
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //设置顶点属性指针//试着去了解各个参数的意义
-		glEnableVertexAttribArray(0);//开启通道
+		//设置顶点属性指针
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); 
+		//开启通道
+		glEnableVertexAttribArray(0);
 
 		glBindVertexArray(vertex_array_object);
 
@@ -69,7 +95,7 @@ namespace Algoriscope {
 
 		glDrawArrays(GL_LINES, 0, 2);
 
-		return 1;
+		return 0;
 	}
 
 	//画三角形
@@ -93,6 +119,8 @@ namespace Algoriscope {
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		return 0;
 	}
+	
+	
 
 	//画矩形
 	// pos - 起始点
@@ -129,15 +157,12 @@ namespace Algoriscope {
 
 	int Render::drawRectBorder(const Vector2& pos, const Vector2& size, const Color&col, const float width) {
 		glLineWidth(width);
+		glPointSize(width);
 		const float line[] = {
 			pos.x, pos.y, 0.0,
 			pos.x + size.x, pos.y, 0.0,
-			pos.x + size.x, pos.y, 0.0,
-			pos.x + size.x, pos.y + size.y, 0.0,
 			pos.x + size.x, pos.y + size.y, 0.0,
 			pos.x, pos.y + size.y, 0.0,
-			pos.x, pos.y, 0.0,
-			pos.x, pos.y + size.y, 0.0
 		};
 		GLuint vertex_array_object;//VAO,使用核心模式，只需调用一次
 		glGenVertexArrays(1, &vertex_array_object);//先生成
@@ -150,10 +175,36 @@ namespace Algoriscope {
 		glEnableVertexAttribArray(0);//开启通道
 		glBindVertexArray(vertex_array_object);
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
-		glDrawArrays(GL_LINES, 0, 8);
+		//循环连接四个点 形成矩形框
+		glDrawArrays(GL_LINE_LOOP, 0, 4);
+		//填充四个角缺失的部分
+		glDrawArrays(GL_POINTS, 0, 4);
 		return 0;
 	}
 
+	int Render::drawPoints(const Vector2& pos1,const Color& col,const float size){
+		glPointSize(size);
+		const float vertices[] = {
+			pos1.x, pos1.y, 0.0,
+		};
+
+		GLuint VAO, VBO;
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		glBindVertexArray(VAO);
+		glEnable(GL_POINT_SPRITE);
+		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		
+		glDrawArrays(GL_POINTS, 0, 1);
+		return 0;
+	}
+	
 	int Render::drawText(Vector2& pos, GLfloat scale, std::string text, Color iColor) {
 		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
 		GLuint WIDTH = size.x, HEIGHT = size.y;
@@ -172,6 +223,7 @@ namespace Algoriscope {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// Compile and setup the shader
 		Shader shader("shaders/text.vs", "shaders/text.fs");
+<<<<<<< HEAD
 		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
 		for(int i=0;i<4;i++){
 			for(int j=0;j<4;j++){
@@ -180,7 +232,14 @@ namespace Algoriscope {
 			cout<<endl;
 		}
 		cout<<endl;
+=======
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 		shader.use();
+		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
+		shader.setMat4("projection",projection);
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(WIDTH/2, HEIGHT/2, 0.0f));
+		shader.setMat4("translation",trans);
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))

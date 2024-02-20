@@ -1,5 +1,6 @@
 #ifndef OBJECT_H
 #define OBJECT_H
+<<<<<<< HEAD
 #include"render.h"
 #include<vector>
 #include"dynamics.h"
@@ -29,6 +30,14 @@ namespace Algoriscope {
 		vector<Bar*>bars;
 		Bars(int*arr,int n);
 		int Draw(Render&render);
+=======
+
+namespace Algoriscope {
+	class Object {
+		public:
+		private:
+
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 	};
 }
 

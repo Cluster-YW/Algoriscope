@@ -1,7 +1,11 @@
 [Project]
 filename = Algoriscope.dev
 name = Algoriscope
+<<<<<<< HEAD
 UnitCount = 22
+=======
+UnitCount = 21
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Type = 1
 Ver = 3
 Includes = .;include
@@ -31,7 +35,7 @@ CommandLine =
 Folders = 
 IncludeVersionInfo = 0
 SupportXPThemes = 0
-CompilerSet = 1
+CompilerSet = 3
 StaticLink = 0
 AddCharset = 1
 ExecEncoding = SYSTEM
@@ -44,11 +48,19 @@ UseUTF8 = 1
 
 
 [Unit1]
+<<<<<<< HEAD
 FileName = vector2.cpp
 CompileCpp = 1
 Folder = 源文件
 Compile = 1
 Link = 1
+=======
+FileName = shader.h
+CompileCpp = 0
+Folder = 头文件
+Compile = 0
+Link = 0
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
@@ -57,8 +69,13 @@ RealEncoding = UTF-8
 
 
 [Unit2]
+<<<<<<< HEAD
 FileName = vertexShaderDrawLines.glsl
 CompileCpp = 1
+=======
+FileName = vertexShader0.glsl
+CompileCpp = 0
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 其他文件
 Compile = 0
 Link = 0
@@ -70,20 +87,36 @@ RealEncoding = ASCII
 
 
 [Unit3]
+<<<<<<< HEAD
 FileName = shader.h
 Folder = 头文件
 Compile = 0
 Link = 0
+=======
+FileName = vector2.cpp
+Folder = 源文件
+Compile = 1
+Link = 1
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
+<<<<<<< HEAD
 RealEncoding = UTF-8
 CompileCpp = 0
 
 
 [Unit4]
 FileName = scene.cpp
+=======
+RealEncoding = ASCII
+CompileCpp = 1
+
+
+[Unit4]
+FileName = dynamics.cpp
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -91,7 +124,7 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = UTF-8
+RealEncoding = ASCII
 CompileCpp = 1
 
 
@@ -116,16 +149,23 @@ SyncProduct = 1
 
 
 [Unit5]
+<<<<<<< HEAD
 FileName = dynamics.cpp
 Folder = 源文件
 Compile = 1
 Link = 1
+=======
+FileName = algoriscope.h
+Folder = 头文件
+Compile = 0
+Link = 0
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = UTF-8
-CompileCpp = 1
+RealEncoding = ASCII
+CompileCpp = 0
 
 
 [Unit6]
@@ -142,7 +182,11 @@ CompileCpp = 1
 
 
 [Unit7]
+<<<<<<< HEAD
 FileName = vertexShader1.glsl
+=======
+FileName = shader.vs
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 其他文件
 Compile = 0
 Link = 0
@@ -150,12 +194,17 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
+<<<<<<< HEAD
 RealEncoding = ASCII
+=======
+RealEncoding = UTF-8
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 CompileCpp = 1
 
 
 [Unit8]
 FileName = render.h
+<<<<<<< HEAD
 Folder = 头文件
 Compile = 0
 Link = 0
@@ -195,6 +244,8 @@ CompileCpp = 0
 
 [Unit11]
 FileName = object.h
+=======
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 头文件
 Compile = 0
 Link = 0
@@ -206,6 +257,7 @@ RealEncoding = UTF-8
 CompileCpp = 0
 
 
+<<<<<<< HEAD
 [Unit12]
 FileName = shader.vs
 Folder = 其他文件
@@ -221,6 +273,10 @@ CompileCpp = 1
 
 [Unit13]
 FileName = vertexShader0.glsl
+=======
+[Unit9]
+FileName = shader.fs
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 其他文件
 Compile = 0
 Link = 0
@@ -228,12 +284,30 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
-RealEncoding = ASCII
+RealEncoding = UTF-8
 CompileCpp = 1
 
 
+<<<<<<< HEAD
 [Unit14]
 FileName = dynamics.h
+=======
+[Unit10]
+FileName = scene.cpp
+Folder = 源文件
+Compile = 1
+Link = 1
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 1
+
+
+[Unit11]
+FileName = scene.h
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 头文件
 Compile = 0
 Link = 0
@@ -245,9 +319,27 @@ RealEncoding = UTF-8
 CompileCpp = 0
 
 
+<<<<<<< HEAD
 [Unit15]
 FileName = main.cpp
 CompileCpp = 1
+=======
+[Unit12]
+FileName = color.h
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
+
+
+[Unit13]
+FileName = main.cpp
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Folder = 源文件
 Compile = 1
 Link = 1
@@ -256,9 +348,16 @@ OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
 RealEncoding = UTF-8
+<<<<<<< HEAD
 
 
 [Unit16]
+=======
+CompileCpp = 1
+
+
+[Unit14]
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 FileName = fragmentShader_frag=vertexDrawLines.glsl
 Folder = 其他文件
 Compile = 0
@@ -284,8 +383,14 @@ RealEncoding = ASCII
 CompileCpp = 0
 
 
+<<<<<<< HEAD
 [Unit18]
 FileName = color.h
+CompileCpp = 0
+Folder = 头文件
+=======
+[Unit15]
+FileName = object.h
 CompileCpp = 0
 Folder = 头文件
 Compile = 0
@@ -294,11 +399,55 @@ Priority = 1000
 OverrideBuildCmd = 0
 BuildCmd = 
 FileEncoding = PROJECT
+RealEncoding = ASCII
+
+
+[Unit16]
+FileName = vertexShader1.glsl
+Folder = 其他文件
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
+CompileCpp = 0
+
+
+[Unit17]
+FileName = dynamics.h
+Folder = 头文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = UTF-8
+CompileCpp = 0
+
+
+[Unit18]
+FileName = color.cpp
+CompileCpp = 1
+Folder = 源文件
+Compile = 1
+Link = 1
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
 RealEncoding = UTF-8
 
 
 [Unit19]
+<<<<<<< HEAD
 FileName = scene.h
+=======
+FileName = vector2.h
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 CompileCpp = 0
 Folder = 头文件
 Compile = 0
@@ -311,6 +460,7 @@ RealEncoding = UTF-8
 
 
 [Unit20]
+<<<<<<< HEAD
 FileName = color.cpp
 CompileCpp = 1
 Folder = 源文件
@@ -340,6 +490,24 @@ RealEncoding = UTF-8
 FileName = algoriscope.h
 CompileCpp = 0
 Folder = 头文件
+=======
+FileName = fragmentShader_frag=vertex.glsl
+CompileCpp = 1
+Folder = 其他文件
+Compile = 0
+Link = 0
+Priority = 1000
+OverrideBuildCmd = 0
+BuildCmd = 
+FileEncoding = PROJECT
+RealEncoding = ASCII
+
+
+[Unit21]
+FileName = vertexShaderDrawLines.glsl
+CompileCpp = 1
+Folder = 其他文件
+>>>>>>> 840ed39b2fbc8c7a772eb5af67975486e45b7dab
 Compile = 0
 Link = 0
 Priority = 1000
