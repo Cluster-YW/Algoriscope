@@ -52,9 +52,9 @@ namespace Algoriscope {
 		// color - 颜色
 		int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
 		
-		int drawRectBorder(const Vector2&pos,const Vector2&size,const Color&col,const float width);
+		int drawRectBorder(const Vector2& pos,const Vector2&size,const Color&col,const float width);
 		
-		int drawText(Vector2& pos,GLfloat scale,string text,Color iColor);
+		int drawText(Vector2 pos,GLfloat scale,string text,Color iColor);
 		
 		GLFWwindow* getw(){
 			return window;
