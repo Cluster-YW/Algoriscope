@@ -161,7 +161,7 @@ namespace Algoriscope {
 		return 0;
 	}
 
-	int Render::drawText(Vector2& pos, GLfloat scale, std::string text, Color iColor) {
+	int Render::drawText(Vector2 pos, GLfloat scale, std::string text, Color iColor) {
 		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
 		GLuint WIDTH = size.x, HEIGHT = size.y;
 		struct Character {

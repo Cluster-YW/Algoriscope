@@ -12,6 +12,8 @@
 namespace Algoriscope {
 	class Scene {
 	public:
+		bool debug_mode;
+		float timer;
 		int (*debug_function)(Scene*,Render*)= nullptr;
 		
 		Scene(int x, int y, int _FPS = 60);
@@ -24,7 +26,7 @@ namespace Algoriscope {
 		int run(int time = -1, bool mouse = 1);
 		
 		
-		int addObject(Object* p);
+		int addObject(Object& p);
 	private:
 		int FPS;
 		Vector2 size;
@@ -32,6 +34,7 @@ namespace Algoriscope {
 		Render render;
 		Color background;
 		Object* root; // 之后把这里改成一个 unique_ptr
+		
 	};
 }
 
