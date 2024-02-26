@@ -65,9 +65,11 @@ namespace Algoriscope {
 			draw_position = draw_position + Vector2(0, height());
 			render.drawRect(draw_position,
 			                Vector2(width(), -height()), Color("#0000FF"));
+			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("#0000FF"),3);
 		} else {
 			render.drawRect(draw_position,
 			                Vector2(width(), height()), Color("#0000FF"));
+			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("#00FF00"),3);
 		}
 
 

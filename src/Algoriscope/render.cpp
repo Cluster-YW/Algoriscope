@@ -133,18 +133,18 @@ namespace Algoriscope {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		return 0;
 	}
-
+	
 	int Render::drawRectBorder(const Vector2& pos, const Vector2& size, const Color&col, const float width) {
 		glLineWidth(width);
 		const float line[] = {
 			pos.x, pos.y, 0.0,
 			pos.x + size.x, pos.y, 0.0,
-			pos.x + size.x, pos.y, 0.0,
-			pos.x + size.x, pos.y + size.y, 0.0,
-			pos.x + size.x, pos.y + size.y, 0.0,
-			pos.x, pos.y + size.y, 0.0,
-			pos.x, pos.y, 0.0,
-			pos.x, pos.y + size.y, 0.0
+			pos.x + size.x-width/2, pos.y, 0.0,
+			pos.x + size.x-width/2, pos.y + size.y, 0.0,
+			pos.x + size.x, pos.y-width/2 + size.y, 0.0,
+			pos.x, pos.y + size.y-width/2, 0.0,
+			pos.x + width/2, pos.y, 0.0,
+			pos.x + width/2, pos.y + size.y, 0.0
 		};
 		GLuint vertex_array_object;//VAO,使用核心模式，只需调用一次
 		glGenVertexArrays(1, &vertex_array_object);//先生成
@@ -157,6 +157,7 @@ namespace Algoriscope {
 		glEnableVertexAttribArray(0);//开启通道
 		glBindVertexArray(vertex_array_object);
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		
 		glDrawArrays(GL_LINES, 0, 8);
 		return 0;
 	}
