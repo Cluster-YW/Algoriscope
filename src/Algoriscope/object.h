@@ -23,6 +23,10 @@ namespace Algoriscope {
 			Vector2 getGlobalPosition() {
 				return global_position;
 			}
+			
+//			double getxposition(){
+//				return 
+//			}
 
 		protected:
 			Dynamics2 position; // 位置
