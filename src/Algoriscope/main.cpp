@@ -62,7 +62,7 @@ int LOOP(Scene* scene, Render* render) {
 }
 
 int main() {
-	Algoriscope::Scene a(1920, 1080, 60);
+	Algoriscope::Scene a(1920, 1080, 10);
 	a.debug_mode = 1 ;
 	a.debug_function = LOOP;
 	a.setTitle("Test window");

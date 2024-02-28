@@ -61,7 +61,8 @@ namespace Algoriscope {
 			void setBind(float *fp) { // 设置绑定
 				bind = fp;
 			}
-
+			
+		
 		protected:
 			float* bind; // 绑定
 			Dynamics scale = 100; // 与绑定变量的比例

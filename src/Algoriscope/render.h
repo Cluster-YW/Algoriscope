@@ -54,6 +54,8 @@ namespace Algoriscope {
 		
 		int drawRectBorder(const Vector2& pos,const Vector2&size,const Color&col,const float width);
 		
+		int drawCircle(Vector2 pos,GLfloat r,Color col);
+		
 		int drawText(Vector2 pos,GLfloat scale,string text,Color iColor);
 		
 		GLFWwindow* getw(){
