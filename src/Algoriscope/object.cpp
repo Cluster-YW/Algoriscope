@@ -22,10 +22,10 @@ namespace Algoriscope {
 	void Object::debug_draw(Render& render) {
 		render.drawRectBorder(global_position, Vector2(20, 20), Color("#FF0000"), 2);
 		// 调试渲染
-		std::string posinfo;
-		posinfo = "(" + std::to_string((int)global_position.x) +
-		          "," + std::to_string((int)global_position.y) + ")";
-		render.drawText(global_position + Vector2(0, -20), 0.3f, posinfo, Color("#00FF00"));
+//		std::string posinfo;
+//		posinfo = "(" + std::to_string((int)global_position.x) +
+//		          "," + std::to_string((int)global_position.y) + ")";
+//		render.drawText(global_position + Vector2(0, -20), 0.3f, posinfo, Color("#00FF00"));
 
 
 		for (auto child : children ) { // 进一步调用子对象的debug_draw()
@@ -65,11 +65,11 @@ namespace Algoriscope {
 			draw_position = draw_position + Vector2(0, height());
 			render.drawRect(draw_position,
 			                Vector2(width(), -height()), Color("#0000FF"));
-			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("#0000FF"),3);
+//			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("#0000FF"),3);
 		} else {
 			render.drawRect(draw_position,
 			                Vector2(width(), height()), Color("#0000FF"));
-			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("#00FF00"),3);
+//			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("#00FF00"),3);
 		}
 
 
@@ -84,12 +84,12 @@ namespace Algoriscope {
 		std::string posinfo;
 		posinfo = "(" + std::to_string((int)global_position.x) +
 		          "," + std::to_string((int)global_position.y) + ")";
-		render.drawText(global_position + Vector2(0, -20), 0.3f, posinfo, Color("#00FFFF"));
+//		render.drawText(global_position + Vector2(0, -20), 0.3f, posinfo, Color("#00FFFF"));
 
 		std::string sizeinfo;
 		sizeinfo = "(" + std::to_string((int)width()) +
 		           "," + std::to_string((int)height()) + ")";
-		render.drawText(global_position + Vector2(0, -40), 0.3f, sizeinfo, Color("#00FFFF"));
+//		render.drawText(global_position + Vector2(0, -40), 0.3f, sizeinfo, Color("#00FFFF"));
 
 
 		for (auto child : children ) { // 进一步调用子对象的debug_draw()

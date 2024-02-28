@@ -24,7 +24,7 @@ namespace Algoriscope {
 				continue;
 			}
 
-			float deltatime = 10.0f / FPS;
+			float deltatime = 1.0f / FPS;
 
 			last = now;// 稳定帧率
 
