@@ -31,10 +31,8 @@
 *.out
 *.app
 
-# Backups
 *.editbackup
 
-# RedPandas
 *.bookmarks
 *.debug
 *.layout

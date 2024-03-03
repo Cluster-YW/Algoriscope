@@ -23,9 +23,9 @@ namespace Algoriscope {
 			Vector2 getGlobalPosition() {
 				return global_position;
 			}
-			
+
 //			double getxposition(){
-//				return 
+//				return
 //			}
 
 		protected:
@@ -65,10 +65,14 @@ namespace Algoriscope {
 			void setBind(float *fp) { // 设置绑定
 				bind = fp;
 			}
-			
-		
+
+			float* setBind() { // 设置绑定
+				return bind;
+			}
+
+
 		protected:
-			float* bind; // 绑定
+			float* bind=nullptr; // 绑定
 			Dynamics scale = 100; // 与绑定变量的比例
 			Dynamics width; // 宽度
 			Dynamics height; // 高度
