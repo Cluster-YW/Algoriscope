@@ -64,11 +64,11 @@ namespace Algoriscope {
 		if (height() < 0) { // 实现高度为负，向下绘制
 			draw_position = draw_position + Vector2(0, height());
 			render.drawRect(draw_position,
-			                Vector2(width(), -height()), Color("#0000FF"));
+			                Vector2(width(), -height()), Color("blue"));
 //			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("#0000FF"),3);
 		} else {
 			render.drawRect(draw_position,
-			                Vector2(width(), height()), Color("#0000FF"));
+			                Vector2(width(), height()), Color("blue"));
 //			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("#00FF00"),3);
 		}
 

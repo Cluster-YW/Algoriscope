@@ -65,7 +65,7 @@ int main() {
 	Algoriscope::Scene a(1920, 1080, 100);
 	a.debug_mode = 1 ;
 	a.debug_function = LOOP;
-	a.setTitle("Test window");
+	a.setTitle("COlor,TesT");
 	auto Ob = new Object;
 	Ob->setPosition(Vector2(500, 700));
 	a.addObject(*Ob);
@@ -91,6 +91,29 @@ int main() {
 	a.run(2000);
 	Ob->setPosition(Vector2(1000, 700));
 
-	
+
 	a.run(2000);
 }
+
+/*
+
+int main() {
+	Algoriscope::Scene scn(1920, 1080, 100);
+	a.debug_mode = 1 ;
+	const int n = 10;
+	float* array[n] = {};
+	auto Bs = new Algoriscope::Bars(n, array) // 输入起码包括长度+绑定指针
+	scn.addObject(Bs);
+	//如果后续可以考虑用vector的话就不用长度了
+	for (int i = n - 1; i >= 0; i++) {
+		for (int j = 0; j < i; j++) {
+			if (array[j] < array[j + 1]) {
+				Bs.swap(j, j + 1);
+				scn.run(1000);
+			}
+		}
+	}
+	scn.run(1000);
+}
+
+*/

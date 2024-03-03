@@ -1,11 +1,19 @@
 #include "color.h"
 
 using namespace Algoriscope;
-Color::Color(const char* RGB) {
+Color::Color(std::string str) {
+	if(str[0]!='#'){
+		if(str=="darkgrey") str="#222222";
+		if(str=="lightgrey")str="#AAAAAA";
+		if(str=="red") 		str="#EE4444";
+		if(str=="blue") 	str="#5588EE";
+		if(str=="green") 	str="#66EE88";
+		if(str=="yellow") 	str="#FFDD66";
+	}
 	int arr[7] = {0};
 	for (int i = 1; i < 7; i++) {
-		if (*(RGB + i) > 64 && *(RGB + i) < 72)arr[i] = *(RGB + i) - 55;
-		else if (*(RGB + i) > 47 && *(RGB + i) < 58)  arr[i] = *(RGB + i) - 48;
+		if (str[i] > 64 && str[i]  < 72)arr[i] = str[i]  - 55;
+		else if (str[i] > 47 && str[i]  < 58)  arr[i] = str[i]  - 48;
 	}
 	r = arr[1] * 16 + arr[2];
 	g = arr[3] * 16 + arr[4];
