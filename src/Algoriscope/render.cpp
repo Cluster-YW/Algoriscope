@@ -8,17 +8,25 @@ namespace Algoriscope {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		glewExperimental = true;
-		
-	}
-	
-	int Render::setTitle(const char* name){
-		window = glfwCreateWindow(size.x, size.y, name, nullptr, nullptr);
+		window = glfwCreateWindow(size.x, size.y, "remember ", nullptr, nullptr);
+		WIDTH = size.x;
+		HEIGHT = size.y;
+		projection = glm::ortho(static_cast<GLfloat>(WIDTH * -0.5f),
+		                        static_cast<GLfloat>(WIDTH * 0.5f),
+		                        static_cast<GLfloat>(HEIGHT * -0.5f),
+		                        static_cast<GLfloat>(HEIGHT * 0.5f));
 		glfwMakeContextCurrent(window);
 		glViewport(0, 0, size.x, size.y);
 		glewInit();
+		shader_graphic.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
+		shader_text.init("shaders/text.vs", "shaders/text.fs");
+	}
+
+	int Render::setTitle(const char* name) {
+
 		return 0;
 	}
-	
+
 	//析构函数，进行收尾工作
 	Render::~Render() {
 		glfwTerminate();
@@ -29,11 +37,6 @@ namespace Algoriscope {
 		glfwPollEvents();
 		glClearColor(col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		glClear(GL_COLOR_BUFFER_BIT);
-		shader.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
-		shader.use();
-		GLuint WIDTH = size.x,HEIGHT = size.y;
-		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
-		shader.setMat4("projection",projection);
 		return 0;
 	}
 
@@ -72,7 +75,7 @@ namespace Algoriscope {
 
 		glBindVertexArray(vertex_array_object);
 
-		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		shader_graphic.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 
 		glDrawArrays(GL_LINES, 0, 2);
 
@@ -96,7 +99,7 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(VAO);
-		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		shader_graphic.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		return 0;
 	}
@@ -128,23 +131,25 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(VAO);
-		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		shader_graphic.use();
+		shader_graphic.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		shader_graphic.setMat4("projection", projection);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		return 0;
 	}
-	
+
 	int Render::drawRectBorder(const Vector2& pos, const Vector2& size, const Color&col, const float width) {
 		glLineWidth(width);
 		const float line[] = {
 			pos.x, pos.y, 0.0,
 			pos.x + size.x, pos.y, 0.0,
-			pos.x + size.x-width/2, pos.y, 0.0,
-			pos.x + size.x-width/2, pos.y + size.y, 0.0,
-			pos.x + size.x, pos.y-width/2 + size.y, 0.0,
-			pos.x, pos.y + size.y-width/2, 0.0,
-			pos.x + width/2, pos.y, 0.0,
-			pos.x + width/2, pos.y + size.y, 0.0
+			pos.x + size.x - width / 2, pos.y, 0.0,
+			pos.x + size.x - width / 2, pos.y + size.y, 0.0,
+			pos.x + size.x, pos.y - width / 2 + size.y, 0.0,
+			pos.x, pos.y + size.y - width / 2, 0.0,
+			pos.x + width / 2, pos.y, 0.0,
+			pos.x + width / 2, pos.y + size.y, 0.0
 		};
 		GLuint vertex_array_object;//VAO,使用核心模式，只需调用一次
 		glGenVertexArrays(1, &vertex_array_object);//先生成
@@ -156,8 +161,10 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //设置顶点属性指针//试着去了解各个参数的意义
 		glEnableVertexAttribArray(0);//开启通道
 		glBindVertexArray(vertex_array_object);
-		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
-		
+		shader_graphic.use();
+		shader_graphic.setMat4("projection", projection);
+		shader_graphic.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
+
 		glDrawArrays(GL_LINES, 0, 8);
 		return 0;
 	}
@@ -179,10 +186,8 @@ namespace Algoriscope {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// Compile and setup the shader
-		Shader shader("shaders/text.vs", "shaders/text.fs");
-		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
-		shader.use();
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		shader_text.use();
+		shader_text.setMat4("projection",projection);
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))
 			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -241,9 +246,9 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-		
 
-		glUniform3f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z);
+
+		glUniform3f(glGetUniformLocation(shader_text.ID, "textColor"), color.x, color.y, color.z);
 		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(VAO);
 

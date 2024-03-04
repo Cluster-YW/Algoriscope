@@ -25,12 +25,13 @@ namespace Algoriscope {
 			}
 
 			float deltatime = 1.0f / FPS;
+			
+			timer += 1000.0f * (now - last) / CLOCKS_PER_SEC;
+			this->timer += 1000.0f * (now - last) / CLOCKS_PER_SEC;
 
 			last = now;// 稳定帧率
 
-			timer += 1000.0f / FPS;
-			this->timer += 1000.0f / FPS;
-			
+
 			if (time > 0) {
 				if (timer > time) {
 					break;
@@ -49,7 +50,7 @@ namespace Algoriscope {
 
 			cout << i << endl;
 			i++;
-			
+
 			if (debug_function != nullptr)
 				debug_function(this, &render);
 		}

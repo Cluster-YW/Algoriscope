@@ -33,11 +33,11 @@ int LOOP(Scene* scene, Render* render) {
 	auto b = Vector2(100.0f, 600.0f);
 	auto size = Vector2(200.0f, 100.0f);
 
-//	auto tcol = Color("#FFFF00");
+	auto tcol = Color("#FFFF00");
 	auto t = scene->timer / 1000.0f;
-//	cout<<t<<endl;
-//	auto a = Vector2(500 + 100 * cos(2 * t), 600);
-//	render->drawText(a, 1.0, "Text Test.", tcol);
+	cout<<t<<endl;
+	auto a = Vector2(0+ 100 * cos(2 * t), 0);
+	render->drawText(a, 1.0, "Text Test.", tcol);
 	// 文字(降低了运行的速度)
 
 	render->drawRect(b, size, col);
@@ -62,12 +62,12 @@ int LOOP(Scene* scene, Render* render) {
 }
 
 int main() {
-	Algoriscope::Scene a(1920, 1080, 100);
+	Algoriscope::Scene a(1920, 1080, 140);
 	a.debug_mode = 1 ;
 	a.debug_function = LOOP;
 	a.setTitle("COlor,TesT");
 	auto Ob = new Object;
-	Ob->setPosition(Vector2(500, 700));
+	Ob->setPosition(Vector2(0, 0));
 	a.addObject(*Ob);
 
 	Oc = new Object;
@@ -86,10 +86,10 @@ int main() {
 	Bb->setBind(&vari);
 
 	a.run(2000);
-	Ob->setPosition(Vector2(700, 300));
+	Ob->setPosition(Vector2(-200, -300));
 
 	a.run(2000);
-	Ob->setPosition(Vector2(1000, 700));
+	Ob->setPosition(Vector2(100, 100));
 
 
 	a.run(2000);
