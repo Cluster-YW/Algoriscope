@@ -39,14 +39,18 @@ namespace Algoriscope {
 	}
 
 	void Bar::update(float deltatime) {
-
+		
 		if (bind != nullptr) { // 实现与外部变量绑定
-			setHeight( *bind * scale());
+			if(bindType == 'i')	setHeight( *(int*)bind * scale());
+			else if(bindType == 'x')	setHeight( *(long long*)bind * scale());
+			else if(bindType == 'f')	setHeight( *(float*)bind * scale());
+			else if(bindType == 'd')	setHeight( *(double*)bind * scale());
 		}
 
 		position.update(deltatime); // 更新位置的动画
 		width.update(deltatime); // 更新宽度
 		height.update(deltatime); // 更新高度
+		color.update(deltatime); //更新颜色
 
 		if (parent != nullptr) // 从父对象更新渲染位置
 			global_position = (parent->getGlobalPosition()) + position();
@@ -64,11 +68,11 @@ namespace Algoriscope {
 		if (height() < 0) { // 实现高度为负，向下绘制
 			draw_position = draw_position + Vector2(0, height());
 			render.drawRect(draw_position,
-			                Vector2(width(), -height()), Color("blue"));
+			                Vector2(width(), -height()), color());
 			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("yellow"),3);
 		} else {
 			render.drawRect(draw_position,
-			                Vector2(width(), height()), Color("red"));
+			                Vector2(width(), height()), color());
 			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("yellow"),3);
 		}
 

@@ -2,6 +2,8 @@
 #define DYNAMICS_H
 
 #include "vector2.h"
+#include "color.h"
+#include <string>
 
 namespace Algoriscope {
 	// 动画解算类：
@@ -25,7 +27,7 @@ namespace Algoriscope {
 			//重载括号运算符，修改括号内的变量为处理后的值，返回处理后的值。
 			float operator()(float &f);
 			//更新函数，应当每帧调用一次。
-			float update(float T);
+			void update(float T);
 			//设定运动学参数
 			void setFZR(float f = 1.0f, float z = 1.0f, float r = 1.0f);
 			//获取处理后的值
@@ -53,11 +55,13 @@ namespace Algoriscope {
 			//重载括号运算符，修改括号内的变量为处理后的值，返回处理后的值。
 			Vector2 operator()(Vector2 &f);
 			//更新函数，应当每帧调用一次。
-			Vector2 update(float T);
+			void update(float T);
 			//设定运动学参数
 			void setFZR(float f = 1.0f, float z = 1.0f, float r = 1.0f);
 			//获取处理后的值
 			Vector2 get();
+			//获取目标值
+			Vector2 getInput();
 			//强制输入，会一并修改处理后的值，并将动画速度直接归零
 			Vector2 set(Vector2 f);
 		private:
@@ -66,6 +70,30 @@ namespace Algoriscope {
 			Vector2 y0;
 			Vector2 Dy0;
 			float k1, k2, k3; //三个方程系数
+	};
+	class DynamicC {
+		public:
+			DynamicC(std::string c, float _k = 0.3f) : input(c), output(c), k(_k) {}
+			DynamicC(Color c, float _k = 0.3f) : input(c), output(c), k(_k) {}
+			//重载赋值运算符，直接修改输入值。
+			Color operator=(Color f);
+			//重载括号运算符，直接返回处理后的值。
+			Color operator()(void);
+			//重载括号运算符，修改括号内的变量为处理后的值，返回处理后的值。
+			Color operator()(Color &f);
+			//更新函数，应当每帧调用一次。
+			void update(float T);
+			//设定变化参数
+			void setK(float _k = 0.3f);
+			//获取处理后的值
+			Color get();
+			//强制输入，会一并修改处理后的值，并将动画速度直接归零
+			Color set(Color f);
+
+		private:
+			Color input;
+			Color output;
+			float k;
 	};
 }
 #endif
