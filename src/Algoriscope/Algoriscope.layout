@@ -1,63 +1,43 @@
 [
     {
-        "caretX": 33,
-        "caretY": 27,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.cpp",
-        "focused": false,
-        "isOpen": true,
-        "leftChar": 1,
-        "order": 3,
-        "topLine": 16
-    },
-    {
-        "caretX": 1,
-        "caretY": 11,
+        "caretX": 14,
+        "caretY": 66,
         "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/color.h",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 9,
-        "topLine": 25
+        "topLine": 52
     },
     {
-        "caretX": 4,
-        "caretY": 23,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.h",
+        "caretX": 1,
+        "caretY": 15,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.h",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 10,
-        "topLine": 7
-    },
-    {
-        "caretX": 62,
-        "caretY": 71,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.cpp",
-        "focused": false,
-        "isOpen": true,
-        "leftChar": 17,
         "order": 1,
-        "topLine": 57
+        "topLine": 22
     },
     {
-        "caretX": 7,
-        "caretY": 82,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.h",
-        "focused": false,
-        "isOpen": true,
-        "leftChar": 1,
-        "order": 0,
-        "topLine": 7
-    },
-    {
-        "caretX": 15,
-        "caretY": 92,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/shader.h",
+        "caretX": 5,
+        "caretY": 93,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/main.cpp",
         "focused": true,
         "isOpen": true,
         "leftChar": 1,
         "order": 7,
-        "topLine": 79
+        "topLine": 68
+    },
+    {
+        "caretX": 29,
+        "caretY": 94,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.cpp",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 3,
+        "topLine": 81
     },
     {
         "caretX": 21,
@@ -66,47 +46,87 @@
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 5,
+        "order": 4,
         "topLine": 190
     },
     {
-        "caretX": 27,
-        "caretY": 20,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/color.cpp",
+        "caretX": 1,
+        "caretY": 1,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/vector2.h",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 6,
-        "topLine": 19
+        "topLine": 31
     },
     {
-        "caretX": 1,
-        "caretY": 35,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.h",
+        "caretX": 12,
+        "caretY": 49,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 10,
+        "topLine": 1
+    },
+    {
+        "caretX": 18,
+        "caretY": 47,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 2,
+        "topLine": 61
+    },
+    {
+        "caretX": 27,
+        "caretY": 18,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/color.cpp",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 5,
+        "topLine": 1
+    },
+    {
+        "caretX": 5,
+        "caretY": 25,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 11,
         "topLine": 13
     },
     {
-        "caretX": 18,
-        "caretY": 71,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/main.cpp",
+        "caretX": 15,
+        "caretY": 92,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/shader.h",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 8,
+        "topLine": 122
+    },
+    {
+        "caretX": 16,
+        "caretY": 64,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 12,
         "topLine": 49
     },
     {
         "caretX": 1,
-        "caretY": 6,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.cpp",
+        "caretY": 77,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 4,
-        "topLine": 43
+        "order": 0,
+        "topLine": 64
     }
 ]
