@@ -65,6 +65,7 @@ int LOOP(Scene* scene, Render* render) {
 int main() {
 	Algoriscope::Scene scn(1920, 1080, 60);
 	scn.debug_mode = 0 ;
+	scn.setTitle("Bubble Sort");
 	const int n = 10;
 	float array[n] = {};
 	Bar* Bs[n] = {};
