@@ -23,7 +23,7 @@ namespace Algoriscope {
 	}
 
 	int Render::setTitle(const char* name) {
-
+		glfwSetWindowTitle(window,name);
 		return 0;
 	}
 
@@ -171,7 +171,6 @@ namespace Algoriscope {
 
 	int Render::drawText(Vector2 pos, GLfloat scale, std::string text, Color iColor) {
 		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
-		GLuint WIDTH = size.x, HEIGHT = size.y;
 		struct Character {
 			GLuint TextureID;   // 字形纹理ID
 			glm::ivec2 Size;    // 字形大小
