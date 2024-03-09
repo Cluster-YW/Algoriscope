@@ -38,13 +38,6 @@ class Shader {
 			glCompileShader(vertex); // 编译着色器
 
 			int success;
-			char info_log[512];
-			//检查着色器是否成功编译，如编译失败，打印错误信息
-			glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
-			if (!success) {
-				glGetShaderInfoLog(vertex, 512, NULL, info_log);
-				cout << "vertex编译失败\n" << info_log << endl;
-			}
 
 			// ——————FS————————
 			// 片段着色器部分
@@ -58,10 +51,6 @@ class Shader {
 
 			glCompileShader(fragment);
 			glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
-			if (!success) {
-				glGetShaderInfoLog(fragment, 512, NULL, info_log);
-				cout << "编译失败\n" << info_log << endl;
-			}
 
 
 

@@ -23,15 +23,8 @@
 using namespace Algoriscope;
 
 
-
 int main() {
-	//use Scene:
-	//Algoriscope::Scene a(1200, 800);
-	//a.setTitle("Test window");
-	//a.run(1000);
-	//a.run(1000);
 	
-
 	auto render = Render(1200, 900);
 	render.setTitle("Hello OpenGL");
 
@@ -59,16 +52,20 @@ int main() {
 		auto c = Vector2(0.0f, 0.0f);
 		auto d = Vector2(300,300);
 		
+		render.drawTextInit();
+		auto a = Vector2(-100 + 100 * cos(2 * t), 0);
+		render.drawText(a,1.0, "Text Test.", tcolor);
+		auto a2 = Vector2(110,-100);
+		render.drawText(a2,1.0, "aaa.", tcolor);
+		
+		auto a1 = Vector2(200 + 100 * cos(2 * t), 0);
+		render.drawChinese(a1,1.0, L"宋体", tcolor);
+		
 		render.drawRect(b, size1, col);
 		render.drawRectBorder(c, size2, col,10);
 		render.drawLine(b, c, col ,10);
 		render.drawPoints(d,col,5);
-	
-		
-		// 文字
-		auto a = Vector2(-100 + 100 * cos(2 * t), 0);
-		render.drawText(a,1.0, "Text Test.", tcolor);
-		
+
 		t += 1.0f / FPS;
 	}	
 }

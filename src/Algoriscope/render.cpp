@@ -8,10 +8,7 @@ namespace Algoriscope {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		glfwWindowHint(GLFW_SAMPLES, 4); // 设置反走样的采样数，可以根据需要调整
-		glEnable(GL_MULTISAMPLE);//启用多采样
 		glewExperimental = true;
-		
 	}
 	
 	int Render::setTitle(const char* name){
@@ -27,16 +24,10 @@ namespace Algoriscope {
 	Render::~Render() {
 		glfwTerminate();
 	}
-	//负责帧的更新
-	int Render::update(const Color& col) {
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-		glClearColor(col.getRf(), col.getGf(), col.getBf(), col.getAf());
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		shader.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
+	
+	int Render::ShaderInit(const char* vPath, const char* fPath){
+		shader.init(vPath, fPath);
 		shader.use();
-		GLuint WIDTH = size.x,HEIGHT = size.y;
 		//正投影矩阵projection
 		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
 		shader.setMat4("projection",projection);
@@ -45,6 +36,16 @@ namespace Algoriscope {
 		glm::mat4 trans = glm::mat4(1.0f);
 		trans = glm::translate(trans, glm::vec3(WIDTH/2, HEIGHT/2, 0.0f));
 		shader.setMat4("translation",trans);
+	}
+	//负责帧的更新
+	int Render::update(const Color& col) {
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+		glClearColor(col.getRf(), col.getGf(), col.getBf(), col.getAf());
+		glClear(GL_COLOR_BUFFER_BIT);
+		
+		ShaderInit("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
+
 		return 0;
 	}
 
@@ -82,7 +83,7 @@ namespace Algoriscope {
 		glEnableVertexAttribArray(0);
 
 		glBindVertexArray(vertex_array_object);
-
+		ShaderInit("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 
 		glDrawArrays(GL_LINES, 0, 2);
@@ -107,6 +108,7 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(VAO);
+		ShaderInit("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		return 0;
@@ -141,6 +143,7 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(VAO);
+		ShaderInit("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -166,6 +169,7 @@ namespace Algoriscope {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //设置顶点属性指针//试着去了解各个参数的意义
 		glEnableVertexAttribArray(0);//开启通道
 		glBindVertexArray(vertex_array_object);
+		ShaderInit("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		//循环连接四个点 形成矩形框
 		glDrawArrays(GL_LINE_LOOP, 0, 4);
@@ -191,50 +195,42 @@ namespace Algoriscope {
 		glBindVertexArray(VAO);
 		glEnable(GL_POINT_SPRITE);
 		glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+		ShaderInit("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
 		shader.setFloat4("inputColor", col.getRf(), col.getGf(), col.getBf(), col.getAf());
 		
 		glDrawArrays(GL_POINTS, 0, 1);
 		return 0;
 	}
 	
-	int Render::drawText(Vector2& pos, GLfloat scale, std::string text, Color iColor) {
-		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
-		GLuint WIDTH = size.x, HEIGHT = size.y;
-		struct Character {
-			GLuint TextureID;   // 字形纹理ID
-			glm::ivec2 Size;    // 字形大小
-			glm::ivec2 Bearing;  // 字形基于基线和起点的位置？
-			GLuint Advance;    // 起点到下一个字形起点的距离？
-		};
-		std::map<GLchar, Character> Characters;
-		GLuint VAO, VBO;
-
-
-		//glEnable(GL_CULL_FACE);
+	int Render::drawTextInit(){
+		// Set OpenGL options
+		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		// Compile and setup the shader
-		Shader shader("shaders/text.vs", "shaders/text.fs");
-		shader.use();
-		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
-		shader.setMat4("projection",projection);
-		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(WIDTH/2, HEIGHT/2, 0.0f));
-		shader.setMat4("translation",trans);
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		
+		// FreeType
 		FT_Library ft;
+		// All functions return a value different than 0 whenever an error occurred
 		if (FT_Init_FreeType(&ft))
 			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-
+		
+		// Load font as face
 		FT_Face face;
 		if (FT_New_Face(ft, "fonts/font.ttf", 0, &face))
 			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-
+		
+		// Set size to load glyphs as
 		FT_Set_Pixel_Sizes(face, 0, 48);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		for (GLubyte c = 0; c < 128; c++) {
-			// Load character glyph
-			if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+		
+		// Disable byte-alignment restriction
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+		
+		// Load first 128 characters of ASCII set
+		for (GLubyte c = 0; c < 128; c++)
+		{
+			// Load character glyph 
+			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			{
 				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
 				continue;
 			}
@@ -243,16 +239,16 @@ namespace Algoriscope {
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
 			glTexImage2D(
-			    GL_TEXTURE_2D,
-			    0,
-			    GL_RED,
-			    face->glyph->bitmap.width,
-			    face->glyph->bitmap.rows,
-			    0,
-			    GL_RED,
-			    GL_UNSIGNED_BYTE,
-			    face->glyph->bitmap.buffer
-			);
+				GL_TEXTURE_2D,
+				0,
+				GL_RED,
+				face->glyph->bitmap.width,
+				face->glyph->bitmap.rows,
+				0,
+				GL_RED,
+				GL_UNSIGNED_BYTE,
+				face->glyph->bitmap.buffer
+				);
 			// Set texture options
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -271,6 +267,154 @@ namespace Algoriscope {
 		// Destroy FreeType once we're finished
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
+		
+		
+		// Configure VAO/VBO for texture quads
+		glGenVertexArrays(1, &VAO1);
+		glGenBuffers(1, &VBO1);
+		glBindVertexArray(VAO1);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		
+		return 0;
+	}
+	
+	
+	int Render::drawText(Vector2& pos, GLfloat scale, std::string text, Color iColor) {
+		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
+		// Compile and setup the shader
+		GLuint WIDTH = size.x, HEIGHT = size.y;
+		Shader shader("shaders/text.vs", "shaders/text.fs");
+		shader.use();
+		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
+		shader.setMat4("projection",projection);
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(WIDTH/2, HEIGHT/2, 0.0f));
+		shader.setMat4("translation",trans);
+		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		
+		glUniform3f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z);
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(VAO1);
+
+		// Iterate through all characters
+		std::string::const_iterator c;
+		for (c = text.begin(); c != text.end(); c++) 
+		{
+			Character ch = Characters[*c];
+			
+			GLfloat xpos = pos.x + ch.Bearing.x * scale;
+			GLfloat ypos = pos.y - (ch.Size.y - ch.Bearing.y) * scale;
+			
+			GLfloat w = ch.Size.x * scale;
+			GLfloat h = ch.Size.y * scale;
+			// Update VBO for each character
+			GLfloat vertices[6][4] = {
+				{ xpos,     ypos + h,   0.0, 0.0 },            
+				{ xpos,     ypos,       0.0, 1.0 },
+				{ xpos + w, ypos,       1.0, 1.0 },
+				
+				{ xpos,     ypos + h,   0.0, 0.0 },
+				{ xpos + w, ypos,       1.0, 1.0 },
+				{ xpos + w, ypos + h,   1.0, 0.0 }           
+			};
+			// Render glyph texture over quad
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+			// Update content of VBO memory
+			glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// Render quad
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+			pos.x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+		}
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		return 0;
+	}
+	
+	
+	int Render::drawChinese(Vector2& pos, GLfloat scale, std::wstring text, Color iColor) {
+		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
+		GLuint WIDTH = size.x, HEIGHT = size.y;
+		struct Character {
+			GLuint TextureID;   // 字形纹理ID
+			glm::ivec2 Size;    // 字形大小
+			glm::ivec2 Bearing;  // 字形基于基线和起点的位置？
+			GLuint Advance;    // 起点到下一个字形起点的距离？
+		};
+		std::map<GLchar, Character> Characters;
+		GLuint VAO, VBO;
+		
+		
+		//glEnable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// Compile and setup the shader
+		Shader shader("shaders/text.vs", "shaders/text.fs");
+		shader.use();
+		glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
+		shader.setMat4("projection",projection);
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(WIDTH/2, HEIGHT/2, 0.0f));
+		shader.setMat4("translation",trans);
+		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		FT_Library ft;
+		if (FT_Init_FreeType(&ft))
+			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+		
+		FT_Face face;
+		if (FT_New_Face(ft, "fonts/STSONG.TTF", 0, &face))
+			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+		
+		FT_Set_Pixel_Sizes(face, 0, 48);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		std::wstring::const_iterator c;
+		for (c = text.begin(); c != text.end(); c++)
+		{
+			if (FT_Load_Char(face, *c, FT_LOAD_RENDER))
+			{
+				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+				continue;
+			}
+			// generate texture
+			unsigned int texture;
+			glGenTextures(1, &texture);
+			glBindTexture(GL_TEXTURE_2D, texture);
+			glTexImage2D(
+				GL_TEXTURE_2D,
+				0,
+				GL_RED,
+				face->glyph->bitmap.width,
+				face->glyph->bitmap.rows,
+				0,
+				GL_RED,
+				GL_UNSIGNED_BYTE,
+				face->glyph->bitmap.buffer);
+			// std::cout << *c << std::endl;
+			// set texture options
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			// Now store character for later use
+			Character character = {
+				texture,
+				glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+				glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+				face->glyph->advance.x
+			};
+			Characters.insert(std::pair<GLchar, Character>(*c, character));
+		}
+		glBindTexture(GL_TEXTURE_2D, 0);
+		// Destroy FreeType once we're finished
+		FT_Done_Face(face);
+		FT_Done_FreeType(ft);
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
 		glBindVertexArray(VAO);
@@ -281,41 +425,44 @@ namespace Algoriscope {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		
-
+		
 		glUniform3f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z);
 		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(VAO);
-
+		
 		// Iterate through all characters
-		std::string::const_iterator c;
-		for (c = text.begin(); c != text.end(); c++) {
-			Character ch = Characters[*c];
-
-			GLfloat xpos = pos.x + ch.Bearing.x * scale;
-			GLfloat ypos = pos.y - (ch.Size.y - ch.Bearing.y) * scale;
-
-			GLfloat w = ch.Size.x * scale;
-			GLfloat h = ch.Size.y * scale;
-			// Update VBO for each character
-			GLfloat vertices[6][4] = {
-				{ xpos,     ypos + h,   0.0, 0.0 },
-				{ xpos,     ypos,       0.0, 1.0 },
-				{ xpos + w, ypos,       1.0, 1.0 },
-
-				{ xpos,     ypos + h,   0.0, 0.0 },
-				{ xpos + w, ypos,       1.0, 1.0 },
-				{ xpos + w, ypos + h,   1.0, 0.0 }
+		std::wstring::const_iterator d;
+		for (d = text.begin(); d != text.end(); d++)
+		{
+			Character ch = Characters[*d];
+			if (ch.Size.x == 0)
+				ch = Characters[35]; // 没加载的字符使用'#'占位
+			
+			float xpos = pos.x + ch.Bearing.x * scale;
+			float ypos = pos.y - (ch.Size.y - ch.Bearing.y) * scale;
+			
+			float w = ch.Size.x * scale;
+			float h = ch.Size.y * scale;
+			// update VBO for each character
+			float vertices[6][4] = {
+				{ xpos,     ypos + h,   0.0f, 0.0f },            
+				{ xpos,     ypos,       0.0f, 1.0f },
+				{ xpos + w, ypos,       1.0f, 1.0f },
+				
+				{ xpos,     ypos + h,   0.0f, 0.0f },
+				{ xpos + w, ypos,       1.0f, 1.0f },
+				{ xpos + w, ypos + h,   1.0f, 0.0f }           
 			};
-			// Render glyph texture over quad
+			// render glyph texture over quad
 			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-			// Update content of VBO memory
+			// update content of VBO memory
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			// Render quad
+			// render quad
 			glDrawArrays(GL_TRIANGLES, 0, 6);
-			// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-			pos.x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+			// now advance cursors for next glyph
+			pos.x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
 		}
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);

@@ -5,7 +5,7 @@
             "condition": "",
             "enabled": true,
             "filename": "render.cpp",
-            "line": 13,
+            "line": 11,
             "timestamp": "1706326887245"
         },
         {
@@ -21,7 +21,7 @@
             "condition": "",
             "enabled": true,
             "filename": "render.cpp",
-            "line": 79,
+            "line": 80,
             "timestamp": "1707394329308"
         },
         {
@@ -29,11 +29,11 @@
             "condition": "",
             "enabled": true,
             "filename": "render.h",
-            "line": 75,
+            "line": 88,
             "timestamp": "1707398491272"
         }
     ],
-    "timestamp": "1707485983757",
+    "timestamp": "1709988096967",
     "watchvars": [
     ]
 }

@@ -19,7 +19,18 @@ namespace Algoriscope {
 		Vector2 size;// 画布/场景尺寸
 		GLFWwindow* window;// 窗口对象
 		Shader shader;//着色器
+		GLuint WIDTH = size.x,HEIGHT = size.y;
 		
+		
+		//预设ASCII字符
+		GLuint VAO1,VBO1;
+		struct Character {
+			GLuint TextureID;   // 字形纹理ID
+			glm::ivec2 Size;    // 字形大小
+			glm::ivec2 Bearing;  // 字形基于基线和起点的位置？
+			GLuint Advance;    // 起点到下一个字形起点的距离？
+		};
+		std::map<GLchar, Character> Characters;
 	public:
 		
 		//**渲染循环里先绘制图形再绘制文字
@@ -32,6 +43,8 @@ namespace Algoriscope {
 		
 		//析构函数，进行收尾工作
 		~Render();
+		
+		int ShaderInit(const char* vPath, const char* fPath);
 		
 		//负责帧的更新
 		//col - 背景色
@@ -77,9 +90,11 @@ namespace Algoriscope {
 		//scale - 字体高度
 		//text - 文字内容
 		//iColor - 文字颜色
+		int drawTextInit();
+		
 		int drawText(Vector2& pos,GLfloat scale,string text,Color iColor);
 		
-		
+		int drawChinese(Vector2& pos, GLfloat scale, std::wstring text, Color iColor);
 		
 		GLFWwindow* getw(){
 			return window;
