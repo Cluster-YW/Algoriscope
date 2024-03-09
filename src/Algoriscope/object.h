@@ -61,13 +61,26 @@ namespace Algoriscope {
 			void setBind(float *fp) { // 设置绑定
 				bind = fp;
 			}
-			
-		
+
+
 		protected:
 			float* bind; // 绑定
 			Dynamics scale = 100; // 与绑定变量的比例
-			Dynamics width; // 宽度
-			Dynamics height; // 高度
+			Dynamics width = 0.1; // 宽度
+			Dynamics height = 0; // 高度
+	};
+	class Bars: public Object {
+		public:
+			Bars(float *arr, int _n, Vector2 _pos);
+			virtual void update(float deltatime);
+			virtual void draw(Render&render);
+         	void setDistance(Vector2 dis);
+		    void setWidth(float w);
+		protected:
+		    int n;
+		    Dynamics width=50.0f;
+		    Vector2 distance{Vector2 (50.0f, 0.0f)};
+			vector <Bar*>bar;
 	};
 }
 

@@ -39,7 +39,6 @@ namespace Algoriscope {
 	}
 
 	void Bar::update(float deltatime) {
-
 		if (bind != nullptr) { // 实现与外部变量绑定
 			setHeight( *bind * scale());
 		}
@@ -47,6 +46,7 @@ namespace Algoriscope {
 		position.update(deltatime); // 更新位置的动画
 		width.update(deltatime); // 更新宽度
 		height.update(deltatime); // 更新高度
+		
 
 		if (parent != nullptr) // 从父对象更新渲染位置
 			global_position = (parent->getGlobalPosition()) + position();
@@ -65,11 +65,11 @@ namespace Algoriscope {
 			draw_position = draw_position + Vector2(0, height());
 			render.drawRect(draw_position,
 			                Vector2(width(), -height()), Color("#0000FF"));
-			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("#0000FF"),3);
+			render.drawRectBorder(draw_position, Vector2(width(), -height()), Color("#0000FF"), 3);
 		} else {
 			render.drawRect(draw_position,
 			                Vector2(width(), height()), Color("#0000FF"));
-			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("#00FF00"),3);
+			render.drawRectBorder(draw_position, Vector2(width(), height()), Color("#00FF00"), 3);
 		}
 
 
@@ -96,5 +96,36 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
-}
+	Bars::Bars(float *arr, int _n, Vector2 _pos):Object(_pos) ,n(_n) {
+		for (int i = 0; i < n; i++) {
+			Vector2 p = i * distance;
+			bar.push_back(new Bar(p, width(), 0));
+			bar[i]->setBind(arr + i);
+			add_child(*bar[i]);
+		}
+	}
+	void Bars::update(float deltatime) {
+		position.update(deltatime); // 更新位置的动画
 
+		if (parent != nullptr) // 从父对象更新渲染位置
+			global_position = (parent->getGlobalPosition()) + position();
+		else
+			global_position = position();
+
+		for (auto child : children ) { // 进一步调用子对象的update()
+			child->update(deltatime);
+		}
+
+	}
+	void Bars::draw(Render&render) {
+		for (auto child : children) {
+			child->draw(render);
+		};
+	}
+	void Bars::setDistance(Vector2 dis){
+		this->distance=dis;	
+	}
+	void Bars::setWidth(float w){
+		for(auto child:bar)child->setWidth(w);
+	}
+}
