@@ -22,10 +22,10 @@ namespace Algoriscope {
 	void Object::debug_draw(Render& render) {
 		render.drawRectBorder(global_position, Vector2(20, 20), Color("#FF0000"), 2);
 		// 调试渲染
-		std::string posinfo;
-		posinfo = "(" + std::to_string((int)global_position.x) +
-		          "," + std::to_string((int)global_position.y) + ")";
-		render.drawText(global_position + Vector2(0, -20), 0.3f, posinfo, Color("#00FF00"));
+//		std::string posinfo;
+//		posinfo = "(" + std::to_string((int)global_position.x) +
+//		          "," + std::to_string((int)global_position.y) + ")";
+//		render.drawText(global_position + Vector2(0, -20), 0.3f, posinfo, Color("#00FF00"));
 
 
 		for (auto child : children ) { // 进一步调用子对象的debug_draw()
@@ -39,14 +39,18 @@ namespace Algoriscope {
 	}
 
 	void Bar::update(float deltatime) {
+		
 		if (bind != nullptr) { // 实现与外部变量绑定
-			setHeight( *bind * scale());
+			if(bindType == 'i')	setHeight( *(int*)bind * scale());
+			else if(bindType == 'x')	setHeight( *(long long*)bind * scale());
+			else if(bindType == 'f')	setHeight( *(float*)bind * scale());
+			else if(bindType == 'd')	setHeight( *(double*)bind * scale());
 		}
 
 		position.update(deltatime); // 更新位置的动画
 		width.update(deltatime); // 更新宽度
 		height.update(deltatime); // 更新高度
-		
+		color.update(deltatime); //更新颜色
 
 		if (parent != nullptr) // 从父对象更新渲染位置
 			global_position = (parent->getGlobalPosition()) + position();
@@ -64,12 +68,12 @@ namespace Algoriscope {
 		if (height() < 0) { // 实现高度为负，向下绘制
 			draw_position = draw_position + Vector2(0, height());
 			render.drawRect(draw_position,
-			                Vector2(width(), -height()), Color("#0000FF"));
-			render.drawRectBorder(draw_position, Vector2(width(), -height()), Color("#0000FF"), 3);
+			                Vector2(width(), -height()), color());
+			render.drawRectBorder(draw_position,Vector2(width(), -height()),Color("yellow"),3);
 		} else {
 			render.drawRect(draw_position,
-			                Vector2(width(), height()), Color("#0000FF"));
-			render.drawRectBorder(draw_position, Vector2(width(), height()), Color("#00FF00"), 3);
+			                Vector2(width(), height()), color());
+			render.drawRectBorder(draw_position,Vector2(width(), height()),Color("yellow"),3);
 		}
 
 
@@ -78,7 +82,7 @@ namespace Algoriscope {
 		}
 	}
 	void Bar::debug_draw(Render& render) {
-		render.drawRectBorder(global_position, Vector2(20, 20), Color("#FF0000"), 2);
+		render.drawRectBorder(global_position, Vector2(20, 20), Color("green"), 2);
 
 
 		std::string posinfo;
@@ -96,36 +100,5 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
-	Bars::Bars(float *arr, int _n, Vector2 _pos):Object(_pos) ,n(_n) {
-		for (int i = 0; i < n; i++) {
-			Vector2 p = i * distance;
-			bar.push_back(new Bar(p, width(), 0));
-			bar[i]->setBind(arr + i);
-			add_child(*bar[i]);
-		}
-	}
-	void Bars::update(float deltatime) {
-		position.update(deltatime); // 更新位置的动画
-
-		if (parent != nullptr) // 从父对象更新渲染位置
-			global_position = (parent->getGlobalPosition()) + position();
-		else
-			global_position = position();
-
-		for (auto child : children ) { // 进一步调用子对象的update()
-			child->update(deltatime);
-		}
-
-	}
-	void Bars::draw(Render&render) {
-		for (auto child : children) {
-			child->draw(render);
-		};
-	}
-	void Bars::setDistance(Vector2 dis){
-		this->distance=dis;	
-	}
-	void Bars::setWidth(float w){
-		for(auto child:bar)child->setWidth(w);
-	}
 }
+

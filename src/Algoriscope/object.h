@@ -20,6 +20,9 @@ namespace Algoriscope {
 			void setPosition(const Vector2 pos) {
 				position = pos;
 			}
+			Vector2 getPosition() {
+				return position.getInput();
+			}
 			Vector2 getGlobalPosition() {
 				return global_position;
 			}
@@ -36,9 +39,8 @@ namespace Algoriscope {
 
 	class Bar: public Object {
 		public:
-			Bar(Vector2 _pos, float _w, float _h):
-				Object(_pos), width(_w), height(_h) {
-
+			Bar(Vector2 _pos, float _w, float _h, Color c = Color("red")):
+				Object(_pos), width(_w), height(_h), color(c) {
 			}
 			virtual void update(float deltatime);
 			virtual void draw(Render & render);
@@ -58,30 +60,41 @@ namespace Algoriscope {
 				width = w;
 			}
 
-			void setBind(float *fp) { // 设置绑定
-				bind = fp;
+			template<typename T>
+			void setBind(T* ptr) { // 通过指针设置绑定
+				auto type = typeid(ptr).name();
+				bindType = type[1];
+				bind = ptr;
 			}
 
+			template<typename T>
+			void setBind(T& ptr) { // 通过引用设置绑定
+				auto type = typeid(ptr).name();
+				bindType = type[0];
+				bind = &ptr;
+			}
 
+			void* getBind() { // 获取绑定
+				return bind;
+			}
+
+			void setColor(Color in) { //设置颜色
+				color = in;
+			}
 		protected:
-			float* bind; // 绑定
+			void* bind = nullptr; // 绑定
+			char bindType = 0; // 绑定类型
 			Dynamics scale = 100; // 与绑定变量的比例
-			Dynamics width = 0.1; // 宽度
-			Dynamics height = 0; // 高度
+			Dynamics width; // 宽度
+			Dynamics height; // 高度
+			DynamicC color; // 颜色
 	};
-	class Bars: public Object {
-		public:
-			Bars(float *arr, int _n, Vector2 _pos);
-			virtual void update(float deltatime);
-			virtual void draw(Render&render);
-         	void setDistance(Vector2 dis);
-		    void setWidth(float w);
-		protected:
-		    int n;
-		    Dynamics width=50.0f;
-		    Vector2 distance{Vector2 (50.0f, 0.0f)};
-			vector <Bar*>bar;
-	};
+
+//	class Text: public Object {
+//		public:
+//		private:
+//			int
+//	};
 }
 
 #endif

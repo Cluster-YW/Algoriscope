@@ -12,7 +12,12 @@ namespace Algoriscope {
 		k2 = 1 / ((2 * PI * f) * (2 * PI * f));
 		k3 = r * z / (2 * PI * f);
 	}
-	float Dynamics::update(float T) {
+	void Dynamics::update(float T) {
+		if (abs(y0 - input) < 0.01f
+		    && abs(Dy0) < 0.01f) {
+			y0 = input;
+			return;
+		}
 		float x1 = input;
 		float k2_stable = std::max(k2, (float)1.1 * (T * T / 4 + T * k1 / 2));
 		float Dx1 = (x1 - x0) / T;
@@ -21,7 +26,7 @@ namespace Algoriscope {
 		x0 = x1;
 		y0 = y1;
 		Dy0 = Dy1;
-		return y0;
+		return;
 	}
 	float Dynamics::operator=(float f) {
 		input = f;
@@ -38,8 +43,8 @@ namespace Algoriscope {
 		return y0;
 	}
 	float Dynamics::set(float f) {
-		Dy0=0;
-		return input=x0=y0=f;
+		Dy0 = 0;
+		return input = x0 = y0 = f;
 	}
 
 	Dynamics2::Dynamics2(float x0, float y0, float f, float z, float r) {
@@ -57,7 +62,12 @@ namespace Algoriscope {
 		k2 = 1 / ((2 * PI * f) * (2 * PI * f));
 		k3 = r * z / (2 * PI * f);
 	}
-	Vector2 Dynamics2::update(float T) {
+	void Dynamics2::update(float T) {
+		if ((y0 - input).GetLength() < 0.01f
+		    && Dy0.GetLength() < 0.01f) {
+			y0 = input;
+			return;
+		}
 		Vector2 x1 = input;
 		float k2_stable = std::max(k2, (float)1.1 * (T * T / 4 + T * k1 / 2));
 		Vector2 Dx1 = (x1 - x0) / T;
@@ -66,7 +76,6 @@ namespace Algoriscope {
 		x0 = x1;
 		y0 = y1;
 		Dy0 = Dy1;
-		return y0;
 	}
 	Vector2 Dynamics2::operator=(Vector2 f) {
 		input = f;
@@ -82,8 +91,33 @@ namespace Algoriscope {
 	Vector2 Dynamics2::get() {
 		return y0;
 	}
+	Vector2 Dynamics2::getInput() {
+		return input;
+	}
 	Vector2 Dynamics2::set(Vector2 f) {
-		Dy0=Vector2(0,0);
-		return input=x0=y0=f;
+		Dy0 = Vector2(0, 0);
+		return input = x0 = y0 = f;
+	}
+
+	Color DynamicC::operator=(Color f) {
+		return input = f;
+	}
+	Color DynamicC::operator()() {
+		return output;
+	}
+	Color DynamicC::operator()(Color &f) {
+		return output;
+	}
+	void DynamicC::update(float T) {
+		output = output.lerp(input, k);
+	}
+	void DynamicC::setK(float _k) {
+		k = _k;
+	}
+	Color DynamicC::get() {
+		return output;
+	}
+	Color DynamicC::set(Color f) {
+		return output = input = f;
 	}
 }

@@ -1,11 +1,19 @@
 #include "color.h"
 
 using namespace Algoriscope;
-Color::Color(const char* RGB) {
+Color::Color(std::string str) {
+	if (str[0] != '#') {
+		if (str == "darkgrey") str = "#222222";
+		if (str == "lightgrey")str = "#AAAAAA";
+		if (str == "red") 		str = "#EE4444";
+		if (str == "blue") 	str = "#5588EE";
+		if (str == "green") 	str = "#66EE88";
+		if (str == "yellow") 	str = "#FFDD66";
+	}
 	int arr[7] = {0};
 	for (int i = 1; i < 7; i++) {
-		if (*(RGB + i) > 64 && *(RGB + i) < 72)arr[i] = *(RGB + i) - 55;
-		else if (*(RGB + i) > 47 && *(RGB + i) < 58)  arr[i] = *(RGB + i) - 48;
+		if (str[i] > 64 && str[i]  < 72)arr[i] = str[i]  - 55;
+		else if (str[i] > 47 && str[i]  < 58)  arr[i] = str[i]  - 48;
 	}
 	r = arr[1] * 16 + arr[2];
 	g = arr[3] * 16 + arr[4];
@@ -13,6 +21,7 @@ Color::Color(const char* RGB) {
 	a = 255;
 	trimRGBA();
 	switchfromRGBtoHSL();
+	calcF();
 };
 
 Color::Color(int r, int g, int b, int a) {
@@ -22,6 +31,7 @@ Color::Color(int r, int g, int b, int a) {
 	this->a = a;
 	trimRGBA();
 	switchfromRGBtoHSL();
+	calcF();
 };
 Color::Color(float h, float s, float l) {
 	this->h = h;
@@ -29,6 +39,7 @@ Color::Color(float h, float s, float l) {
 	this->l = l;
 	trimHSL();
 	switchfromHSLtoRGB();
+	calcF();
 };
 void Color::trimRGBA() {
 	if (r > 255)this->r = 255;
@@ -110,6 +121,12 @@ void Color::switchfromHSLtoRGB() {
 		b = arr[2] * 255;
 	}
 
+}
+void Color::calcF() {
+	rf = r / 255.0f;
+	gf = g / 255.0f;
+	bf = b / 255.0f;
+	af = a / 255.0f;
 }
 Color Color::lerp(Color target, float k) {
 	auto flerp = [](float a, float b, float k)->float{return (a * (1 - k) + b * k);	};

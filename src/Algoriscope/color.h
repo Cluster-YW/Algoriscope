@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string>
 
 namespace Algoriscope {
 
@@ -10,26 +11,31 @@ namespace Algoriscope {
 	class Color {
 		private:
 			int r, g, b, a;
+			float rf, gf, bf, af;
 			float h, s, l;
 		public:
 
-			Color(const char* RGB);
+			Color(std::string str);
 			Color(int r = 0, int g = 0, int b = 0, int a = 255);
 			Color(float h = 0, float s = 0, float l = 0);
 			void SetR(int r) {
 				this->r = r;
+				calcF();
 				switchfromRGBtoHSL();
 			};
 			void setG(int g) {
 				this->g = g;
+				calcF();
 				switchfromRGBtoHSL();
 			};
 			void setB(int b) {
 				this->b = b;
+				calcF();
 				switchfromRGBtoHSL();
 			};
 			void setA(int a) {
 				this->a = a;
+				calcF();
 				switchfromRGBtoHSL();
 			};
 
@@ -57,16 +63,16 @@ namespace Algoriscope {
 			}
 			// rgba标准化函数
 			float getRf()const {
-				return this->r / 255.0f;
+				return rf;
 			}
 			float getGf()const {
-				return this->g / 255.0f;
+				return gf;
 			}
 			float getBf()const {
-				return this->b / 255.0f;
+				return bf;
 			}
 			float getAf()const {
-				return this->a / 255.0f;
+				return af;
 			}
 
 			Color lerp(Color target, float k);
@@ -75,6 +81,7 @@ namespace Algoriscope {
 			void trimHSL();
 			void switchfromRGBtoHSL();
 			void switchfromHSLtoRGB();
+			void calcF();
 	};
 
 }
