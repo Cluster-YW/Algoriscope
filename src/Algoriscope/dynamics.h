@@ -19,7 +19,7 @@ namespace Algoriscope {
 	// r	初始响应 		提前准备 < 0 < 立即响应 < 1 < 过度响应
 	class Dynamics {
 		public:
-			Dynamics(float x0 = 0.0f, float f = 1.0f, float z = 1.0f, float r = 1.0f);
+			Dynamics(float x0 = 0.0f, float f = 2.0f, float z = 1.0f, float r = 1.0f);
 			//重载赋值运算符，直接修改输入值。
 			float operator=(float f);
 			//重载括号运算符，直接返回处理后的值。
@@ -47,7 +47,7 @@ namespace Algoriscope {
 	class Dynamics2 {
 		public:
 			Dynamics2(float x0 = 0.0f, float y0 = 0.0f, float f = 1.0f, float z = 1.0f, float r = 1.0f);
-			Dynamics2(Vector2 v, float f = 1.0f, float z = 1.0f, float r = 1.0f);
+			Dynamics2(Vector2 v, float f = 3.0f, float z = 0.5f, float r = 1.0f);
 			//重载赋值运算符，直接修改输入值。
 			Vector2 operator=(Vector2 f);
 			//重载括号运算符，直接返回处理后的值。
@@ -73,7 +73,6 @@ namespace Algoriscope {
 	};
 	class DynamicC {
 		public:
-			DynamicC(std::string c, float _k = 0.3f) : input(c), output(c), k(_k) {}
 			DynamicC(Color c, float _k = 0.3f) : input(c), output(c), k(_k) {}
 			//重载赋值运算符，直接修改输入值。
 			Color operator=(Color f);
@@ -84,7 +83,7 @@ namespace Algoriscope {
 			//更新函数，应当每帧调用一次。
 			void update(float T);
 			//设定变化参数
-			void setK(float _k = 0.3f);
+			void setK(float _k = 0.6f);
 			//获取处理后的值
 			Color get();
 			//强制输入，会一并修改处理后的值，并将动画速度直接归零
