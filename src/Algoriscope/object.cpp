@@ -243,5 +243,21 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
+	void BarArray ::setColor(Color in,int i){
+		bars[i]->setColor(in);
+	};
+	void BarArray ::setColor(Color in,int i,int j){
+		for(i=i;i<=j;i++){
+			bars[i]->setColor(in);
+		}
+	};
+	void BarArray ::resetColor(int i){
+		bars[i]->resetColor();
+	};
+	void BarArray ::resetColor(int i,int j){
+		for(i=i;i<=j;i++){
+			bars[i]->resetColor();
+		}
+	};
 }
 

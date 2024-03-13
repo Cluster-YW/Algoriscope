@@ -120,15 +120,22 @@ int main() {
 	                 };
 	Bs->setBind(array, n);
 	Bs->autoScale(500);
-	for (int i = n - 1; i >= 0; i--) {
-		for (int j = 0; j < i; j++) {
-			if (array[j] < array[j + 1]) {
-				swap(array[j], array[j + 1]);
-
-				Bs->animSwap(j, j + 1);
-			}
-			scn.run(100);
-		}
-	}
+	Color a(0,0,0);
+	Bs->setColor(a,1);
+	Bs->setColor(a,3,4);
+	scn.run(3000);
+	Bs->resetColor(1);
+	scn.run(1000);
+	Bs->resetColor(3,4);
+//	for (int i = n - 1; i >= 0; i--) {
+//		for (int j = 0; j < i; j++) {
+//			if (array[j] < array[j + 1]) {
+//				swap(array[j], array[j + 1]);
+//
+//				Bs->animSwap(j, j + 1);
+//			}
+//			scn.run(100);
+//		}
+//	}
 	scn.run(1000);
 }
