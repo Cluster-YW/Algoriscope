@@ -14,10 +14,12 @@ namespace Algoriscope {
 			float rf, gf, bf, af;
 			float h, s, l;
 		public:
-
+			Color(const char*);
 			Color(std::string str);
 			Color(int r = 0, int g = 0, int b = 0, int a = 255);
-			Color(float h = 0, float s = 0, float l = 0);
+
+			Color HSL(float h = 0, float s = 0, float l = 0);
+
 			void SetR(int r) {
 				this->r = r;
 				calcF();
@@ -37,6 +39,21 @@ namespace Algoriscope {
 				this->a = a;
 				calcF();
 				switchfromRGBtoHSL();
+			};
+			void SetH(int h) {
+				this->h = h;
+				switchfromHSLtoRGB();
+				calcF();
+			};
+			void SetS(int s) {
+				this->s = s;
+				switchfromHSLtoRGB();
+				calcF();
+			};
+			void SetL(int l) {
+				this->l = l;
+				switchfromHSLtoRGB();
+				calcF();
 			};
 
 			// Get函数
@@ -75,7 +92,8 @@ namespace Algoriscope {
 				return af;
 			}
 
-			Color lerp(Color target, float k);
+			Color lerp(Color target, float k); // RGB 线性插值
+			Color mix(Color target, float k); // HSL 色相插值
 		private:
 			void trimRGBA();
 			void trimHSL();

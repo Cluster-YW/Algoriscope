@@ -23,6 +23,15 @@ namespace Algoriscope {
 			GLuint WIDTH, HEIGHT;
 			glm::mat4 projection;
 
+			struct Character {
+				GLuint TextureID;   // 字形纹理ID
+				glm::ivec2 Size;    // 字形大小
+				glm::ivec2 Bearing;  // 字形基于基线和起点的位置？
+				GLuint Advance;    // 起点到下一个字形起点的距离？
+			};
+			std::map<GLchar, Character> Characters;
+			GLuint VAO, VBO;
+
 		public:
 			//构造函数，进行相关初始化。
 			Render(int sizex, int sizey);
@@ -43,7 +52,8 @@ namespace Algoriscope {
 			//pos1 - 起点位置
 			//pos2 - 终点位置
 			//color - 线的颜色
-			int drawLine(const Vector2& pos1, const Vector2& pos2, const Color& col);
+			int drawLine(const Vector2& pos1, const Vector2& pos2,
+			             const Color& col, const float width = 2.0f);
 
 			//画三角形
 			//3个点+颜色
@@ -59,7 +69,8 @@ namespace Algoriscope {
 
 			int drawCircle(Vector2 pos, GLfloat r, Color col);
 
-			int drawText(Vector2 pos, GLfloat scale, string text, Color iColor);
+			int drawText(Vector2 pos, GLfloat scale, string text,
+			             Color iColor, string align="");
 
 			GLFWwindow* getw() {
 				return window;

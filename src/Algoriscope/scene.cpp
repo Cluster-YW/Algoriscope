@@ -25,7 +25,7 @@ namespace Algoriscope {
 			}
 
 			float deltatime = 1.0f / FPS;
-			
+
 			timer += 1000.0f * (now - last) / CLOCKS_PER_SEC;
 			this->timer += 1000.0f * (now - last) / CLOCKS_PER_SEC;
 
@@ -45,10 +45,16 @@ namespace Algoriscope {
 			root->draw(render);
 
 			if (debug_mode) {
+				render.drawLine(Vector2(-size.x, 0), Vector2(size.x, 0), Color("#0000FF"));
+				render.drawLine(Vector2(0, -size.y), Vector2(0, size.y), Color("#FF0000"));
+				render.drawText(Vector2(size.x * 0.5f - 20, 15), 5,
+				                util::Format("{0}", size.x * 0.5f), "#0000FF");
+				render.drawText(Vector2(20, size.y * 0.5f - 15), 5,
+				                util::Format("{0}", size.y * 0.5f), "#FF0000");
+				render.drawText(Vector2(-size.x * 0.48f, size.y * 0.48f), 5, "#" + to_string(i), "#FFFFFF");
 				root -> debug_draw(render);
 			}
 
-			cout << i << endl;
 			i++;
 
 			if (debug_function != nullptr)
