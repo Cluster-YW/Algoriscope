@@ -206,5 +206,42 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
+
+	void BarArray::update(float deltatime) {
+		position.update(deltatime); // 更新位置的动画
+		gap.update(deltatime);
+
+		int n =	bars.size();
+		float gap_ = gap();
+		for (int i = 0; i < n; i++) {
+			Vector2 bpos( gap_ * (i - (n - 1) * 0.5f), 0);
+			bars[i]->setPosition(bpos);
+		}
+
+		if (parent != nullptr) // 从父对象更新渲染位置
+			global_position = (parent->getGlobalPosition()) + position();
+		else
+			global_position = position();
+
+		for (auto child : children ) { // 进一步调用子对象的update()
+			child->update(deltatime);
+		}
+	}
+	void BarArray::draw(Render & render) {
+		if (display == 0) {
+			for (auto child : children ) { // 进一步调用子对象的draw()
+				child->draw(render);
+			}
+			return;
+		}
+		for (auto child : children ) { // 进一步调用子对象的draw()
+			child->draw(render);
+		}
+	}
+	void BarArray::debug_draw(Render & render) {
+		for (auto child : children ) { // 进一步调用子对象的debug_draw()
+			child->debug_draw(render);
+		}
+	}
 }
 

@@ -42,6 +42,9 @@ namespace Algoriscope {
 	float Dynamics::get() {
 		return y0;
 	}
+	float Dynamics::getInput() {
+		return input;
+	}
 	float Dynamics::set(float f) {
 		Dy0 = 0;
 		return input = x0 = y0 = f;
@@ -116,6 +119,9 @@ namespace Algoriscope {
 	}
 	Color DynamicC::get() {
 		return output;
+	}
+	Color DynamicC::getInput() {
+		return input;
 	}
 	Color DynamicC::set(Color f) {
 		return output = input = f;

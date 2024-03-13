@@ -83,16 +83,21 @@ namespace Algoriscope {
 
 			int add_child(Object & target);
 
-			void setPosition(const Vector2 pos) {
-				position = pos;
-			}
-
 
 			void setHeight(float h) { // 设置高度（带动画）
 				height = h;
 			}
 			void setWidth(float w) { // 设置宽度（带动画）
 				width = w;
+			}
+			float getHeight() {
+				return height.getInput();
+			}
+			float getWidth() {
+				return width.getInput();
+			}
+			float getScale() {
+				return scale.getInput();
 			}
 
 			template<typename T>
@@ -129,6 +134,13 @@ namespace Algoriscope {
 
 			void setDefaultColor(Color in) {
 				defaultcolor = in;
+			}
+
+			Color getColor() {
+				return color.getInput();
+			}
+			Color getDefaultColor() {
+				return defaultcolor;
 			}
 
 		protected:
@@ -202,6 +214,93 @@ namespace Algoriscope {
 			Text* tag;
 	};
 
+	class BarArray: public Object {
+		public:
+			BarArray(Vector2 _pos, int _n, float _w, float _g,
+			         float _h, Color c = Color("red")) :
+				Object(_pos), gap(_g) {
+				for (int i = 0; i < _n; i++) {
+					Vector2 bpos(_g * (i - (_n - 1) * 0.5f), 0);
+					Bar* bar = new Bar(bpos, _w, _h, c);
+					add_child(*bar);
+					bars.push_back(bar);
+				}
+			}
+			~BarArray() {
+				for (auto bar : bars) {
+					delete bar;
+				}
+			}
+			virtual void update(float deltatime);
+			virtual void draw(Render & render);
+			virtual void debug_draw(Render & render);
+
+			void setGap(float in) {
+				gap = in;
+			}
+			void setWidth(float in) {
+				for (auto bar : bars) {
+					bar->setWidth(in);
+				}
+			}
+
+			template<typename T>
+			void setBind(T* ptr, int n) { // 通过指针设置绑定
+				auto type = typeid(ptr).name();
+				bindType = type[1];
+				bind = ptr;
+				if (n > bars.size()) {
+					Bar* btemp = bars[bars.size() - 1];
+					auto _w = btemp->getWidth();
+					auto c = btemp->getDefaultColor();
+					auto s = btemp->getScale();
+					for (int i = bars.size(); i < n; i++) {
+						Vector2 bpos(gap() * (i - (bars.size() - 1) * 0.5f), 0);
+						Bar* bar = new Bar(bpos, _w, 0, c);
+						bar->setScale(s);
+						add_child(*bar);
+						bars.push_back(bar);
+					}
+				}
+				for (int i = 0; i < n; i++) {
+					bars[i]->setBind(ptr + i);
+					bars[i]->setHeight(bars[i]->getScale() * ptr[i]);
+				}
+			}
+
+			void animSwap(int i, int j) {
+				swap(bars[j], bars[i]);
+				Vector2 v1 = bars[j]->getPosition();
+				bars[j]->setPosition(bars[i]->getPosition());
+				bars[i]->setPosition(v1);
+				float* f1 = (float*)bars[j]->getBind();
+				bars[j]->setBind((float*)(bars[i]->getBind()));
+				bars[i]->setBind(f1);
+			}
+
+			void setScale(float in) {
+				for (auto bar : bars) {
+					bar->setScale(in);
+				}
+			}
+			void autoScale(float in) {
+				float high = 0;
+				float low = 0;
+				for (auto bar : bars) {
+					auto s = bar->getHeight()/bar->getScale();
+					cout << s << endl;
+					high = high > s ? high : s;
+					low = low < s ? low : s;
+				}
+				setScale( in / (high - low));
+			}
+
+		protected:
+			void* bind = nullptr; // 绑定
+			char bindType = 0; // 绑定类型
+			Dynamics gap;
+			vector<Bar*> bars;
+	};
 }
 
 #endif

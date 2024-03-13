@@ -32,6 +32,8 @@ namespace Algoriscope {
 			void setFZR(float f = 1.0f, float z = 1.0f, float r = 1.0f);
 			//获取处理后的值
 			float get();
+			//获取目标值
+			float getInput();
 			//强制输入，会一并修改处理后的值，并将动画速度直接归零
 			float set(float f);
 		private:
@@ -86,6 +88,8 @@ namespace Algoriscope {
 			void setK(float _k = 0.6f);
 			//获取处理后的值
 			Color get();
+			//获取目标值
+			Color getInput();
 			//强制输入，会一并修改处理后的值，并将动画速度直接归零
 			Color set(Color f);
 
