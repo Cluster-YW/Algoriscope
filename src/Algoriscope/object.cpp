@@ -213,11 +213,17 @@ namespace Algoriscope {
 
 		int n =	bars.size();
 		float gap_ = gap();
+	
 		for (int i = 0; i < n; i++) {
-			Vector2 bpos( gap_ * (i - (n - 1) * 0.5f), 0);
-			bars[i]->setPosition(bpos);
+			if(align.find_first_of("l") != string::npos){
+				Vector2 bpos( gap_ * i +bars[i]->getWidth()*0.5f, 0);
+				bars[i]->setPosition(bpos);
+			}
+			else if(align.find_first_of("r") != string::npos){
+				Vector2 bpos( gap_ * (i -(n -1)*0.5f), 0);
+				bars[i]->setPosition(bpos);
+			}
 		}
-
 		if (parent != nullptr) // 从父对象更新渲染位置
 			global_position = (parent->getGlobalPosition()) + position();
 		else

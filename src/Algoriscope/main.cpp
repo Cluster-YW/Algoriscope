@@ -114,6 +114,7 @@ int main() {
 	auto Bs = new BarArray(Vector2(0, 0), n, 50,
 	                       100, 100); // 输入起码包括长度+绑定指针
 	scn.addObject(*Bs);
+	Bs->setAlign('r');
 	n = 10;
 	float array[n] = {0.3f, -0.6f, -0.7f, 0.2f, 0.8f
 	                  , 0.1f, 0.9f, 0.4f, 2.0f, 1.0f
@@ -130,5 +131,6 @@ int main() {
 			scn.run(100);
 		}
 	}
-	scn.run(1000);
+	scn.run(10000);
 }
+
