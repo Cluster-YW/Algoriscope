@@ -56,6 +56,7 @@ int main() {
 	                  , 0.1f, 0.9f, 0.4f, 2.0f, 1.0f
 	                 };
 	Bs->setBind(array, n);
+	Bs->setAlign("right");
 	Bs->autoScale(500);
 	Bs->setCallBack(make);
 	Bs->setBarsCallBack(hightlight);

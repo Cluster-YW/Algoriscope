@@ -338,7 +338,7 @@ namespace Algoriscope {
 				}
 				setScale( in / (high - low));
 			}
-			void setAlign(char in) {
+			void setAlign(string in="") {
 				align = in;
 			}
 			Bar* getBar(int index) {
@@ -366,7 +366,7 @@ namespace Algoriscope {
 			vector<Bar*> bars;
 
 			CallBackFunction<BarArray> call_back;
-			string align;
+			string align="l";
 	};
 }
 

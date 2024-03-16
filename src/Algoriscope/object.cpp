@@ -251,8 +251,12 @@ namespace Algoriscope {
 				Vector2 bpos( gap_ * i +bars[i]->getWidth()*0.5f, 0);
 				bars[i]->setPosition(bpos);
 			}
-			else if(align.find_first_of("r") != string::npos){
+			else if(align.find_first_of("c") != string::npos){
 				Vector2 bpos( gap_ * (i -(n -1)*0.5f), 0);
+				bars[i]->setPosition(bpos);
+			}
+			else if(align.find_first_of("r") != string::npos){
+				Vector2 bpos(-gap_ * i -bars[i]->getWidth()*0.5f, 0);
 				bars[i]->setPosition(bpos);
 			}
 		}
