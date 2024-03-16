@@ -5,9 +5,9 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = Algoriscope_private.res
-OBJ      = render.o scene.o dynamics.o main.o vector2.o object.o color.o $(RES)
-LINKOBJ  = render.o scene.o dynamics.o main.o vector2.o object.o color.o Algoriscope_private.res
-CLEANOBJ  =  render.o scene.o dynamics.o main.o vector2.o object.o color.o  Algoriscope_private.res Algoriscope.exe
+OBJ      = scene.o main.o dynamics.o object.o render.o vector2.o color.o $(RES)
+LINKOBJ  = scene.o main.o dynamics.o object.o render.o vector2.o color.o Algoriscope_private.res
+CLEANOBJ  =  scene.o main.o dynamics.o object.o render.o vector2.o color.o  Algoriscope_private.res Algoriscope.exe
 LIBS     =  -L"D:/cpp/src/Algoriscope/libs" -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32 -lfreetype
 INCS     =   -I"D:/cpp/src/Algoriscope" -I"D:/cpp/src/Algoriscope/include"
 CXXINCS  =   -I"D:/cpp/src/Algoriscope" -I"D:/cpp/src/Algoriscope/include"
@@ -27,25 +27,25 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-render.o: render.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
-	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
-
-scene.o: scene.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
+scene.o: scene.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
 	$(CPP) -c scene.cpp -o scene.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-dynamics.o: dynamics.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
-	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
-
-main.o: main.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
+main.o: main.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-vector2.o: vector2.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
-	$(CPP) -c vector2.cpp -o vector2.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+dynamics.o: dynamics.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
+	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-object.o: object.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
+object.o: object.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
 	$(CPP) -c object.cpp -o object.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-color.o: color.cpp color.h dynamics.h object.h shader.h render.h scene.h algoriscope.h vector2.h
+render.o: render.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
+	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+vector2.o: vector2.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
+	$(CPP) -c vector2.cpp -o vector2.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+color.o: color.cpp dynamics.h scene.h object.h color.h render.h algoriscope.h vector2.h shader.h
 	$(CPP) -c color.cpp -o color.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
 Algoriscope_private.res: Algoriscope_private.rc 

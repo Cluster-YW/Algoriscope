@@ -369,7 +369,7 @@ namespace Algoriscope {
 			vector<Bar*> bars;
 
 			CallBackFunction<BarArray> call_back;
-			string align="l";
+			string align="c";
 	};
 }
 

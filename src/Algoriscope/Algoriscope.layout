@@ -1,42 +1,42 @@
 [
     {
-        "caretX": 3,
-        "caretY": 164,
-        "filename": "D:/cpp/src/Algoriscope/object.h",
-        "focused": false,
-        "isOpen": true,
-        "leftChar": 1,
-        "order": 0,
-        "topLine": 144
-    },
-    {
         "caretX": 1,
         "caretY": 1,
         "filename": "D:/cpp/src/Algoriscope/scene.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 2,
+        "order": 1,
         "topLine": 1
     },
     {
-        "caretX": 2,
-        "caretY": 61,
+        "caretX": 1,
+        "caretY": 77,
         "filename": "D:/cpp/src/Algoriscope/main.cpp",
         "focused": true,
         "isOpen": true,
         "leftChar": 1,
-        "order": 1,
-        "topLine": 49
+        "order": 2,
+        "topLine": 58
     },
     {
-        "caretX": 19,
-        "caretY": 320,
+        "caretX": 45,
+        "caretY": 361,
+        "filename": "D:/cpp/src/Algoriscope/object.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 0,
+        "topLine": 330
+    },
+    {
+        "caretX": 1,
+        "caretY": 310,
         "filename": "D:/cpp/src/Algoriscope/object.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 3,
-        "topLine": 296
+        "topLine": 265
     }
 ]
