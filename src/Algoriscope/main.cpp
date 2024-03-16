@@ -25,12 +25,12 @@ using namespace Algoriscope;
 
 void make(BarArray* me, InputState& input) {
 	cout << "?" << endl;
-	for (int i = 0; i < 10; i++) {
+	for(int i=0;i<10;i++){
 		me->resetColor(i);
 	}
 	for (int i = 0; i < 10; i++) {
 		if (input.key_down['0' + i]) {
-			me->setColor("blue",i);
+			me->setColor("blue", i);
 		}
 	}
 }
@@ -49,7 +49,7 @@ int main() {
 	Scene scn(1920, 1080, 100);
 	int n = 9;
 	auto Bs = new BarArray(Vector2(0, 0), n, 50,
-	                       100, 100); // 输入起码包括长度+绑定指针
+	                       100, 100,Color("red")); // 输入起码包括长度+绑定指针
 	scn.addObject(*Bs);
 	n = 10;
 	float array[n] = {0.3f, -0.6f, -0.7f, 0.2f, 0.8f
@@ -66,8 +66,12 @@ int main() {
 
 				Bs->animSwap(j, j + 1);
 			}
-			scn.run(1000);
-		}
-	}
+			scn.run(100);
+		};
+		Bs->setDefaultColor(Color("green"),i);
+//		Bs->setColor(Color("green"),i);
+		scn.run(100);
+	};
+
 	scn.run(5000);
 }

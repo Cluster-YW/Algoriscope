@@ -245,14 +245,13 @@ namespace Algoriscope {
 
 		int n =	bars.size();
 		float gap_ = gap();
-	
+
 		for (int i = 0; i < n; i++) {
-			if(align.find_first_of("l") != string::npos){
-				Vector2 bpos( gap_ * i +bars[i]->getWidth()*0.5f, 0);
+			if (align.find_first_of("l") != string::npos) {
+				Vector2 bpos( gap_ * i + bars[i]->getWidth() * 0.5f, 0);
 				bars[i]->setPosition(bpos);
-			}
-			else if(align.find_first_of("r") != string::npos){
-				Vector2 bpos( gap_ * (i -(n -1)*0.5f), 0);
+			} else if (align.find_first_of("r") != string::npos) {
+				Vector2 bpos( gap_ * (i - (n - 1) * 0.5f), 0);
 				bars[i]->setPosition(bpos);
 			}
 		}
@@ -286,21 +285,33 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
-	void BarArray ::setColor(Color in,int i){
-		bars[i]->setColor(in);
+	void BarArray ::setColor(Color in, int _i) {
+		bars[_i]->setColor(in);
 	};
-	void BarArray ::setColor(Color in,int i,int j){
-		for(i=i;i<=j;i++){
-			bars[i]->setColor(in);
-		}
+	void BarArray ::setColor(Color in, int _i, int _j) {
+		int i = _i > _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+
+		for (i = i; i <= j; i++) setColor(in,i);
 	};
-	void BarArray ::resetColor(int i){
-		bars[i]->resetColor();
+	void BarArray ::resetColor(int _i) {
+		bars[_i]->resetColor();
 	};
-	void BarArray ::resetColor(int i,int j){
-		for(i=i;i<=j;i++){
-			bars[i]->resetColor();
-		}
+	void BarArray ::resetColor(int _i, int _j) {
+		int i = _i > _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+		for (i = i; i <= j; i++) 	resetColor(i);
+		
+	};
+	void BarArray::setDefaultColor(Color in, int _i) {
+		bars[_i]->setDefaultColor(in);
+		resetColor(_i);
+	};
+	void BarArray::setDefaultColor(Color in, int _i, int _j) {
+		int i = _i > _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+
+		for (i = i; i <= j; i++)setDefaultColor(in,i);
+		resetColor(i,j);
 	};
 }
-
