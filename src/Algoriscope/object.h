@@ -261,6 +261,7 @@ namespace Algoriscope {
 			BarArray(Vector2 _pos, int _n, float _w, float _g,
 			         float _h, Color c = Color("red")) :
 				Object(_pos), gap(_g) {
+
 				for (int i = 0; i < _n; i++) {
 					Vector2 bpos(_g * (i - (_n - 1) * 0.5f), 0);
 					Bar* bar = new Bar(bpos, _w, _h, c);
@@ -285,6 +286,7 @@ namespace Algoriscope {
 					bar->setWidth(in);
 				}
 			}
+
 
 			template<typename T>
 			void setBind(T* ptr, int n) { // 通过指针设置绑定
@@ -336,7 +338,9 @@ namespace Algoriscope {
 				}
 				setScale( in / (high - low));
 			}
-
+			void setAlign(char in) {
+				align = in;
+			}
 			Bar* getBar(int index) {
 				if (index < -(int)(bars.size()) || index >= bars.size()) return nullptr;
 				if (index < 0)index += bars.size();
@@ -351,15 +355,18 @@ namespace Algoriscope {
 					bar->setCallBack(in);
 				}
 			}
-
+			void setColor(Color in, int i);
+			void setColor(Color in, int i, int j);
+			void resetColor(int i);
+			void resetColor(int i, int j);
 		protected:
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
 			Dynamics gap;
 			vector<Bar*> bars;
 
-
 			CallBackFunction<BarArray> call_back;
+			string align;
 	};
 }
 
