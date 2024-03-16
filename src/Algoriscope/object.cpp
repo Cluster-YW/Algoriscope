@@ -1,6 +1,6 @@
 #include "object.h"
 namespace Algoriscope {
-	void Object::update(float deltatime) {
+	void Object::update(float deltatime, InputState &input) {
 
 		position.update(deltatime); // 更新位置的动画
 
@@ -10,7 +10,7 @@ namespace Algoriscope {
 			global_position = position();
 
 		for (auto child : children ) { // 进一步调用子对象的update()
-			child->update(deltatime);
+			child->update(deltatime, input);
 		}
 
 	}
@@ -38,27 +38,35 @@ namespace Algoriscope {
 		return children.size() - 1;
 	}
 
-	void Bar::update(float deltatime) {
+	void Object::mouseProcess(InputState& input) {
+		isTouchedByMouse = 0;
+		isClickedByMouse = 0;
+		isLeftClickedByMouse = 0;
+		isRightClickedByMouse = 0;
+	}
+
+	void Bar::update(float deltatime, InputState &input) {
 
 		if (bind != nullptr) { // 实现与外部变量绑定
 			float _scale = scale();
 			float _width = width();
+			float text_bios = height() > 0 ? 0.5f : -0.5f;
 			if (bindType == 'i') {
 				tag->setContent( to_string( *(int*)bind ));
 				setHeight( *(int*)bind * _scale);
-				tag->setPosition(Vector2(0, *(int*)bind * _scale + _width * 0.5f));
+				tag->setPosition(Vector2(0, *(int*)bind * _scale + _width * text_bios));
 			} else if (bindType == 'x')	{
 				tag->setContent( to_string( *(long long*)bind ));
 				setHeight( *(long long*)bind * _scale);
-				tag->setPosition(Vector2(0, *(long long*)bind * _scale + _width * 0.5f));
+				tag->setPosition(Vector2(0, *(long long*)bind * _scale + _width * text_bios));
 			} else if (bindType == 'f')	{
 				tag->setContent( util::Format("{0}", *(float*)bind));
 				setHeight( *(float*)bind * _scale);
-				tag->setPosition(Vector2(0, *(float*)bind * _scale + _width * 0.5f));
+				tag->setPosition(Vector2(0, *(float*)bind * _scale + _width * text_bios));
 			} else if (bindType == 'd')	{
 				tag->setContent( util::Format("{0}", *(double*)bind) );
 				setHeight( *(double*)bind * _scale);
-				tag->setPosition(Vector2(0, *(double*)bind * _scale + _width * 0.5f));
+				tag->setPosition(Vector2(0, *(double*)bind * _scale + _width * text_bios));
 			}
 		}
 
@@ -68,13 +76,20 @@ namespace Algoriscope {
 		color.update(deltatime); //更新颜色
 		scale.update(deltatime);
 
+
 		if (parent != nullptr) // 从父对象更新渲染位置
 			global_position = (parent->getGlobalPosition()) + position();
 		else
 			global_position = position();
 
+		mouseProcess(input);
+
+		if (call_back != nullptr) {
+			call_back(this, input);
+		}
+
 		for (auto child : children ) { // 进一步调用子对象的update()
-			child->update(deltatime);
+			child->update(deltatime, input);
 		}
 
 	}
@@ -123,8 +138,25 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
+	void Bar::mouseProcess(InputState& input)  {
+		float L = global_position.x - width() * 0.5f;
+		float R = global_position.x + width() * 0.5f;
+		float U = global_position.y + max(0.0f,  height());
+		float D = global_position.y + min(0.0f, height());
+		isTouchedByMouse = 0;
+		isClickedByMouse = 0;
+		isLeftClickedByMouse = 0;
+		isRightClickedByMouse = 0;
+		if (input.mousepos.x > L and input.mousepos.x < R and
+		    input.mousepos.y > D and input.mousepos.y < U) {
+			isTouchedByMouse = 1;
+			if (input.mouse_left_down)isLeftClickedByMouse = isClickedByMouse = 1;
+			if (input.mouse_right_down)isRightClickedByMouse = isClickedByMouse = 1;
+		}
+//		cout << util::Format("[{0},{1}],[{2},{3}]:{4}\n", L, R, U, D,isTouchedByMouse);
+	}
 
-	void Text::update(float deltatime) {
+	void Text::update(float deltatime, InputState &input) {
 		size.update(deltatime);
 		position.update(deltatime); // 更新位置的动画
 		color.update(deltatime); //更新颜色
@@ -135,7 +167,7 @@ namespace Algoriscope {
 			global_position = position();
 
 		for (auto child : children ) { // 进一步调用子对象的update()
-			child->update(deltatime);
+			child->update(deltatime, input);
 		}
 	}
 	void Text::draw(Render& render) {
@@ -156,7 +188,7 @@ namespace Algoriscope {
 		}
 	}
 
-	void Box::update(float deltatime) {
+	void Box::update(float deltatime, InputState &input) {
 
 		if (bind != nullptr) { // 实现与外部变量绑定
 			if (bindType == 'i') {
@@ -180,7 +212,7 @@ namespace Algoriscope {
 			global_position = position();
 
 		for (auto child : children ) { // 进一步调用子对象的update()
-			child->update(deltatime);
+			child->update(deltatime, input);
 		}
 	}
 
@@ -207,7 +239,7 @@ namespace Algoriscope {
 		}
 	}
 
-	void BarArray::update(float deltatime) {
+	void BarArray::update(float deltatime, InputState &input) {
 		position.update(deltatime); // 更新位置的动画
 		gap.update(deltatime);
 
@@ -218,13 +250,17 @@ namespace Algoriscope {
 			bars[i]->setPosition(bpos);
 		}
 
+		if (call_back != nullptr) {
+			call_back(this, input);
+		}
+
 		if (parent != nullptr) // 从父对象更新渲染位置
 			global_position = (parent->getGlobalPosition()) + position();
 		else
 			global_position = position();
 
 		for (auto child : children ) { // 进一步调用子对象的update()
-			child->update(deltatime);
+			child->update(deltatime, input);
 		}
 	}
 	void BarArray::draw(Render & render) {

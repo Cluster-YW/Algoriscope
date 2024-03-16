@@ -8,13 +8,31 @@
 #include "Format.h"
 
 namespace Algoriscope {
+	struct InputState {
+		Vector2 mousepos_screen;
+		Vector2 mousepos;
+		bool mouse_left_down = 0;
+		bool mouse_right_down = 0;
+		bool key_down[350] = {};
+		int key_change[350] = {};
+		const string key_all = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ []\\;\',./";
+	};
+
+	template<typename T>
+	using CallBackFunction = void(*)(T* self, InputState &input);
+	//定义回调函数的模板
+
 	class Object {
 		public:
 			Object (void) = default;
 			Object (Vector2 _pos): position(_pos) {}
-			virtual void update(float deltatime);
+			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render& render);
 			virtual void debug_draw(Render& render);
+			bool isTouchedByMouse = 0;
+			bool isClickedByMouse = 0;
+			bool isLeftClickedByMouse = 0;
+			bool isRightClickedByMouse = 0;
 
 			int add_child(Object &target);
 
@@ -27,8 +45,11 @@ namespace Algoriscope {
 			Vector2 getGlobalPosition() {
 				return global_position;
 			}
-
+			void setCallBack(CallBackFunction<Object> in) {
+				call_back = in;
+			}
 		protected:
+			virtual void mouseProcess(InputState& input);
 			Dynamics2 position; // 位置
 			Vector2 global_position; // 全局位置/渲染位置
 			void setGlobalPosition(Vector2 v2) {
@@ -36,6 +57,9 @@ namespace Algoriscope {
 			}
 			Object* parent = nullptr; // 父对象
 			std::vector<Object*> children; // 子对象
+
+
+			CallBackFunction<Object> call_back;
 		public:
 			bool display = 1; //是否显示
 	};
@@ -56,13 +80,20 @@ namespace Algoriscope {
 				size = input;
 			}
 
-			virtual void update(float deltatime);
+			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render & render);
 			virtual void debug_draw(Render & render);
+
+			void setCallBack(CallBackFunction<Text> in) {
+				call_back = in;
+			}
+
 		protected:
 			string content;
 			Dynamics size;
 			DynamicC color;
+
+			CallBackFunction<Text> call_back;
 	};
 
 	class Bar: public Object {
@@ -77,7 +108,7 @@ namespace Algoriscope {
 			~Bar() {
 				delete tag;
 			}
-			virtual void update(float deltatime);
+			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render & render);
 			virtual void debug_draw(Render & render);
 
@@ -143,7 +174,12 @@ namespace Algoriscope {
 				return defaultcolor;
 			}
 
+			void setCallBack(CallBackFunction<Bar> in) {
+				call_back = in;
+			}
+
 		protected:
+			virtual void mouseProcess(InputState& input);
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
 			Dynamics scale = 100; // 与绑定变量的比例
@@ -152,7 +188,8 @@ namespace Algoriscope {
 			DynamicC color; // 颜色
 			Color defaultcolor; //默认颜色
 
-			Text* tag;
+			Text* tag = nullptr;
+			CallBackFunction<Bar> call_back;
 	};
 
 	class Box: public Object {
@@ -169,7 +206,7 @@ namespace Algoriscope {
 				delete tag;
 			}
 
-			virtual void update(float deltatime);
+			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render & render);
 			virtual void debug_draw(Render & render);
 
@@ -204,6 +241,10 @@ namespace Algoriscope {
 			void* getBind() { // 获取绑定
 				return bind;
 			}
+
+			void setCallBack(CallBackFunction<Box> in) {
+				call_back = in;
+			}
 		protected:
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
@@ -212,6 +253,7 @@ namespace Algoriscope {
 			Color defaultcolor; //默认颜色
 
 			Text* tag;
+			CallBackFunction<Box> call_back;
 	};
 
 	class BarArray: public Object {
@@ -231,7 +273,7 @@ namespace Algoriscope {
 					delete bar;
 				}
 			}
-			virtual void update(float deltatime);
+			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render & render);
 			virtual void debug_draw(Render & render);
 
@@ -287,7 +329,7 @@ namespace Algoriscope {
 				float high = 0;
 				float low = 0;
 				for (auto bar : bars) {
-					auto s = bar->getHeight()/bar->getScale();
+					auto s = bar->getHeight() / bar->getScale();
 					cout << s << endl;
 					high = high > s ? high : s;
 					low = low < s ? low : s;
@@ -295,11 +337,29 @@ namespace Algoriscope {
 				setScale( in / (high - low));
 			}
 
+			Bar* getBar(int index) {
+				if (index < -(int)(bars.size()) || index >= bars.size()) return nullptr;
+				if (index < 0)index += bars.size();
+				return bars[index];
+			}
+
+			void setCallBack(CallBackFunction<BarArray> in) {
+				call_back = in;
+			}
+			void setBarsCallBack(CallBackFunction<Bar> in) {
+				for (auto bar : bars){
+					bar->setCallBack(in);
+				}
+			}
+
 		protected:
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
 			Dynamics gap;
 			vector<Bar*> bars;
+
+
+			CallBackFunction<BarArray> call_back;
 	};
 }
 

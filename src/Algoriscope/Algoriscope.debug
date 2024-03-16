@@ -1,7 +1,15 @@
 {
     "breakpoints": [
+        {
+            "breakpoint_type": 0,
+            "condition": "",
+            "enabled": true,
+            "filename": "scene.cpp",
+            "line": 137,
+            "timestamp": "1710487607187"
+        }
     ],
-    "timestamp": "1710334424195",
+    "timestamp": "1710489113332",
     "watchvars": [
         {
             "expression": "scn",

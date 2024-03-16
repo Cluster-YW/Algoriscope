@@ -22,9 +22,10 @@ namespace Algoriscope {
 
 			// 运行场景一定时间
 			// time -	运行的时间（毫秒）
-			// mouse -	是否可以通过鼠标点击直接结束
-			int run(int time = -1, bool mouse = 1);
+			// mouse -	是否可以通过空格直接结束
+			int run(int time = -1, bool canbreak = 1);
 
+			void processInput();
 
 			int addObject(Object& p);
 		private:
@@ -34,7 +35,9 @@ namespace Algoriscope {
 			Render render;
 			Color background;
 			Object* root; // 之后把这里改成一个 unique_ptr
-
+			InputState input;
+			bool running = 1;
+			bool paused = 0;
 	};
 }
 
