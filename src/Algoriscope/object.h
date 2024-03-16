@@ -219,7 +219,7 @@ namespace Algoriscope {
 			BarArray(Vector2 _pos, int _n, float _w, float _g,
 			         float _h, Color c = Color("red")) :
 				Object(_pos), gap(_g) {
-					
+
 				for (int i = 0; i < _n; i++) {
 					Vector2 bpos(_g * (i - (_n - 1) * 0.5f), 0);
 					Bar* bar = new Bar(bpos, _w, _h, c);
@@ -244,7 +244,7 @@ namespace Algoriscope {
 					bar->setWidth(in);
 				}
 			}
-			
+
 
 			template<typename T>
 			void setBind(T* ptr, int n) { // 通过指针设置绑定
@@ -257,7 +257,7 @@ namespace Algoriscope {
 					auto c = btemp->getDefaultColor();
 					auto s = btemp->getScale();
 					for (int i = bars.size(); i < n; i++) {
-						Vector2 bpos(gap() * (i - (bars.size() -1) * 0.5f), 0);
+						Vector2 bpos(gap() * (i - (bars.size() - 1) * 0.5f), 0);
 						Bar* bar = new Bar(bpos, _w, 0, c);
 						bar->setScale(s);
 						add_child(*bar);
@@ -289,19 +289,21 @@ namespace Algoriscope {
 				float high = 0;
 				float low = 0;
 				for (auto bar : bars) {
-					auto s = bar->getHeight()/bar->getScale();
+					auto s = bar->getHeight() / bar->getScale();
 					cout << s << endl;
 					high = high > s ? high : s;
 					low = low < s ? low : s;
 				}
 				setScale( in / (high - low));
 			}
-			
-			void setAlign(char in){
-				align=in;
+			void setAlign(char in) {
+				align = in;
 			}
-			
 
+			void setColor(Color in, int i);
+			void setColor(Color in, int i, int j);
+			void resetColor(int i);
+			void resetColor(int i, int j);
 		protected:
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
