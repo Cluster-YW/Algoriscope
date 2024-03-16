@@ -24,7 +24,7 @@ using namespace Algoriscope;
 
 
 void make(BarArray* me, InputState& input) {
-	cout << "?" << endl;
+//	cout << "?" << endl;
 	for (int i = 0; i < 10; i++) {
 		me->resetColor(i);
 	}
@@ -32,6 +32,12 @@ void make(BarArray* me, InputState& input) {
 		if (input.key_down['0' + i]) {
 			me->setColor("blue",i);
 		}
+	}
+	me->setAlign("c");
+	if (input.key_down['A']) {
+		me->setAlign("l");
+	}else if (input.key_down['D']) {
+		me->setAlign("r");
 	}
 }
 
