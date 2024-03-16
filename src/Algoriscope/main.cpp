@@ -26,11 +26,11 @@ using namespace Algoriscope;
 void make(BarArray* me, InputState& input) {
 	cout << "?" << endl;
 	for (int i = 0; i < 10; i++) {
-		me->getBar(i)->resetColor();
+		me->resetColor(i);
 	}
 	for (int i = 0; i < 10; i++) {
 		if (input.key_down['0' + i]) {
-			me->getBar(i)->setColor("blue");
+			me->setColor("blue",i);
 		}
 	}
 }
