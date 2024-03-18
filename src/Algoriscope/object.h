@@ -26,6 +26,13 @@ namespace Algoriscope {
 		public:
 			Object (void) = default;
 			Object (Vector2 _pos): position(_pos) {}
+
+			~Object() {
+				for (auto pObj : children) {
+					cout << "Deleting Object...\n";
+					delete pObj;
+				}
+			}
 			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render& render);
 			virtual void debug_draw(Render& render);
@@ -66,18 +73,22 @@ namespace Algoriscope {
 
 	class Text: public Object {
 		public:
-			Text(string _c, Vector2 _pos, float _size, Color c = Color("red")):
-				content(_c), Object(_pos), size(_size), color(c) {
+			Text(string _c, Vector2 _pos, float _size, Color c = Color("red"),string _align="m"):
+				content(_c), Object(_pos), size(_size), color(c),align(_align) {
 			}
-			Text(Vector2 _pos, float _size, Color c = Color("red")):
-				Object(_pos), size(_size), color(c) {
+			Text(Vector2 _pos, float _size, Color c = Color("red"),string _align="m"):
+				content(""), Object(_pos), size(_size), color(c),align(_align) {
 			}
 
 			void setContent(string input) {
-				content = input;
+				content.content = input;
+				content.generate();
 			}
 			void setSize(float input) {
 				size = input;
+			}
+			void setAlign(string input) {
+				align = input;
 			}
 
 			virtual void update(float deltatime, InputState &input);
@@ -89,10 +100,11 @@ namespace Algoriscope {
 			}
 
 		protected:
-			string content;
+			TextUre content;
 			Dynamics size;
 			DynamicC color;
 
+			string align;
 			CallBackFunction<Text> call_back;
 	};
 
@@ -338,7 +350,7 @@ namespace Algoriscope {
 				}
 				setScale( in / (high - low));
 			}
-			void setAlign(string in="") {
+			void setAlign(string in = "") {
 				align = in;
 			}
 			Bar* getBar(int index) {
@@ -351,7 +363,7 @@ namespace Algoriscope {
 				call_back = in;
 			}
 			void setBarsCallBack(CallBackFunction<Bar> in) {
-				for (auto bar : bars){
+				for (auto bar : bars) {
 					bar->setCallBack(in);
 				}
 			}
@@ -366,7 +378,7 @@ namespace Algoriscope {
 			vector<Bar*> bars;
 
 			CallBackFunction<BarArray> call_back;
-			string align="l";
+			string align = "l";
 	};
 }
 

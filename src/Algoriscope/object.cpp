@@ -177,12 +177,13 @@ namespace Algoriscope {
 			}
 			return;
 		}
-		render.drawText(global_position, size(), content, color());
+		render.drawText(global_position, size(), content, color(), align);
 		for (auto child : children ) { // 进一步调用子对象的draw()
 			child->draw(render);
 		}
 	}
 	void Text::debug_draw(Render& render) {
+		render.drawRectBorder(global_position, Vector2(20, 20), Color("#0000FF"), 2);
 		for (auto child : children ) { // 进一步调用子对象的debug_draw()
 			child->debug_draw(render);
 		}
@@ -245,18 +246,16 @@ namespace Algoriscope {
 
 		int n =	bars.size();
 		float gap_ = gap();
-	
+
 		for (int i = 0; i < n; i++) {
-			if(align.find_first_of("l") != string::npos){
-				Vector2 bpos( gap_ * i +bars[i]->getWidth()*0.5f, 0);
+			if (align.find_first_of("l") != string::npos) {
+				Vector2 bpos( gap_ * i + bars[i]->getWidth() * 0.5f, 0);
 				bars[i]->setPosition(bpos);
-			}
-			else if(align.find_first_of("c") != string::npos){
-				Vector2 bpos( gap_ * (i -(n -1)*0.5f), 0);
+			} else if (align.find_first_of("c") != string::npos) {
+				Vector2 bpos( gap_ * (i - (n - 1) * 0.5f), 0);
 				bars[i]->setPosition(bpos);
-			}
-			else if(align.find_first_of("r") != string::npos){
-				Vector2 bpos(-gap_ * i -bars[i]->getWidth()*0.5f, 0);
+			} else if (align.find_first_of("r") != string::npos) {
+				Vector2 bpos(-gap_ * i - bars[i]->getWidth() * 0.5f, 0);
 				bars[i]->setPosition(bpos);
 			}
 		}
@@ -290,19 +289,19 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
-	void BarArray ::setColor(Color in,int i){
+	void BarArray ::setColor(Color in, int i) {
 		bars[i]->setColor(in);
 	};
-	void BarArray ::setColor(Color in,int i,int j){
-		for(i=i;i<=j;i++){
+	void BarArray ::setColor(Color in, int i, int j) {
+		for (i = i; i <= j; i++) {
 			bars[i]->setColor(in);
 		}
 	};
-	void BarArray ::resetColor(int i){
+	void BarArray ::resetColor(int i) {
 		bars[i]->resetColor();
 	};
-	void BarArray ::resetColor(int i,int j){
-		for(i=i;i<=j;i++){
+	void BarArray ::resetColor(int i, int j) {
+		for (i = i; i <= j; i++) {
 			bars[i]->resetColor();
 		}
 	};

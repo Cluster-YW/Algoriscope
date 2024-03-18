@@ -8,28 +8,42 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-
+#include "iconv.h"
 #include "shader.h"
 #include "vector2.h"
 #include "color.h"
 
 namespace Algoriscope {
+	struct Character {
+		GLuint TextureID;   // 字形纹理ID
+		glm::ivec2 Size;    // 字形大小
+		glm::ivec2 Bearing;  // 字形基于基线和起点的位置？
+		GLuint Advance;    // 起点到下一个字形起点的距离？
+	};
+	using ChMap = std::map<GLuint, Character>;
+	void loadFontTexture(ChMap &Characters, const char* fontpath, string content);
+	struct TextUre {
+		string content;
+		ChMap texture;
+		TextUre(string input,
+		        const char* fontpath = "fonts/Bold.otf"):
+			content(input) {
+			generate(fontpath);
+		}
+		void generate(const char* fontpath = "fonts/Bold.otf") {
+			loadFontTexture(texture, fontpath, content);
+		}
+	};
 	class Render {
 		private:
 			Vector2 size;// 画布/场景尺寸
-			GLFWwindow* window;// 窗口对象
+			GLFWwindow * window; // 窗口对象
 			Shader shader_graphic;
 			Shader shader_text;
 			GLuint WIDTH, HEIGHT;
 			glm::mat4 projection;
 
-			struct Character {
-				GLuint TextureID;   // 字形纹理ID
-				glm::ivec2 Size;    // 字形大小
-				glm::ivec2 Bearing;  // 字形基于基线和起点的位置？
-				GLuint Advance;    // 起点到下一个字形起点的距离？
-			};
-			std::map<GLchar, Character> Characters;
+			std::map<GLuint, Character> Characters;
 			GLuint VAO, VBO;
 
 		public:
@@ -41,7 +55,7 @@ namespace Algoriscope {
 			//析构函数，进行收尾工作
 			~Render();
 			//负责帧的更新
-			int update(const Color& col);
+			int update(const Color & col);
 
 			//检测按键是否按下
 			//key - 按下哪个键
@@ -52,27 +66,36 @@ namespace Algoriscope {
 			//pos1 - 起点位置
 			//pos2 - 终点位置
 			//color - 线的颜色
-			int drawLine(const Vector2& pos1, const Vector2& pos2,
-			             const Color& col, const float width = 2.0f);
+			int drawLine(const Vector2 & pos1, const Vector2 & pos2,
+			             const Color & col, const float width = 2.0f);
 
 			//画三角形
 			//3个点+颜色
-			int drawTri(const Vector2& pos1, const Vector2& pos2, const Vector2& pos3, const Color& col) ;
+			int drawTri(const Vector2 & pos1, const Vector2 & pos2, const Vector2 & pos3, const Color & col) ;
 
 			//画矩形
 			// pos - 起始点
 			// size - 尺寸（宽和高）
 			// color - 颜色
-			int drawRect(const Vector2& pos, const Vector2& size, const Color& col) ;
+			int drawRect(const Vector2 & pos, const Vector2 & size, const Color & col) ;
 
-			int drawRectBorder(const Vector2& pos, const Vector2&size, const Color&col, const float width);
+			int drawRectBorder(const Vector2 & pos, const Vector2 & size, const Color & col, const float width);
 
 			int drawCircle(Vector2 pos, GLfloat r, Color col);
 
-			int drawText(Vector2 pos, GLfloat scale, string text,
+
+			int drawText(Vector2 pos, GLfloat scale,
+			             string str, ChMap& tex,
 			             Color iColor, string align="");
 
-			GLFWwindow* getw() {
+			int drawText(Vector2 pos, GLfloat scale,
+			             TextUre& TU,
+			             Color iColor, string align="");
+
+			int drawText(Vector2 pos, GLfloat scale,
+			             string str,
+			             Color iColor, string align="");
+			GLFWwindow * getw() {
 				return window;
 			}
 	};

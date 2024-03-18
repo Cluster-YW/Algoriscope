@@ -17,6 +17,9 @@ namespace Algoriscope {
 			int (*debug_function)(Scene*, Render*) = nullptr;
 
 			Scene(int x, int y, int _FPS = 60);
+			~Scene() {
+				delete root;
+			}
 
 			int setTitle(const char*name);
 

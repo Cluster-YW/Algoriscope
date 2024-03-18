@@ -22,21 +22,25 @@
 #include "algoriscope.h"
 using namespace Algoriscope;
 
+//int LOOP(Scene* scn, Render* render){
+//	TextUre a("123随便来点中文");
+//	render->drawText(Vector2(0,-100),20,a,"red","l");
+//}
 
 void make(BarArray* me, InputState& input) {
 //	cout << "?" << endl;
 	for (int i = 0; i < 10; i++) {
-		me->resetColor(i);
-	}
-	for (int i = 0; i < 10; i++) {
-		if (input.key_down['0' + i]) {
-			me->setColor("blue",i);
+		if (input.key_change['0' + i] == 1) {
+			me->setColor("yellow", i);
+		}
+		if (input.key_change['0' + i] == -1) {
+			me->resetColor(i);
 		}
 	}
 	me->setAlign("c");
 	if (input.key_down['A']) {
 		me->setAlign("l");
-	}else if (input.key_down['D']) {
+	} else if (input.key_down['D']) {
 		me->setAlign("r");
 	}
 }
@@ -53,8 +57,9 @@ void hightlight(Bar* me, InputState& input) {
 
 int main() {
 	Scene scn(1920, 1080, 100);
+//	scn.debug_function = LOOP;
 	int n = 9;
-	auto Bs = new BarArray(Vector2(0, 0), n, 50,
+	auto Bs = new BarArray(Vector2(0, -60.0f), n, 50,
 	                       100, 100); // 输入起码包括长度+绑定指针
 	scn.addObject(*Bs);
 	n = 10;
@@ -66,15 +71,33 @@ int main() {
 	Bs->autoScale(500);
 	Bs->setCallBack(make);
 	Bs->setBarsCallBack(hightlight);
+	auto Title = new Text("冒泡排序演示：",Vector2(-800,400),15,"white");
+	auto Subtitle = new Text("此时进行：",Vector2(-800,300),10,"white","ld");
+	scn.addObject(*Title);
+	scn.addObject(*Subtitle);
 	for (int i = n - 1; i >= 0; i--) {
 		for (int j = 0; j < i; j++) {
+			Bs->getBar(j)->setDefaultColor("blue");
+			Bs->getBar(j+1)->setDefaultColor("blue");
+			Bs->getBar(j)->resetColor();
+			Bs->getBar(j+1)->resetColor();
+			Subtitle->setContent("比较");
+			scn.run(1000);
+			Subtitle->setContent("无需交换");
 			if (array[j] < array[j + 1]) {
 				swap(array[j], array[j + 1]);
 
 				Bs->animSwap(j, j + 1);
+			Subtitle->setContent("进行交换！");
 			}
 			scn.run(1000);
+			Bs->getBar(j)->setDefaultColor("red");
+			Bs->getBar(j+1)->setDefaultColor("red");
+			Bs->getBar(j)->resetColor();
+			Bs->getBar(j+1)->resetColor();
 		}
+		Bs->getBar(i)->setDefaultColor("green");
+		Bs->getBar(i)->resetColor();
 	}
 	scn.run(5000);
 }

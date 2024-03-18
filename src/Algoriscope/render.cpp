@@ -1,43 +1,61 @@
 #include "render.h"
+#include <bitset>
 #define  MAX_CHAR 128
 namespace Algoriscope {
-	Render::Render(int sizex, int sizey) : size (sizex, sizey) {
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		glewExperimental = true;
-		window = glfwCreateWindow(size.x, size.y, "remember ", nullptr, nullptr);
-		WIDTH = size.x;
-		HEIGHT = size.y;
-		projection = glm::ortho(static_cast<GLfloat>(WIDTH * -0.5f),
-		                        static_cast<GLfloat>(WIDTH * 0.5f),
-		                        static_cast<GLfloat>(HEIGHT * -0.5f),
-		                        static_cast<GLfloat>(HEIGHT * 0.5f));
-		glfwMakeContextCurrent(window);
-		glViewport(0, 0, size.x, size.y);
-		glewInit();
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		shader_graphic.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
-		shader_text.init("shaders/text.vs", "shaders/text.fs");
-
+	int GBKToUTF16(const string& input, string& output) {
+		int ret = 0;
+		size_t charInPutLen = input.length() + 1;
+		if ( charInPutLen == 0)
+			return 0;
+		size_t charOutPutLen = 2 * charInPutLen;
+		char *pTemp = new char[charOutPutLen];
+		memset(pTemp, 0, charOutPutLen);
+		iconv_t cd;
+		char *pSource = (char *)input.c_str();
+		char *pOut = pTemp;
+		cd = iconv_open("utf-16be", "GB2312");
+		ret = iconv(cd, &pSource, &charInPutLen, &pTemp, &charOutPutLen);
+		iconv_close(cd);
+		for (int i = 0; i < 2 * input.size() + 2; i++) {
+			if (pOut[i] == 0 && pOut[i + 1] == 0) break;
+			output += pOut[i];
+		}
+		delete []pOut; //注意这里，不能使用delete []pTemp, iconv函数会改变指针pTemp的值
+		return ret;
+	}
+	void loadFontTexture(ChMap &Characters, const char* fontpath, string content) {
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))
 			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 
 		FT_Face face;
-		if (FT_New_Face(ft, "fonts/font.ttf", 0, &face))
+		if (FT_New_Face(ft, fontpath, 0, &face))
 			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
 		FT_Set_Pixel_Sizes(face, 0, 120);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		for (GLubyte c = 0; c < 128; c++) {
+
+		string wcontent;
+		GBKToUTF16(content, wcontent);
+//		for (int i = 0; i < content.size(); i++) {
+//			auto ch = content[i];
+//			cout << bitset<8>(ch) << " - " << hex << (unsigned)ch % (1 << 8) << endl;
+//		}
+//		cout << "-----------" << endl;
+//		for (int i = 0; i < wcontent.size(); i++) {
+//			auto ch = wcontent[i];
+//			cout << bitset<8>(ch) << " - " << hex << (unsigned)ch % (1 << 8) << endl;
+//		}
+//		cout << "-----------" << endl;
+		for (int i = 0; i < wcontent.size(); i += 2) {
+			wchar_t ch1 = (unsigned)wcontent[i] % (1 << 8);
+			wchar_t ch2 = (unsigned)wcontent[i + 1] % (1 << 8);
+//			cout << bitset<16>(ch1 << 8) << " - " << hex << (unsigned)(ch1 << 8) % (1 << 16) << endl;
+//			cout << bitset<16>(ch2) << " - " << hex << (ch2) % (1 << 16) << endl;
+			wchar_t ch = (ch1 << 8) + (unsigned)ch2;
+//			cout << bitset<16>(ch) << " - " << hex << (unsigned)(ch) % (1 << 16) << endl;
 			// Load character glyph
-			if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+			if (FT_Load_Char(face, ch, FT_LOAD_RENDER)) {
 				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
 				continue;
 			}
@@ -68,12 +86,43 @@ namespace Algoriscope {
 				glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 				face->glyph->advance.x
 			};
-			Characters.insert(std::pair<GLchar, Character>(c, character));
+			Characters.insert(std::pair<GLuint, Character>(ch, character));
 		}
 		glBindTexture(GL_TEXTURE_2D, 0);
 		// Destroy FreeType once we're finished
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
+	}
+
+	Render::Render(int sizex, int sizey) : size (sizex, sizey) {
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		glewExperimental = true;
+		window = glfwCreateWindow(size.x, size.y, "New Window", nullptr, nullptr);
+		WIDTH = size.x;
+		HEIGHT = size.y;
+		projection = glm::ortho(static_cast<GLfloat>(WIDTH * -0.5f),
+		                        static_cast<GLfloat>(WIDTH * 0.5f),
+		                        static_cast<GLfloat>(HEIGHT * -0.5f),
+		                        static_cast<GLfloat>(HEIGHT * 0.5f));
+		glfwMakeContextCurrent(window);
+		glViewport(0, 0, size.x, size.y);
+		glewInit();
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		shader_graphic.init("vertexShaderDrawLines.glsl", "fragmentShader_frag=vertexDrawLines.glsl");
+		shader_text.init("shaders/text.vs", "shaders/text.fs");
+
+		string str;
+		for (int i = 1; i < 128; i++) {
+			str += (char)i;
+		}
+		loadFontTexture(Characters, "fonts/font.ttf", str);
 	}
 
 	int Render::setTitle(const char* name) {
@@ -229,7 +278,8 @@ namespace Algoriscope {
 	}
 
 	int Render::drawText(Vector2 pos, GLfloat scale,
-	                     std::string text, Color iColor, string align) {
+	                     string text, ChMap& Characters,
+	                     Color iColor, string align ) {
 		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
 		scale *= 0.033f;
 
@@ -278,10 +328,14 @@ namespace Algoriscope {
 			pos.y += h_MAX * 0.5f;
 		}
 
-		// Iterate through all characters
-		for (c = text.begin(); c != text.end(); c++) {
-			Character ch = Characters[*c];
 
+		string wcontent;
+		GBKToUTF16(text, wcontent);
+		// Iterate through all characters
+		for (int i = 0; i < wcontent.size(); i += 2) {
+			wchar_t c = ((unsigned)wcontent[i] << 8) + ((unsigned)wcontent[i + 1] & ((1 << 8) - 1));
+//			cout << bitset<16>(c) << " - " << hex << (unsigned)(c) % (1 << 16) << endl;
+			auto ch = Characters[c];
 			GLfloat xpos = pos.x + ch.Bearing.x * scale;
 			GLfloat ypos = pos.y - (ch.Size.y - ch.Bearing.y) * scale;
 
@@ -313,5 +367,14 @@ namespace Algoriscope {
 //		glDisable(GL_BLEND);
 		return 0;
 	}
-
+	int Render::drawText(Vector2 pos, GLfloat scale,
+	                     TextUre& TU,
+	                     Color iColor, string align) {
+		drawText(pos, scale, TU.content, TU.texture, iColor, align);
+	}
+	int Render::drawText(Vector2 pos, GLfloat scale,
+	                     string str,
+	                     Color iColor, string align) {
+		drawText(pos, scale, str, Characters, iColor, align);
+	}
 };
