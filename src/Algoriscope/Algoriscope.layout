@@ -1,71 +1,112 @@
 [
     {
-        "caretX": 2,
-        "caretY": 21,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.cpp",
+        "caretX": 1,
+        "caretY": 1,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 1,
-        "topLine": 7
+        "order": 7,
+        "topLine": 1
     },
     {
-        "caretX": 31,
-        "caretY": 84,
+        "caretX": 13,
+        "caretY": 21,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 10,
+        "topLine": 1
+    },
+    {
+        "caretX": 1,
+        "caretY": 20,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/shader.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 6,
+        "topLine": 10
+    },
+    {
+        "caretX": 7,
+        "caretY": 13,
         "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/dynamics.h",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 0,
-        "topLine": 1
+        "topLine": 22
     },
     {
-        "caretX": 1,
-        "caretY": 135,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.cpp",
-        "focused": false,
-        "isOpen": true,
-        "leftChar": 1,
-        "order": 4,
-        "topLine": 163
-    },
-    {
-        "caretX": 19,
-        "caretY": 32,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.h",
+        "caretX": 21,
+        "caretY": 7,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.cpp",
         "focused": false,
         "isOpen": true,
         "leftChar": 1,
         "order": 5,
-        "topLine": 22
+        "topLine": 1
     },
     {
-        "caretX": 53,
-        "caretY": 17,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/scene.h",
+        "caretX": 73,
+        "caretY": 186,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.cpp",
+        "focused": true,
+        "isOpen": true,
+        "leftChar": 8,
+        "order": 3,
+        "topLine": 181
+    },
+    {
+        "caretX": 33,
+        "caretY": 86,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/main.cpp",
         "focused": false,
-        "isOpen": false,
-        "leftChar": 1,
-        "topLine": 10
+        "isOpen": true,
+        "leftChar": 6,
+        "order": 2,
+        "topLine": 65
     },
     {
-        "caretX": 8,
-        "caretY": 341,
+        "caretX": 4,
+        "caretY": 56,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.h",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 8,
+        "topLine": 48
+    },
+    {
+        "caretX": 67,
+        "caretY": 80,
         "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/object.h",
         "focused": false,
         "isOpen": true,
-        "leftChar": 1,
-        "order": 3,
-        "topLine": 325
+        "leftChar": 22,
+        "order": 9,
+        "topLine": 67
     },
     {
-        "caretX": 46,
-        "caretY": 26,
-        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/main.cpp",
-        "focused": true,
+        "caretX": 1,
+        "caretY": 1,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/vector2.h",
+        "focused": false,
         "isOpen": true,
         "leftChar": 1,
-        "order": 2,
-        "topLine": 22
+        "order": 4,
+        "topLine": 1
+    },
+    {
+        "caretX": 44,
+        "caretY": 125,
+        "filename": "D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/render.cpp",
+        "focused": false,
+        "isOpen": true,
+        "leftChar": 1,
+        "order": 1,
+        "topLine": 105
     }
 ]

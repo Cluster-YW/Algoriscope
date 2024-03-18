@@ -173,6 +173,7 @@ namespace Algoriscope {
 
 			void resetColor() { //设置颜色
 				color = defaultcolor;
+		
 			}
 
 			void setDefaultColor(Color in) {
@@ -367,10 +368,12 @@ namespace Algoriscope {
 					bar->setCallBack(in);
 				}
 			}
-			void setColor(Color in, int i);
-			void setColor(Color in, int i, int j);
-			void resetColor(int i);
-			void resetColor(int i, int j);
+			void setColor(Color in, int _i);
+			void setColor(Color in, int _i, int _j);
+		    void setDefaultColor(Color in,int _i);
+		    void setDefaultColor(Color in,int _i,int _j);
+			void resetColor(int _i);
+			void resetColor(int _i, int _j);
 		protected:
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
@@ -378,7 +381,9 @@ namespace Algoriscope {
 			vector<Bar*> bars;
 
 			CallBackFunction<BarArray> call_back;
-			string align = "l";
+
+			string align = "c";
+
 	};
 }
 
