@@ -304,16 +304,18 @@ namespace Algoriscope {
 		for (i = i; i <= j; i++) {
 			bars[i]->resetColor();
 		}
-	};void BarArray::setDefaultColor(Color in, int _i) {
+	};
+	void BarArray::setDefaultColor(Color in, int _i) {
 		bars[_i]->setDefaultColor(in);
 		resetColor(_i);
 	};
 	void BarArray::setDefaultColor(Color in, int _i, int _j) {
-		int i = _i > _j ? _i : _j;
+		int i = _i < _j ? _i : _j;
 		int j = _i > _j ? _i : _j;
-		
-		for (i = i; i <= j; i++)setDefaultColor(in,i);
-		resetColor(i,j);
+
+		for (i = i; i <= j; i++)
+			setDefaultColor(in, i);
+		resetColor(i, j);
 	};
 }
 
