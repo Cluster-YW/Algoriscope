@@ -18,6 +18,9 @@ namespace Algoriscope {
 		const string key_all = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ []\\;\',./";
 	};
 
+	Vector2 calcRadiusRectEnd(const Vector2& C,
+	                          const Vector2& RU, const Vector2& LD, const Vector2& n);
+
 	template<typename T>
 	using CallBackFunction = void(*)(T* self, InputState &input);
 	//定义回调函数的模板
@@ -36,6 +39,11 @@ namespace Algoriscope {
 			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render& render);
 			virtual void debug_draw(Render& render);
+
+			virtual	Vector2 getPointedPos(Vector2 from) {
+				return global_position;
+			}
+
 			bool isTouchedByMouse = 0;
 			bool isClickedByMouse = 0;
 			bool isLeftClickedByMouse = 0;
@@ -71,13 +79,18 @@ namespace Algoriscope {
 			bool display = 1; //是否显示
 	};
 
+	extern std::map<void*, std::vector<Object*>> bind_map;
+
+	void addBindMap(void* ptr, Object* obj);
+	void popBindMap(void* ptr, Object* obj);
+
 	class Text: public Object {
 		public:
-			Text(string _c, Vector2 _pos, float _size, Color c = Color("red"),string _align="m"):
-				content(_c), Object(_pos), size(_size), color(c),align(_align) {
+			Text(string _c, Vector2 _pos, float _size, Color c = Color("red"), string _align = "m"):
+				content(_c), Object(_pos), size(_size), color(c), align(_align) {
 			}
-			Text(Vector2 _pos, float _size, Color c = Color("red"),string _align="m"):
-				content(""), Object(_pos), size(_size), color(c),align(_align) {
+			Text(Vector2 _pos, float _size, Color c = Color("red"), string _align = "m"):
+				content(""), Object(_pos), size(_size), color(c), align(_align) {
 			}
 
 			void setContent(string input) {
@@ -108,6 +121,7 @@ namespace Algoriscope {
 			CallBackFunction<Text> call_back;
 	};
 
+
 	class Bar: public Object {
 		public:
 			Bar(Vector2 _pos, float _w, float _h, Color c = Color("red")):
@@ -123,6 +137,11 @@ namespace Algoriscope {
 			virtual void update(float deltatime, InputState &input);
 			virtual void draw(Render & render);
 			virtual void debug_draw(Render & render);
+
+			virtual	Vector2 getPointedPos(Vector2 from) {
+				return calcRadiusRectEnd(global_position + Vector2(0, 0.5 * height()), global_position + Vector2(-0.5f * width(), 0),
+				                         global_position + Vector2(0.5f * width(), height()), from - (global_position + Vector2(0, 0.5 * height())));
+			}
 
 			int add_child(Object & target);
 
@@ -145,18 +164,17 @@ namespace Algoriscope {
 
 			template<typename T>
 			void setBind(T* ptr) { // 通过指针设置绑定
+				popBindMap(bind, this);
 				auto type = typeid(ptr).name();
 				bindType = type[1];
 				bind = ptr;
+				addBindMap(bind, this);
 				tag->display = 1;
 			}
 
 			template<typename T>
 			void setBind(T& ptr) { // 通过引用设置绑定
-				auto type = typeid(ptr).name();
-				bindType = type[0];
-				bind = &ptr;
-				tag->display = 1;
+				setBind(&ptr);
 			}
 
 			void* getBind() { // 获取绑定
@@ -173,7 +191,7 @@ namespace Algoriscope {
 
 			void resetColor() { //设置颜色
 				color = defaultcolor;
-		
+
 			}
 
 			void setDefaultColor(Color in) {
@@ -238,17 +256,16 @@ namespace Algoriscope {
 			template<typename T>
 			void setBind(T* ptr) { // 通过指针设置绑定
 				auto type = typeid(ptr).name();
+				popBindMap(bind, this);
 				bindType = type[1];
 				bind = ptr;
 				tag->display = 1;
+				addBindMap(bind, this);
 			}
 
 			template<typename T>
 			void setBind(T& ptr) { // 通过引用设置绑定
-				auto type = typeid(ptr).name();
-				bindType = type[0];
-				bind = &ptr;
-				tag->display = 1;
+				setBind(&ptr);
 			}
 
 			void* getBind() { // 获取绑定
@@ -266,6 +283,7 @@ namespace Algoriscope {
 			Color defaultcolor; //默认颜色
 
 			Text* tag;
+		private:
 			CallBackFunction<Box> call_back;
 	};
 
@@ -370,8 +388,8 @@ namespace Algoriscope {
 			}
 			void setColor(Color in, int _i);
 			void setColor(Color in, int _i, int _j);
-		    void setDefaultColor(Color in,int _i);
-		    void setDefaultColor(Color in,int _i,int _j);
+			void setDefaultColor(Color in, int _i);
+			void setDefaultColor(Color in, int _i, int _j);
 			void resetColor(int _i);
 			void resetColor(int _i, int _j);
 		protected:
@@ -383,7 +401,47 @@ namespace Algoriscope {
 			CallBackFunction<BarArray> call_back;
 
 			string align = "c";
+	};
 
+	class NodeBox: public Box {
+		public:
+			NodeBox(Vector2 _pos, float _size, Color _c = Color("red")) :
+				Box(_pos, _size, _c) {
+				tag = new Text("3", Vector2(0, 0), _size * 0.1f, Color("#FFFFFF"));
+				add_child(*tag);
+				tag->display = 0;
+			}
+			~NodeBox() {
+				delete tag;
+			}
+
+			virtual void update(float deltatime, InputState &input);
+			virtual void draw(Render & render);
+			virtual void debug_draw(Render & render);
+
+			virtual	Vector2 getPointedPos(Vector2 from);
+
+			void setCallBack(CallBackFunction<NodeBox> in) {
+				call_back = in;
+			}
+
+			void setNext(void** next) {
+				pointer = next;
+			}
+		
+			template<typename T>
+			void setNext(T &next) {
+				pointer = (void**)&next;
+			}
+		
+			void** getNext() {
+				return pointer;
+			}
+
+		protected:
+			void** pointer = nullptr;
+
+			CallBackFunction<NodeBox> call_back;
 	};
 }
 

@@ -1,5 +1,53 @@
 #include "object.h"
 namespace Algoriscope {
+
+	Vector2 calcRadiusRectEnd(const Vector2& C,
+	                          const Vector2& RU, const Vector2& LD, const Vector2& n) {
+		auto check = [](Vector2 res, Vector2 C, float u, float d, float l, float r, Vector2 n)-> bool {
+			if ((res.x - C.x)*n.x < 0) return 0;
+			if ((res.y - C.y)*n.y < 0) return 0;
+			if (res.x > r || res.x < l) return 0;
+			if (res.y > u || res.y < d) return 0;
+			return 1;
+		};
+		auto u = max(RU.y, LD.y);
+		auto d = min(RU.y, LD.y);
+		auto l = min(RU.x, LD.x);
+		auto r = max(RU.x, LD.x);
+
+		Vector2 trying;
+		trying = Vector2(l, C.y + (l - C.x) * n.y / n.x);
+		if (check(trying, C, u, d, l, r, n)) return trying;
+		trying = Vector2(r, C.y + (r - C.x) * n.y / n.x);
+		if (check(trying, C, u, d, l, r, n)) return trying;
+
+		trying = Vector2(C.x + (u - C.y) * n.x / n.y, u);
+		if (check(trying, C, u, d, l, r, n)) return trying;
+		trying = Vector2(C.x + (d - C.y) * n.x / n.y, d);
+		if (check(trying, C, u, d, l, r, n)) return trying;
+	}
+
+	std::map<void*, std::vector<Object*>> bind_map;
+
+	void addBindMap(void* ptr, Object* obj) {
+		if (ptr == nullptr)return;
+		if (bind_map.count(ptr)) {
+			bind_map[ptr].push_back(obj);
+		} else {
+			bind_map[ptr] = vector<Object*>();
+			bind_map[ptr].push_back(obj);
+		}
+	}
+
+	void popBindMap(void* ptr, Object* obj) {
+		if (ptr == nullptr)return;
+		if (bind_map.count(ptr)) {
+			auto &vec = bind_map[ptr];
+			auto newEnd = std::remove(vec.begin(), vec.end(), obj);
+			vec.erase(newEnd, vec.end());
+		}
+	}
+
 	void Object::update(float deltatime, InputState &input) {
 
 		position.update(deltatime); // 更新位置的动画
@@ -225,9 +273,9 @@ namespace Algoriscope {
 			return;
 		}
 		Vector2 Vsize(size(), size());
-		render.drawRect(position() - 0.5f * Vsize, Vsize,
+		render.drawRect(global_position - 0.5f * Vsize, Vsize,
 		                color());
-		render.drawRectBorder(position() - 0.5f * Vsize, Vsize,
+		render.drawRectBorder(global_position - 0.5f * Vsize, Vsize,
 		                      color().mix("#FFFFFF", 0.5f), size() * 0.05f);
 		for (auto child : children ) { // 进一步调用子对象的draw()
 			child->draw(render);
@@ -317,5 +365,80 @@ namespace Algoriscope {
 			setDefaultColor(in, i);
 		resetColor(i, j);
 	};
+
+	void NodeBox::update(float deltatime, InputState &input) {
+		if (bind != nullptr) { // 实现与外部变量绑定
+			if (bindType == 'i') {
+				tag->setContent( to_string( *(int*)bind ));
+			} else if (bindType == 'x')	{
+				tag->setContent( to_string( *(long long*)bind ));
+			} else if (bindType == 'f')	{
+				tag->setContent( util::Format("{0}", *(float*)bind));
+			} else if (bindType == 'd')	{
+				tag->setContent( util::Format("{0}", *(double*)bind) );
+			}
+		}
+
+		size.update(deltatime);
+		position.update(deltatime); // 更新位置的动画
+		color.update(deltatime); //更新颜色
+
+		if (parent != nullptr) // 从父对象更新渲染位置
+			global_position = (parent->getGlobalPosition()) + position();
+		else
+			global_position = position();
+
+		for (auto child : children ) { // 进一步调用子对象的update()
+			child->update(deltatime, input);
+		}
+	}
+
+	void NodeBox::draw(Render& render) {
+		if (display == 0) {
+			for (auto child : children ) { // 进一步调用子对象的draw()
+				child->draw(render);
+			}
+			return;
+		}
+		auto _size = size();
+		render.drawRect(global_position - Vector2(0.5f * _size, 0.5f * _size), Vector2(_size * 1.4f, _size),
+		                color());
+		render.drawRectBorder(global_position - Vector2(0.5f * _size, 0.5f * _size), Vector2(_size, _size),
+		                      color().mix("#FFFFFF", 0.5f), size() * 0.05f);
+		render.drawRectBorder(global_position - Vector2(_size * -0.45f, 0.5f * _size), Vector2(_size * 0.45f, _size),
+		                      color().mix("#FFFFFF", 0.5f), size() * 0.05f);
+
+		if (pointer != nullptr) {
+			void* pointer_to = *pointer;
+			if (pointer_to != nullptr) {
+				if (bind_map.count(pointer_to)) {
+					auto start = global_position - Vector2(_size * -0.7f, 0);
+					auto &vec = bind_map[pointer_to];
+					for (Object* objp : vec) {
+						render.drawArrow(start,
+						                 objp->getPointedPos(start), "white");
+					}
+				}
+			}
+		}
+
+		for (auto child : children ) { // 进一步调用子对象的draw()
+			child->draw(render);
+		}
+	}
+
+	void NodeBox::debug_draw(Render& render) {
+		for (auto child : children ) { // 进一步调用子对象的debug_draw()
+			child->debug_draw(render);
+		}
+	}
+
+	Vector2 NodeBox::getPointedPos(Vector2 from) {
+		return calcRadiusRectEnd(global_position,
+		                         global_position + Vector2(size() * 0.9f, size() * 0.5f),
+		                         global_position - Vector2(size() * 0.5f, size() * 0.5f),
+		                         from - global_position
+		                        );
+	}
 }
 

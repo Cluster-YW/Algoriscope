@@ -3,6 +3,7 @@
 #define  MAX_CHAR 128
 namespace Algoriscope {
 	int GBKToUTF16(const string& input, string& output) {
+		output.clear();
 		int ret = 0;
 		size_t charInPutLen = input.length() + 1;
 		if ( charInPutLen == 0)
@@ -278,7 +279,7 @@ namespace Algoriscope {
 	}
 
 	int Render::drawText(Vector2 pos, GLfloat scale,
-	                     string text, ChMap& Characters,
+	                     const string& text, ChMap& Characters,
 	                     Color iColor, string align ) {
 		glm::vec3 color(iColor.getRf(), iColor.getGf(), iColor.getBf());
 		scale *= 0.033f;
@@ -373,8 +374,28 @@ namespace Algoriscope {
 		drawText(pos, scale, TU.content, TU.texture, iColor, align);
 	}
 	int Render::drawText(Vector2 pos, GLfloat scale,
-	                     string str,
+	                     const string& str,
 	                     Color iColor, string align) {
 		drawText(pos, scale, str, Characters, iColor, align);
 	}
+	int Render::drawArrow(const Vector2& from, const Vector2& to,
+	                      const Color& col, const float width, const float size) {
+		Vector2 n = to - from;
+		n.Normalize();
+		drawLine(from, to, col, width);
+		drawLine(to, to - n.Rotate(0.5236f)*size, col, width);
+		drawLine(to, to - n.Rotate(-0.5236f)*size, col, width);
+	}
 };
+
+
+
+
+
+
+
+
+
+
+
+

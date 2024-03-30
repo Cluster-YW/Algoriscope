@@ -2,6 +2,8 @@
 #define SCENE_H
 
 #include <time.h>
+#include <map>
+#include <vector>
 
 #include "vector2.h"
 #include "color.h"
@@ -14,10 +16,11 @@ namespace Algoriscope {
 		public:
 			bool debug_mode = 0;
 			float timer = 0.0f;
-			int (*debug_function)(Scene*, Render*) = nullptr;
+			int (*debug_function)(Scene*, Render*, InputState&) = nullptr;
 
 			Scene(int x, int y, int _FPS = 60);
 			~Scene() {
+				bind_map.clear();
 				delete root;
 			}
 
@@ -32,6 +35,8 @@ namespace Algoriscope {
 
 			int addObject(Object& p);
 		private:
+			void debug_info_draw(int i);
+
 			int FPS;
 			Vector2 size;
 			string title;

@@ -85,16 +85,21 @@ namespace Algoriscope {
 
 
 			int drawText(Vector2 pos, GLfloat scale,
-			             string str, ChMap& tex,
-			             Color iColor, string align="");
+			             const string& str, ChMap& tex,
+			             Color iColor, string align = "");
 
 			int drawText(Vector2 pos, GLfloat scale,
 			             TextUre& TU,
-			             Color iColor, string align="");
+			             Color iColor, string align = "");
 
 			int drawText(Vector2 pos, GLfloat scale,
-			             string str,
-			             Color iColor, string align="");
+			             const string& str,
+			             Color iColor, string align = "");
+
+			int drawArrow(const Vector2& from, const Vector2& to,
+			              const Color& col, const float width = 5, const float size = 20
+			             );
+
 			GLFWwindow * getw() {
 				return window;
 			}

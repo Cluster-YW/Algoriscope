@@ -56,13 +56,18 @@ float Vector2::Dot(const Vector2 &lhs, const Vector2 &rhs) {
 float Vector2::Angle(const Vector2 &from, const Vector2 &to) {
 	float PI = 3.141592653589793238;
 	float t = ((from.x) * (to.x) + (from.y) * (to.y)) /
-	(sqrt(pow(from.x, 2) + pow(from.y, 2)) * sqrt(pow(to.x, 2) + pow(to.y, 2)));
+	          (sqrt(pow(from.x, 2) + pow(from.y, 2)) * sqrt(pow(to.x, 2) + pow(to.y, 2)));
 	return acos(t) * (180 / PI);
 }
 
 float Vector2::SignedAngle(const Vector2 from, const Vector2 to) {
 	float pi = 3.141592653589793238;
 	return atan2((to.y - from.y), (to.x - from.x)) * (float) 180 / pi;
+}
+
+Vector2 Vector2::Rotate(const float rot) {
+	return Vector2(x * cos(rot) + y * sin(rot),
+	               -x * sin(rot) + y * cos(rot));
 }
 
 float Vector2::Distance(const Vector2 from, const Vector2 to) {

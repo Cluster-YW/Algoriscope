@@ -22,10 +22,12 @@
 #include "algoriscope.h"
 using namespace Algoriscope;
 
-//int LOOP(Scene* scn, Render* render){
+int LOOP(Scene* scn, Render* render, InputState& input) {
 //	TextUre a("123随便来点中文");
 //	render->drawText(Vector2(0,-100),20,a,"red","l");
-//}
+//	render->drawArrow(Vector2(0, -100), input.mousepos, "white", 5);
+//	Node2->setPosition(input.mousepos);
+}
 
 void make(BarArray* me, InputState& input) {
 //	cout << "?" << endl;
@@ -55,9 +57,56 @@ void hightlight(Bar* me, InputState& input) {
 	}
 }
 
-int main() {
+struct Node {
+	int data;
+	Node* next;
+} A, B, C, D;
+
+int main_insert() {
 	Scene scn(1920, 1080, 100);
 //	scn.debug_function = LOOP;
+
+	A.data = 10;
+	B.data = 5;
+	C.data = 20;
+	A.next = &B;
+	B.next = &C;
+
+
+	auto Node = new NodeBox(Vector2(-400, -50), 100, "darkred");
+	scn.addObject(*Node);
+	Node->setBind(A.data);
+	Node->setNext((A.next));
+
+	auto Node2 = new NodeBox(Vector2(0, -50), 100, "darkred");
+	scn.addObject(*Node2);
+	Node2->setBind(B.data);
+	Node2->setNext((B.next));
+
+	auto Node3 = new NodeBox(Vector2(400, -50), 100, "darkred");
+	scn.addObject(*Node3);
+	Node3->setBind(C.data);
+	Node3->setNext((C.next));
+
+	scn.run(2000);
+
+	D.data = 15;
+
+	auto Node4 = new NodeBox(Vector2(200, 600), 100, "darkblue");
+	scn.addObject(*Node4);
+	Node4->setBind(D.data);
+	Node4->setPosition(Vector2(200, 100));
+	Node4->setNext(D.next);
+
+	scn.run(2000);
+	D.next = B.next;
+	scn.run(2000);
+
+	B.next = &D;
+	scn.run(2000);
+}
+int main_sort() {
+	Scene scn(1920, 1080, 100);
 	int n = 9;
 	n = 10;
 	float array[n] = {0.3f, -0.6f, -0.7f, 0.2f, 0.8f
@@ -75,7 +124,6 @@ int main() {
 	auto Subtitle = new Text("此时进行：", Vector2(-800, 300), 10, "white", "ld");
 	scn.addObject(*Title);
 	scn.addObject(*Subtitle); // 加入两行文字
-
 
 	for (int i = n - 1; i >= 0; i--) {
 		for (int j = 0; j < i; j++) {
@@ -100,4 +148,19 @@ int main() {
 		Bs->resetColor(i);
 	}
 	scn.run(5000);
+}
+int main() {
+	while (1) {
+		printf("输入播放的动画：\n\t1.\t冒泡排序\n\t2.\t链表插入节点\n输入：");
+		int choice;
+		cin >> choice;
+		switch (choice) {
+			case 1:
+				main_sort();
+				break;
+			case 2:
+				main_insert();
+				break;
+		}
+	}
 }

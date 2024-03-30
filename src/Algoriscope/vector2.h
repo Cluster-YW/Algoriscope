@@ -35,6 +35,9 @@ public:
 	//向量按比例缩放
 	void Scale(float factor);
 	
+	//向量旋转一定角度
+	Vector2 Rotate(float degree);
+	
 	//---------------静态函数------------------------
 	//向量点乘
 	static float Dot(const Vector2 &lhs, const Vector2 &rhs);

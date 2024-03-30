@@ -12,6 +12,47 @@ namespace Algoriscope {
 		return 0;
 	}
 
+	void Scene::debug_info_draw(int i){
+		string key_change_string = "";
+		render.drawLine(Vector2(-size.x, 0), Vector2(size.x, 0), Color("#0000FF"));
+		render.drawLine(Vector2(0, -size.y), Vector2(0, size.y), Color("#FF0000"));
+		render.drawText(Vector2(size.x * 0.5f - 20, 15), 5,
+			util::Format("{0}", size.x * 0.5f), "#0000FF");
+		render.drawText(Vector2(20, size.y * 0.5f - 15), 5,
+			util::Format("{0}", size.y * 0.5f), "#FF0000");
+		//绘制坐标轴
+		
+		render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 30.0f), 5, "#" + to_string(i), "#FFFFFF", "l");
+		//绘制帧序号
+		
+		
+		Color mouse_line_color("lightgrey");
+		if (input.mouse_left_down) {
+			mouse_line_color = "#FF0000";
+			if (input.mouse_right_down)
+				mouse_line_color = "#00FF00";
+		} else if (input.mouse_right_down) {
+			mouse_line_color = "#0000FF";
+		}
+		auto &mousepos = input.mousepos;
+		render.drawLine(Vector2(-size.x, mousepos.y), Vector2(size.x, mousepos.y), mouse_line_color, 2);
+		render.drawLine(Vector2(mousepos.x, -size.y), Vector2(mousepos.x, size.y), mouse_line_color, 2);
+		render.drawText(mousepos + Vector2(5, 5), 3,
+			util::Format("({0},{1})", mousepos.x, mousepos.y), "white", "ld");
+		//绘制鼠标位置
+		
+		
+		string key_string = "KEYBOARD:";
+		for (auto c : input.key_all) {
+			if (input.key_down[(int)c]) key_string += c;
+			if (input.key_change[(int)c] == 1) key_change_string += c, key_change_string += "_";
+			if (input.key_change[(int)c] == -1) key_change_string += c, key_change_string += "^";
+		}
+		render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 60.0f), 5, key_string, "#FFFFFF", "l");
+		render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 90.0f), 5, key_change_string, "#FFFFFF", "l");
+		//绘制键盘事件
+	}
+	
 	int Scene::run(int time, bool canbreak) {
 
 		float timer = 0.0f;
@@ -19,7 +60,6 @@ namespace Algoriscope {
 		last = now = clock();
 
 		auto i = 0;
-		string key_change_string = "";
 		while (running) {
 			glfwPollEvents();
 			now = clock();
@@ -50,46 +90,10 @@ namespace Algoriscope {
 			if (!paused)
 				root->update(deltatime, input);
 
-			root->draw(render);
-
+			root->draw(render);			
+			
 			if (debug_mode) {
-				render.drawLine(Vector2(-size.x, 0), Vector2(size.x, 0), Color("#0000FF"));
-				render.drawLine(Vector2(0, -size.y), Vector2(0, size.y), Color("#FF0000"));
-				render.drawText(Vector2(size.x * 0.5f - 20, 15), 5,
-				                util::Format("{0}", size.x * 0.5f), "#0000FF");
-				render.drawText(Vector2(20, size.y * 0.5f - 15), 5,
-				                util::Format("{0}", size.y * 0.5f), "#FF0000");
-				//绘制坐标轴
-
-				render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 30.0f), 5, "#" + to_string(i), "#FFFFFF", "l");
-				//绘制帧序号
-
-
-				Color mouse_line_color("lightgrey");
-				if (input.mouse_left_down) {
-					mouse_line_color = "#FF0000";
-					if (input.mouse_right_down)
-						mouse_line_color = "#00FF00";
-				} else if (input.mouse_right_down) {
-					mouse_line_color = "#0000FF";
-				}
-				auto &mousepos = input.mousepos;
-				render.drawLine(Vector2(-size.x, mousepos.y), Vector2(size.x, mousepos.y), mouse_line_color, 2);
-				render.drawLine(Vector2(mousepos.x, -size.y), Vector2(mousepos.x, size.y), mouse_line_color, 2);
-				render.drawText(mousepos + Vector2(5, 5), 3,
-				                util::Format("({0},{1})", mousepos.x, mousepos.y), "white", "ld");
-				//绘制鼠标位置
-
-
-				string key_string = "KEYBOARD:";
-				for (auto c : input.key_all) {
-					if (input.key_down[(int)c]) key_string += c;
-					if (input.key_change[(int)c] == 1) key_change_string += c, key_change_string += "_";
-					if (input.key_change[(int)c] == -1) key_change_string += c, key_change_string += "^";
-				}
-				render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 60.0f), 5, key_string, "#FFFFFF", "l");
-				render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 90.0f), 5, key_change_string, "#FFFFFF", "l");
-				//绘制键盘事件
+				debug_info_draw(i);
 				
 				root -> debug_draw(render);
 			}
@@ -114,7 +118,7 @@ namespace Algoriscope {
 			}
 
 			if (debug_function != nullptr)
-				debug_function(this, &render);
+				debug_function(this, &render,input);
 		}
 		cout << "loopend" << endl;
 		return 0;

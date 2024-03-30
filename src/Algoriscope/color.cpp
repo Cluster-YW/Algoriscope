@@ -2,7 +2,7 @@
 
 using namespace Algoriscope;
 
-Color::Color(const char* c) {
+Color::Color(const char c[]) {
 	std::string str = c;
 	if (str[0] != '#') {
 		if (str == "white") str = "#FFFFFF";
