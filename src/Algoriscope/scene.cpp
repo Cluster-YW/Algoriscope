@@ -12,20 +12,20 @@ namespace Algoriscope {
 		return 0;
 	}
 
-	void Scene::debug_info_draw(int i){
+	void Scene::debug_info_draw(int i) {
 		string key_change_string = "";
 		render.drawLine(Vector2(-size.x, 0), Vector2(size.x, 0), Color("#0000FF"));
 		render.drawLine(Vector2(0, -size.y), Vector2(0, size.y), Color("#FF0000"));
 		render.drawText(Vector2(size.x * 0.5f - 20, 15), 5,
-			util::Format("{0}", size.x * 0.5f), "#0000FF");
+		                util::Format("{0}", size.x * 0.5f), "#0000FF");
 		render.drawText(Vector2(20, size.y * 0.5f - 15), 5,
-			util::Format("{0}", size.y * 0.5f), "#FF0000");
+		                util::Format("{0}", size.y * 0.5f), "#FF0000");
 		//绘制坐标轴
-		
+
 		render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 30.0f), 5, "#" + to_string(i), "#FFFFFF", "l");
 		//绘制帧序号
-		
-		
+
+
 		Color mouse_line_color("lightgrey");
 		if (input.mouse_left_down) {
 			mouse_line_color = "#FF0000";
@@ -38,10 +38,10 @@ namespace Algoriscope {
 		render.drawLine(Vector2(-size.x, mousepos.y), Vector2(size.x, mousepos.y), mouse_line_color, 2);
 		render.drawLine(Vector2(mousepos.x, -size.y), Vector2(mousepos.x, size.y), mouse_line_color, 2);
 		render.drawText(mousepos + Vector2(5, 5), 3,
-			util::Format("({0},{1})", mousepos.x, mousepos.y), "white", "ld");
+		                util::Format("({0},{1})", mousepos.x, mousepos.y), "white", "ld");
 		//绘制鼠标位置
-		
-		
+
+
 		string key_string = "KEYBOARD:";
 		for (auto c : input.key_all) {
 			if (input.key_down[(int)c]) key_string += c;
@@ -52,7 +52,7 @@ namespace Algoriscope {
 		render.drawText(Vector2(-size.x * 0.5f + 30, size.y * 0.5f - 90.0f), 5, key_change_string, "#FFFFFF", "l");
 		//绘制键盘事件
 	}
-	
+
 	int Scene::run(int time, bool canbreak) {
 
 		float timer = 0.0f;
@@ -90,20 +90,23 @@ namespace Algoriscope {
 			if (!paused)
 				root->update(deltatime, input);
 
-			root->draw(render);			
-			
+			root->draw(render);
+
 			if (debug_mode) {
 				debug_info_draw(i);
-				
+
 				root -> debug_draw(render);
 			}
 
-			if(paused){
+			if (paused) {
 				render.drawText(Vector2(0, size.y * 0.4f), 10, "PAUSED", "#FFFFFF", "m");
 			}//输出暂停标志
-			
+
 
 			if (input.key_change[' '] == 1) {
+				break;
+			}
+			if (input.key_down['\n']) {
 				break;
 			}
 			if (input.key_change[GLFW_KEY_F12] == -1) {
@@ -118,13 +121,9 @@ namespace Algoriscope {
 			}
 
 			if (debug_function != nullptr)
-				debug_function(this, &render,input);
+				debug_function(this, &render, input);
 		}
 		cout << "loopend" << endl;
-		return 0;
-	}
-	int Scene::addObject(Object& p) {
-		root->add_child(p);
 		return 0;
 	}
 	void Scene::processInput() {
@@ -144,6 +143,8 @@ namespace Algoriscope {
 
 		for (auto k : key_all) {
 			auto now_state = glfwGetKey(window, k);
+			if (k == '\n')
+				now_state = glfwGetKey(window, GLFW_KEY_ENTER);
 			if (now_state > key_down[(int)k]) key_change[(int)k] = 1;
 			else if (now_state < key_down[(int)k]) key_change[(int)k] = -1;
 			else key_change[(int)k] = 0;
