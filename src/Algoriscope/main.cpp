@@ -222,15 +222,15 @@ int main_quick_sort() {
 	Scene scn(1920, 1080, 100);
 	BarArray* Bs = new BarArray(Vector2(0, -60.0f), n, 50,
 		100, 100); // 创建一个条形图对象
-	scn.addObject(*Bs);
+	scn.addIn(*Bs);
 	Bs->setBind(array, n);
 	Bs->autoScale(500); // 进行相关设置
 	Bs->setCallBack(make);
 	Bs->setBarsCallBack(hightlight); // 用于交互的回调函数
 	auto Title = new Text("快速排序演示：", Vector2(-800, 400), 15, "white");
 	auto Subtitle = new Text("此时进行：", Vector2(-800, 300), 10, "white", "ld");
-	scn.addObject(*Title);
-	scn.addObject(*Subtitle); // 加入两行文字
+	scn.addIn(*Title);
+	scn.addIn(*Subtitle); // 加入两行文字
 	scn.run(500);
 	
 	QuickSort(array, 0, n - 1, Bs, Subtitle, &scn);
@@ -242,7 +242,7 @@ int main_quick_sort() {
 	Subtitle->setContent("排序完成！");
 	scn.run(1000);
 }
-int main_sort() {
+int main_sort_bubble() {
 	Scene scn(1920, 1080, 100);
 	int n = 9;
 	n = 10;
@@ -346,7 +346,7 @@ int main_sort_selection() { //选择排序源代码
 
 int main() {
 	while (1) {
-		printf("输入播放的动画：\n\t1.\t冒泡排序\n\t2.\t链表插入节点\n\t3.\t快速排序\n输入：");
+		printf("输入播放的动画：\n\t1.\t冒泡排序\n\t2.\t链表插入节点\n\t3.\t快速排序\n\t4.\t插入排序\n输入：");
 		int choice;
 		cin >> choice;
 		switch (choice) {
