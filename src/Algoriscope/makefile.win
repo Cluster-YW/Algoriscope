@@ -5,12 +5,12 @@ CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = Algoriscope_private.res
-OBJ      = dynamics.o color.o scene.o main.o object.o render.o vector2.o $(RES)
-LINKOBJ  = dynamics.o color.o scene.o main.o object.o render.o vector2.o Algoriscope_private.res
-CLEANOBJ  =  dynamics.o color.o scene.o main.o object.o render.o vector2.o  Algoriscope_private.res Algoriscope.exe
-LIBS     =  -L"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/libs" -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32 -lfreetype
-INCS     =   -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope" -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/include"
-CXXINCS  =   -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope" -I"D:/GitHub/Algoriscope/Algoriscope/src/Algoriscope/include"
+OBJ      = color.o main.o dynamics.o scene.o object.o vector2.o render.o $(RES)
+LINKOBJ  = color.o main.o dynamics.o scene.o object.o vector2.o render.o Algoriscope_private.res
+CLEANOBJ  =  color.o main.o dynamics.o scene.o object.o vector2.o render.o  Algoriscope_private.res Algoriscope.exe
+LIBS     =  -L"C:/Users/62477/Documents/GitHub/Algoriscope/src/Algoriscope/libs" -lglfw3 -lglew32 -lopengl32 -lwinmm -lgdi32 -lfreetype
+INCS     =   -I"C:/Users/62477/Documents/GitHub/Algoriscope/src/Algoriscope" -I"C:/Users/62477/Documents/GitHub/Algoriscope/src/Algoriscope/include"
+CXXINCS  =   -I"C:/Users/62477/Documents/GitHub/Algoriscope/src/Algoriscope" -I"C:/Users/62477/Documents/GitHub/Algoriscope/src/Algoriscope/include"
 BIN      = Algoriscope.exe
 CXXFLAGS = $(CXXINCS)  -g3 -pipe -Wall -D__DEBUG__
 CFLAGS   = $(INCS)  -g3 -pipe -Wall -D__DEBUG__
@@ -27,26 +27,26 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-dynamics.o: dynamics.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
-	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
-
-color.o: color.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
+color.o: color.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
 	$(CPP) -c color.cpp -o color.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-scene.o: scene.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
-	$(CPP) -c scene.cpp -o scene.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
-
-main.o: main.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
+main.o: main.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-object.o: object.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
+dynamics.o: dynamics.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
+	$(CPP) -c dynamics.cpp -o dynamics.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+scene.o: scene.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
+	$(CPP) -c scene.cpp -o scene.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+object.o: object.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
 	$(CPP) -c object.cpp -o object.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
-render.o: render.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
-	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
-
-vector2.o: vector2.cpp shader.h algoriscope.h color.h vector2.h object.h dynamics.h render.h scene.h
+vector2.o: vector2.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
 	$(CPP) -c vector2.cpp -o vector2.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
+
+render.o: render.cpp object.h scene.h algoriscope.h render.h vector2.h dynamics.h color.h shader.h
+	$(CPP) -c render.cpp -o render.o $(CXXFLAGS)  -finput-charset=UTF-8 -fexec-charset=gbk
 
 Algoriscope_private.res: Algoriscope_private.rc 
 	$(WINDRES) -i Algoriscope_private.rc --input-format=rc -o Algoriscope_private.res -O coff $(WINDRESFLAGS) 
