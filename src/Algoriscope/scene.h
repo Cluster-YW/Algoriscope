@@ -9,7 +9,7 @@
 #include "color.h"
 #include "object.h"
 #include "render.h"
-
+#include "array.h"
 
 namespace Algoriscope {
 	class Scene {
@@ -33,7 +33,39 @@ namespace Algoriscope {
 
 			void processInput();
 
-			int addObject(Object& p);
+			int addIn(Object& p) {
+				root->add_child(p);
+				return 0;
+			}
+			int addIn(Object* p) {
+				root->add_child(*p);
+				return 0;
+			}
+
+
+			template<typename T, typename... Args>
+			T* add(Args&&... args) {
+				auto ptr = new T(std::forward<Args>(args)...);
+				addIn(ptr);
+				return ptr;
+			}
+
+			template<typename T, typename B, typename... Args>
+			T* addBind(B& bptr, Args&&... args) {
+				auto ptr = new T(std::forward<Args>(args)...);
+				addIn(ptr);
+				ptr->setBind(bptr);
+				return ptr;
+			}
+
+			template<typename T, typename B, typename... Args>
+			T* addBind(B& bptr, int n, Args&&... args) {
+				auto ptr = new T(std::forward<Args>(args)...);
+				addIn(ptr);
+				ptr->setBind(bptr, n);
+				return ptr;
+			}
+
 		private:
 			void debug_info_draw(int i);
 

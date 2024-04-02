@@ -74,17 +74,17 @@ int main_insert() {
 
 
 	auto Node = new NodeBox(Vector2(-400, -50), 100, "darkred");
-	scn.addObject(*Node);
+	scn.addIn(*Node);
 	Node->setBind(A.data);
 	Node->setNext((A.next));
 
 	auto Node2 = new NodeBox(Vector2(0, -50), 100, "darkred");
-	scn.addObject(*Node2);
+	scn.addIn(*Node2);
 	Node2->setBind(B.data);
 	Node2->setNext((B.next));
 
 	auto Node3 = new NodeBox(Vector2(400, -50), 100, "darkred");
-	scn.addObject(*Node3);
+	scn.addIn(*Node3);
 	Node3->setBind(C.data);
 	Node3->setNext((C.next));
 
@@ -93,7 +93,7 @@ int main_insert() {
 	D.data = 15;
 
 	auto Node4 = new NodeBox(Vector2(200, 600), 100, "darkblue");
-	scn.addObject(*Node4);
+	scn.addIn(*Node4);
 	Node4->setBind(D.data);
 	Node4->setPosition(Vector2(200, 100));
 	Node4->setNext(D.next);
@@ -105,7 +105,7 @@ int main_insert() {
 	B.next = &D;
 	scn.run(2000);
 }
-int main_sort() {
+int main_sort_bubble() {
 	Scene scn(1920, 1080, 100);
 	int n = 9;
 	n = 10;
@@ -115,15 +115,15 @@ int main_sort() {
 
 	auto Bs = new BarArray(Vector2(0, -60.0f), n, 50,
 	                       100, 100); // 创建一个条形图对象
-	scn.addObject(*Bs);
+	scn.addIn(*Bs);
 	Bs->setBind(array, n);
 	Bs->autoScale(500); // 进行相关设置
 	Bs->setCallBack(make);
 	Bs->setBarsCallBack(hightlight); // 用于交互的回调函数
 	auto Title = new Text("冒泡排序演示：", Vector2(-800, 400), 15, "white");
 	auto Subtitle = new Text("此时进行：", Vector2(-800, 300), 10, "white", "ld");
-	scn.addObject(*Title);
-	scn.addObject(*Subtitle); // 加入两行文字
+	scn.addIn(*Title);
+	scn.addIn(*Subtitle); // 加入两行文字
 
 	for (int i = n - 1; i >= 0; i--) {
 		for (int j = 0; j < i; j++) {
@@ -149,6 +149,64 @@ int main_sort() {
 	}
 	scn.run(5000);
 }
+
+int sort_selection() { //选择排序源代码
+	int n;
+	int *arr;
+	printf("输入数据总数量：\n");
+	cin >> n;
+	printf("输入待排序数据（整数/使用空格分隔）：\n");
+	arr = new int[n];
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = i+1; j < n; j++) {
+			if (arr[i] < arr[j]) {
+				swap(arr[i], arr[j]);
+			}
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		cout << arr[i] << " ";
+	}
+}
+
+int main_sort_selection() { //选择排序源代码
+	int n;
+	int *arr;
+	printf("输入数据总数量：\n");
+	cin >> n;
+	printf("输入待排序数据（整数/使用空格分隔）：\n");
+	arr = new int[n];
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+	}
+	Scene scn(1920, 1080, 100);
+	auto b = scn.addBind<BarArray>(arr, n,
+	                               Vector2(0, 0), n, 50, 75, 0, "red");
+	auto Bx = scn.addBind<BoxArray>(arr, n,
+	                                Vector2(0, -200.0f), n, 100);
+	for (int i = 0; i < n; i++) {
+		b->setColor("blue", i);
+		for (int j = i + 1; j < n; j++) {
+			b->setColor("blue", j);
+			if (arr[i] < arr[j]) {
+				swap(arr[i], arr[j]);
+				b->animSwap(i, j);
+				Bx->animSwap(i, j);
+			}
+			scn.run(1000);
+			b->resetColor(j);
+		}
+		b->setDefaultColor("green", i);
+		b->resetColor(i);
+	}
+	for (int i = 0; i < n; i++) {
+		cout << arr[i] << " ";
+	}
+}
+
 int main() {
 	while (1) {
 		printf("输入播放的动画：\n\t1.\t冒泡排序\n\t2.\t链表插入节点\n输入：");
@@ -156,11 +214,13 @@ int main() {
 		cin >> choice;
 		switch (choice) {
 			case 1:
-				main_sort();
+				main_sort_bubble();
 				break;
 			case 2:
 				main_insert();
 				break;
+			case 3:
+				main_sort_selection();
 		}
 	}
 }
