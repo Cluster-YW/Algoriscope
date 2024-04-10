@@ -106,122 +106,110 @@ int main_insert() {
 	scn.run(2000);
 }
 
-int part(float arr[],int left,int right, BarArray* Bs, Text* Subtitle, Scene* scn){
-	int l=left,r=right;
-	float pivot=arr[left];
-	
-	while(left<right){
-		Bs->setDefaultColor("green", left); 
-		Bs->resetColor(left);
+int part(float arr[], int left, int right, BarArray* Bs, Text* Subtitle, Scene* scn) {
+	int l = left, r = right;
+	float pivot = arr[left];
+
+	while (left < right) {
+		Bs->resetDefaultColor("green", left);
 		Subtitle->setContent("分割点");
 		scn->run(500);
-		while(left<right&&arr[right]>=pivot)
-		{
-			Bs->setDefaultColor("blue", right);
-			Bs->setDefaultColor("blue", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+		while (left < right && arr[right] >= pivot) {
+			Bs->resetDefaultColor("blue", right);
+			Bs->resetDefaultColor("blue", left);
 			Subtitle->setContent("比较");
 			scn->run(300);
 			Subtitle->setContent("无需交换");
 			scn->run(500);
-			
-			Bs->setDefaultColor("red", right);
-			Bs->setDefaultColor("green", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+
+			Bs->resetDefaultColor("red", right);
+			Bs->resetDefaultColor("green", left);
 			Subtitle->setContent("分割点");
 			scn->run(500);
 			right--;
 		}
-		
-		
-		if(left<right)
-		{
-			Bs->setDefaultColor("blue", right);
-			Bs->setDefaultColor("blue", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+
+
+		if (left < right) {
+			Bs->resetDefaultColor("blue", right);
+			Bs->resetDefaultColor("blue", left);
 			Subtitle->setContent("比较");
 			scn->run(300);
 			swap(arr[left], arr[right]);
-			
+
 			Bs->animSwap(left, right);
 			Subtitle->setContent("进行交换！");
 			scn->run(500);
-			Bs->setDefaultColor("green", right);
-			Bs->setDefaultColor("red", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+			Bs->resetDefaultColor("green", right);
+			Bs->resetDefaultColor("red", left);
 			Subtitle->setContent("分割点");
 			scn->run(500);
 			left++;
 		}
-		while(left<right&&arr[left]<=pivot)
-		{
-			Bs->setDefaultColor("blue", right);
-			Bs->setDefaultColor("blue", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+		while (left < right && arr[left] <= pivot) {
+			Bs->resetDefaultColor("blue", right);
+			Bs->resetDefaultColor("blue", left);
 			Subtitle->setContent("比较");
 			scn->run(300);
 			Subtitle->setContent("无需交换");
 			scn->run(500);
-			
-			Bs->setDefaultColor("green", right);
-			Bs->setDefaultColor("red", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+
+			Bs->resetDefaultColor("green", right);
+			Bs->resetDefaultColor("red", left);
 			Subtitle->setContent("分割点");
 			scn->run(500);
 			left++;
 		}
-		
-		if(left<right)
-		{
-			Bs->setDefaultColor("blue", right);
-			Bs->setDefaultColor("blue", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+
+		if (left < right) {
+			Bs->resetDefaultColor("blue", right);
+			Bs->resetDefaultColor("blue", left);
 			Subtitle->setContent("比较");
 			scn->run(300);
 			swap(arr[left], arr[right]);
 			Bs->animSwap(left, right);
 			Subtitle->setContent("进行交换！");
 			scn->run(500);
-			
-			Bs->setDefaultColor("red", right);
-			Bs->setDefaultColor("green", left);
-			Bs->resetColor(right);
-			Bs->resetColor(left);
+
+			Bs->resetDefaultColor("red", right);
+			Bs->resetDefaultColor("green", left);
 			Subtitle->setContent("分割点");
 			scn->run(500);
 			right--;
 		}
-		
+
 	}
-	Bs->setDefaultColor("red",l,r);
-	Bs->resetColor(l,r);
-	arr[left]=pivot;
+	Bs->setDefaultColor("red", l, r);
+	Bs->resetColor(l, r);
+	arr[left] = pivot;
 	return left;
 }
-void QuickSort(float arr[], int left, int right, BarArray* Bs, Text* Subtitle, Scene* scn){
-	if(left<right){
-		int devide=part(arr,left,right,Bs,Subtitle,scn);
-		QuickSort(arr,left,devide-1,Bs,Subtitle,scn);
-		QuickSort(arr,devide+1,right,Bs,Subtitle,scn);
+void QuickSort(float arr[], int left, int right, BarArray* Bs, Text* Subtitle, Scene* scn) {
+	if (left == right) {
+		Bs->resetDefaultColor("green", left);
+		return;
+	} else if (left < right) {
+		Bs->resetDefaultColor("yellow", left, right);
+		scn->run(500);
+		printf("[%d,%d]", left, right);
+
+		int divide = part(arr, left, right, Bs, Subtitle, scn);
+		printf("DIVIDE:%d\n", divide);
+		Bs->resetDefaultColor("green", divide);
+		QuickSort(arr, left, divide - 1, Bs, Subtitle, scn);
+		QuickSort(arr, divide + 1, right, Bs, Subtitle, scn);
 	}
 }
 
 int main_quick_sort() {
 	int	n = 10;
 	float array[n] = {0.3f, -0.6f, -0.7f, 0.2f, 0.8f
-		, 0.1f, 0.9f, 0.4f, 2.0f, 1.0f
-	};
-	
+	                  , 0.1f, 0.9f, 0.4f, 2.0f, 1.0f
+	                 };
+
 	Scene scn(1920, 1080, 100);
 	BarArray* Bs = new BarArray(Vector2(0, -60.0f), n, 50,
-		100, 100); // 创建一个条形图对象
+	                            100, 100); // 创建一个条形图对象
 	scn.addIn(*Bs);
 	Bs->setBind(array, n);
 	Bs->autoScale(500); // 进行相关设置
@@ -232,13 +220,9 @@ int main_quick_sort() {
 	scn.addIn(*Title);
 	scn.addIn(*Subtitle); // 加入两行文字
 	scn.run(500);
-	
+
 	QuickSort(array, 0, n - 1, Bs, Subtitle, &scn);
-	
-	for (int i = 0; i < n; ++i) {
-		Bs->setDefaultColor("green", i);
-		Bs->resetColor(i);
-	}
+
 	Subtitle->setContent("排序完成！");
 	scn.run(1000);
 }
@@ -298,7 +282,7 @@ int sort_selection() { //选择排序源代码
 		cin >> arr[i];
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j = i+1; j < n; j++) {
+		for (int j = i + 1; j < n; j++) {
 			if (arr[i] < arr[j]) {
 				swap(arr[i], arr[j]);
 			}
@@ -326,8 +310,10 @@ int main_sort_selection() { //选择排序源代码
 	                                Vector2(0, -200.0f), n, 100);
 	for (int i = 0; i < n; i++) {
 		b->setColor("blue", i);
+		Bx->setColor("darkblue", i);
 		for (int j = i + 1; j < n; j++) {
 			b->setColor("blue", j);
+			Bx->setColor("darkblue", j);
 			if (arr[i] < arr[j]) {
 				swap(arr[i], arr[j]);
 				b->animSwap(i, j);
@@ -335,10 +321,12 @@ int main_sort_selection() { //选择排序源代码
 			}
 			scn.run(1000);
 			b->resetColor(j);
+			Bx->resetColor(j);
 		}
-		b->setDefaultColor("green", i);
-		b->resetColor(i);
+		b->resetDefaultColor("green", i);
+		Bx->resetDefaultColor("darkgreen", i);
 	}
+	scn.run(3000);
 	for (int i = 0; i < n; i++) {
 		cout << arr[i] << " ";
 	}

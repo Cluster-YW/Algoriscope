@@ -54,7 +54,9 @@ namespace Algoriscope {
 	void BarArray ::setColor(Color in, int i) {
 		elements[i]->setColor(in);
 	};
-	void BarArray ::setColor(Color in, int i, int j) {
+	void BarArray ::setColor(Color in, int _i, int _j) {
+		int i = _i < _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
 		for (i = i; i <= j; i++) {
 			elements[i]->setColor(in);
 		}
@@ -78,6 +80,16 @@ namespace Algoriscope {
 		for (i = i; i <= j; i++)
 			setDefaultColor(in, i);
 		resetColor(i, j);
+	};
+	void BarArray::resetDefaultColor(Color in, int _i) {
+		elements[_i]->resetDefaultColor(in);
+	};
+	void BarArray::resetDefaultColor(Color in, int _i, int _j) {
+		int i = _i < _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+		
+		for (i = i; i <= j; i++)
+			resetDefaultColor(in, i);
 	};
 
 	void BoxArray::update(float deltatime, InputState &input) {
@@ -112,4 +124,42 @@ namespace Algoriscope {
 			child->debug_draw(render);
 		}
 	}
+	void BoxArray ::setColor(Color in, int i) {
+		elements[i]->setColor(in);
+	};
+	void BoxArray ::setColor(Color in, int _i, int _j) {
+		int i = _i < _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+		for (i = i; i <= j; i++) {
+			elements[i]->setColor(in);
+		}
+	};
+	void BoxArray ::resetColor(int i) {
+		elements[i]->resetColor();
+	};
+	void BoxArray ::resetColor(int i, int j) {
+		for (i = i; i <= j; i++) {
+			elements[i]->resetColor();
+		}
+	};
+	void BoxArray::setDefaultColor(Color in, int _i) {
+		elements[_i]->setDefaultColor(in);
+	};
+	void BoxArray::setDefaultColor(Color in, int _i, int _j) {
+		int i = _i < _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+		
+		for (i = i; i <= j; i++)
+			setDefaultColor(in, i);
+	};
+	void BoxArray::resetDefaultColor(Color in, int _i) {
+		elements[_i]->resetDefaultColor(in);
+	};
+	void BoxArray::resetDefaultColor(Color in, int _i, int _j) {
+		int i = _i < _j ? _i : _j;
+		int j = _i > _j ? _i : _j;
+		
+		for (i = i; i <= j; i++)
+			resetDefaultColor(in, i);
+	};
 }

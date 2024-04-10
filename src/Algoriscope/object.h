@@ -169,7 +169,7 @@ namespace Algoriscope {
 			void setBind(T* ptr) { // 通过指针设置绑定
 				popBindMap(bind, this);
 				auto type = typeid(ptr).name();
-				if(type[1]!='v')
+				if (type[1] != 'v')
 					bindType = type[1];
 				bind = ptr;
 				addBindMap(bind, this);
@@ -200,6 +200,10 @@ namespace Algoriscope {
 
 			void setDefaultColor(Color in) {
 				defaultcolor = in;
+			}
+			void resetDefaultColor(Color in) {
+				defaultcolor = in;
+				color = defaultcolor;
 			}
 
 			Color getColor() {
@@ -259,6 +263,10 @@ namespace Algoriscope {
 
 			void setDefaultColor(Color in) {
 				defaultcolor = in;
+			}
+			void resetDefaultColor(Color in) {
+				defaultcolor = in;
+				color = defaultcolor;
 			}
 
 			template<typename T>

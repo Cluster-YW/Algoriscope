@@ -42,6 +42,8 @@ namespace Algoriscope {
 			void setColor(Color in, int _i, int _j);
 			void setDefaultColor(Color in, int _i);
 			void setDefaultColor(Color in, int _i, int _j);
+			void resetDefaultColor(Color in, int _i);
+			void resetDefaultColor(Color in, int _i, int _j);
 			void resetColor(int _i);
 			void resetColor(int _i, int _j);
 
@@ -148,6 +150,8 @@ namespace Algoriscope {
 			void setColor(Color in, int _i, int _j);
 			void setDefaultColor(Color in, int _i);
 			void setDefaultColor(Color in, int _i, int _j);
+			void resetDefaultColor(Color in, int _i);
+			void resetDefaultColor(Color in, int _i, int _j);
 			void resetColor(int _i);
 			void resetColor(int _i, int _j);
 
