@@ -4,7 +4,7 @@
 
 [![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/)
 [![OpenGL](https://img.shields.io/badge/OpenGL-3.3-5586A4.svg)](https://www.opengl.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-GNU-green.svg)](LICENSE)
 
 Algoriscope（算法镜）是一个基于 C++ 与 OpenGL 的算法可视化引擎。它通过**低侵入式**的代码嵌入设计，允许开发者直接在原有算法代码中插入可视化指令，实时生成交互式动画。
 
