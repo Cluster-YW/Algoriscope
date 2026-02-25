@@ -75,6 +75,8 @@ Color Color::HSL(float h, float s, float l) {
 	col.calcF();
 	return col;
 };
+
+
 void Color::trimRGBA() {
 	if (r > 255)this->r = 255;
 	else if (r < 0)this->r = 0;

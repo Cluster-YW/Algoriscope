@@ -15,7 +15,7 @@ namespace Algoriscope {
 		bool mouse_right_down = 0;
 		bool key_down[350] = {};
 		int key_change[350] = {};
-		const string key_all = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ []\\;\',./";
+		const string key_all = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ []\\;\',./\n";
 	};
 
 	Vector2 calcRadiusRectEnd(const Vector2& C,
@@ -54,6 +54,9 @@ namespace Algoriscope {
 			void setPosition(const Vector2 pos) {
 				position = pos;
 			}
+			void _setPosAtOnce(const Vector2 pos) {
+				position.set(pos);
+			}
 			Vector2 getPosition() {
 				return position.getInput();
 			}
@@ -74,7 +77,7 @@ namespace Algoriscope {
 			std::vector<Object*> children; // 子对象
 
 
-			CallBackFunction<Object> call_back;
+			CallBackFunction<Object> call_back = nullptr;
 		public:
 			bool display = 1; //是否显示
 	};
@@ -118,7 +121,7 @@ namespace Algoriscope {
 			DynamicC color;
 
 			string align;
-			CallBackFunction<Text> call_back;
+			CallBackFunction<Text> call_back = nullptr;
 	};
 
 
@@ -166,7 +169,8 @@ namespace Algoriscope {
 			void setBind(T* ptr) { // 通过指针设置绑定
 				popBindMap(bind, this);
 				auto type = typeid(ptr).name();
-				bindType = type[1];
+				if (type[1] != 'v')
+					bindType = type[1];
 				bind = ptr;
 				addBindMap(bind, this);
 				tag->display = 1;
@@ -197,6 +201,10 @@ namespace Algoriscope {
 			void setDefaultColor(Color in) {
 				defaultcolor = in;
 			}
+			void resetDefaultColor(Color in) {
+				defaultcolor = in;
+				color = defaultcolor;
+			}
 
 			Color getColor() {
 				return color.getInput();
@@ -220,7 +228,7 @@ namespace Algoriscope {
 			Color defaultcolor; //默认颜色
 
 			Text* tag = nullptr;
-			CallBackFunction<Bar> call_back;
+			CallBackFunction<Bar> call_back = nullptr;
 	};
 
 	class Box: public Object {
@@ -241,6 +249,10 @@ namespace Algoriscope {
 			virtual void draw(Render & render);
 			virtual void debug_draw(Render & render);
 
+			void setSize(float in) {
+				size = in;
+			}
+
 			void setColor(Color in) { //设置颜色
 				color = in;
 			}
@@ -251,6 +263,10 @@ namespace Algoriscope {
 
 			void setDefaultColor(Color in) {
 				defaultcolor = in;
+			}
+			void resetDefaultColor(Color in) {
+				defaultcolor = in;
+				color = defaultcolor;
 			}
 
 			template<typename T>
@@ -275,6 +291,10 @@ namespace Algoriscope {
 			void setCallBack(CallBackFunction<Box> in) {
 				call_back = in;
 			}
+
+			Text* _getTag() {
+				return tag;
+			}
 		protected:
 			void* bind = nullptr; // 绑定
 			char bindType = 0; // 绑定类型
@@ -285,122 +305,6 @@ namespace Algoriscope {
 			Text* tag;
 		private:
 			CallBackFunction<Box> call_back;
-	};
-
-	class BarArray: public Object {
-		public:
-			BarArray(Vector2 _pos, int _n, float _w, float _g,
-			         float _h, Color c = Color("red")) :
-				Object(_pos), gap(_g) {
-
-				for (int i = 0; i < _n; i++) {
-					Vector2 bpos(_g * (i - (_n - 1) * 0.5f), 0);
-					Bar* bar = new Bar(bpos, _w, _h, c);
-					add_child(*bar);
-					bars.push_back(bar);
-				}
-			}
-			~BarArray() {
-				for (auto bar : bars) {
-					delete bar;
-				}
-			}
-			virtual void update(float deltatime, InputState &input);
-			virtual void draw(Render & render);
-			virtual void debug_draw(Render & render);
-
-			void setGap(float in) {
-				gap = in;
-			}
-			void setWidth(float in) {
-				for (auto bar : bars) {
-					bar->setWidth(in);
-				}
-			}
-
-
-			template<typename T>
-			void setBind(T* ptr, int n) { // 通过指针设置绑定
-				auto type = typeid(ptr).name();
-				bindType = type[1];
-				bind = ptr;
-				if (n > bars.size()) {
-					Bar* btemp = bars[bars.size() - 1];
-					auto _w = btemp->getWidth();
-					auto c = btemp->getDefaultColor();
-					auto s = btemp->getScale();
-					for (int i = bars.size(); i < n; i++) {
-						Vector2 bpos(gap() * (i - (bars.size() - 1) * 0.5f), 0);
-						Bar* bar = new Bar(bpos, _w, 0, c);
-						bar->setScale(s);
-						add_child(*bar);
-						bars.push_back(bar);
-					}
-				}
-				for (int i = 0; i < n; i++) {
-					bars[i]->setBind(ptr + i);
-					bars[i]->setHeight(bars[i]->getScale() * ptr[i]);
-				}
-			}
-
-			void animSwap(int i, int j) {
-				swap(bars[j], bars[i]);
-				Vector2 v1 = bars[j]->getPosition();
-				bars[j]->setPosition(bars[i]->getPosition());
-				bars[i]->setPosition(v1);
-				float* f1 = (float*)bars[j]->getBind();
-				bars[j]->setBind((float*)(bars[i]->getBind()));
-				bars[i]->setBind(f1);
-			}
-
-			void setScale(float in) {
-				for (auto bar : bars) {
-					bar->setScale(in);
-				}
-			}
-			void autoScale(float in) {
-				float high = 0;
-				float low = 0;
-				for (auto bar : bars) {
-					auto s = bar->getHeight() / bar->getScale();
-					cout << s << endl;
-					high = high > s ? high : s;
-					low = low < s ? low : s;
-				}
-				setScale( in / (high - low));
-			}
-			void setAlign(string in = "") {
-				align = in;
-			}
-			Bar* getBar(int index) {
-				if (index < -(int)(bars.size()) || index >= bars.size()) return nullptr;
-				if (index < 0)index += bars.size();
-				return bars[index];
-			}
-
-			void setCallBack(CallBackFunction<BarArray> in) {
-				call_back = in;
-			}
-			void setBarsCallBack(CallBackFunction<Bar> in) {
-				for (auto bar : bars) {
-					bar->setCallBack(in);
-				}
-			}
-			void setColor(Color in, int _i);
-			void setColor(Color in, int _i, int _j);
-			void setDefaultColor(Color in, int _i);
-			void setDefaultColor(Color in, int _i, int _j);
-			void resetColor(int _i);
-			void resetColor(int _i, int _j);
-		protected:
-			void* bind = nullptr; // 绑定
-			char bindType = 0; // 绑定类型
-			Dynamics gap;
-			vector<Bar*> bars;
-
-			CallBackFunction<BarArray> call_back;
-
-			string align = "c";
 	};
 
 	class NodeBox: public Box {
@@ -428,12 +332,12 @@ namespace Algoriscope {
 			void setNext(void** next) {
 				pointer = next;
 			}
-		
+
 			template<typename T>
 			void setNext(T &next) {
 				pointer = (void**)&next;
 			}
-		
+
 			void** getNext() {
 				return pointer;
 			}
@@ -441,7 +345,7 @@ namespace Algoriscope {
 		protected:
 			void** pointer = nullptr;
 
-			CallBackFunction<NodeBox> call_back;
+			CallBackFunction<NodeBox> call_back = nullptr;
 	};
 }
 
