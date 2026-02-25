@@ -19,6 +19,12 @@ Algoriscope（算法镜）是一个基于 C++ 与 OpenGL 的算法可视化引�
 - **低耦合设计**：只需在原有算法代码中插入少量动画代码，不影响原有逻辑。
 - **树形对象管理**：对象可建立父子关系，子对象基于父对象的相对坐标定位，便于构建复杂场景。
 
+## ⚠️ 重要提示 / Important Note
+
+本项目由初学者在课程设计中开发，架构设计存在严重问题，代码质量较差，难以在实际项目中使用，也无法继续维护。我们对此深表遗憾，但也感谢大家的关注。未来，我们计划重新设计并开发一个更合理、更易用的版本。敬请期待。
+
+This project was developed by beginners as part of a course project. The architecture has serious flaws and the code quality is poor, making it unsuitable for practical use and difficult to maintain. We regret this situation but appreciate your interest. In the future, we plan to redesign and develop a more robust and user-friendly version. Stay tuned.
+
 ## 依赖
 
 - OpenGL 3.3+
